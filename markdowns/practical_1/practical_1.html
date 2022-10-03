@@ -1,0 +1,1348 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Basics in R &#8212; Biodiversity and Conservation Biology</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Phylogenetics in R" href="../practical_2/practical_2.html" />
+    <link rel="prev" title="Introduction" href="../../intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Biodiversity and Conservation Biology</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Basics in R
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../practical_2/practical_2.html">
+   Phylogenetics in R
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../practical_3/practical_3.html">
+   Macroecology analyses
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../practical_4/practical_4.html">
+   Setting conservation priorities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../links.html">
+   Useful links
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/markdowns/practical_1/practical_1.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction-and-resources">
+   1. Introduction and resources
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#working-directory">
+     Working directory
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-scripts">
+     Using scripts
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#installing-and-using-packages-for-practicals">
+     Installing and using packages for practicals
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#revision-of-data-types">
+   2. Revision of data types
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vectors">
+     Vectors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#matrices-and-dataframes">
+     Matrices and dataframes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-writing-and-rdata-files">
+   3. Reading, writing and .RData files
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#plotting-data">
+   4. Plotting data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#handling-spatial-data">
+   5. Handling spatial data
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rasters">
+     Rasters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spatial-polygons">
+     Spatial polygons
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-maps">
+     Plotting maps
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-the-tidyverse">
+   6. Using the Tidyverse
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section id="basics-in-r">
+<h1>Basics in R<a class="headerlink" href="#basics-in-r" title="Permalink to this headline">¶</a></h1>
+<section id="introduction-and-resources">
+<h2>1. Introduction and resources<a class="headerlink" href="#introduction-and-resources" title="Permalink to this headline">¶</a></h2>
+<p>The aim of this practical is to revise some basic functions in <code class="docutils literal notranslate"><span class="pre">R</span></code>
+relating to data management and plotting. We will then look at handling
+spatial data. One aim of this practical is to make sure everyone’s set
+up is working well and fix any problems!</p>
+<section id="working-directory">
+<h3>Working directory<a class="headerlink" href="#working-directory" title="Permalink to this headline">¶</a></h3>
+<p>The first step when starting a new session is to set your working
+directory. Think of it as the ‘folder’ that you work out of on your
+computer. Unless you specify differently, anything that you read in or
+save will be in this folder. We can find out what working directory we
+are in using the function <code class="docutils literal notranslate"><span class="pre">getwd()</span></code>:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the current working directory. (Mine will be different to yours!)</span>
+<span class="nf">getwd</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;C:/Users/rb417/Desktop/BCB_Backup/bcb_notebook_2021/markdowns/practical_1&quot;
+</pre></div>
+</div>
+<p>The working directory is set using the function <code class="docutils literal notranslate"><span class="pre">setwd()</span></code> and the path
+to the folders location, for example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">setwd(&quot;C:/Users/rb417/Desktop/BCB_Practicals&quot;)</span></code></p>
+<p>If you’re using RStudio Cloud, you should already be in the correct
+directory, but if you’re working on your laptop I recommend storing all
+the files you need for the practicals in one folder called
+“BCB_practicals”. You should then set your working directory to this
+folder at the start of each R session.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you’re in <code class="docutils literal notranslate"><span class="pre">RStudio</span></code> you can also use
+<code class="docutils literal notranslate"><span class="pre">Tools</span> <span class="pre">-&gt;</span> <span class="pre">Global</span> <span class="pre">Options</span></code> to change your default working directory to your
+preferred folder. This means every time you open RStudio you will already be in
+correct place to begin.</p>
+</div>
+</section>
+<section id="using-scripts">
+<h3>Using scripts<a class="headerlink" href="#using-scripts" title="Permalink to this headline">¶</a></h3>
+<p>You can open a new script by going to <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">-&gt;</span> <span class="pre">New</span> <span class="pre">File</span> <span class="pre">-&gt;</span> <span class="pre">R</span> <span class="pre">script</span></code>.
+Also on windows you can type <code class="docutils literal notranslate"><span class="pre">CTRL</span> <span class="pre">+</span> <span class="pre">SHIFT</span> <span class="pre">+</span> <span class="pre">N</span></code>. Save often! Although
+you can write commands directly into the console window, using a script
+allows you to save a record of your code that can easily be re-run. This
+is particularly useful if you find a mistake later on, or want to update
+models with new data. This is also a lifesaver when R crashes!</p>
+<p>For anyone unfamiliar, ‘#’ proceeds comments in scripts that won’t be
+acted on by R, which allows us to label our scripts. Comments are very
+useful! Try and make as many comments as possible, and use more detail
+than you think you need. You’d be surprised how quickly you can forget
+what a function or script does, so detailed comments are a lifesaver!</p>
+<p>Spaces are also important for adding to scripts! Try and space out lines
+of code with spaces, and add spaces wherever possible to make code
+easier to run. For example:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># A nice script to say hi #</span>
+
+<span class="c1"># Create a message.</span>
+<span class="n">my_message</span> <span class="o">&lt;-</span> <span class="s">&quot;Hello World.&quot;</span>
+
+<span class="c1"># Print my message in the console.</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">my_message</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;Hello World.&quot;
+</pre></div>
+</div>
+<p>If you start writing your scripts in this way from early on, you’ll find
+future work much easier!</p>
+</section>
+<section id="installing-and-using-packages-for-practicals">
+<h3>Installing and using packages for practicals<a class="headerlink" href="#installing-and-using-packages-for-practicals" title="Permalink to this headline">¶</a></h3>
+<p>Throughout the practicals we will be using different R packages to
+tackle different tasks. If you’re using <code class="docutils literal notranslate"><span class="pre">RStudio</span> <span class="pre">Cloud</span></code> all the
+necessary packages should come pre-installed. If you are using your own
+laptop you will need to install packages like so:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install ggplot2 for making fancy plots.</span>
+<span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;ggplot2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also upgrade packages in the same way if you need to.</p>
+<p>Once we’ve installed packages they don’t automatically get loaded into
+your <code class="docutils literal notranslate"><span class="pre">R</span></code> session. Instead you need to tell <code class="docutils literal notranslate"><span class="pre">R</span></code> to load them <strong>every
+time</strong> you start a new <code class="docutils literal notranslate"><span class="pre">R</span></code> session and want to use functions from these
+packages. To load the package <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> into your current <code class="docutils literal notranslate"><span class="pre">R</span></code> session:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="revision-of-data-types">
+<h2>2. Revision of data types<a class="headerlink" href="#revision-of-data-types" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start with some basic data manipulation in R to get started.</p>
+<section id="vectors">
+<h3>Vectors<a class="headerlink" href="#vectors" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll first try defining some basic variables.</span>
+
+<span class="c1"># A number.</span>
+<span class="n">a</span> <span class="o">&lt;-</span> <span class="m">5.7</span>
+
+<span class="c1"># Running the variable returns it to the console.</span>
+<span class="n">a</span>
+
+<span class="c1"># The class function tells us what type of variable.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] 5.7
+## [1] &quot;numeric&quot;
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To run a single line of your script at a time in windows, a convenient short
+cut is <code class="docutils literal notranslate"><span class="pre">CTRL</span> <span class="pre">+</span> <span class="pre">ENTER</span></code>.</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># A string.</span>
+<span class="n">b</span> <span class="o">&lt;-</span> <span class="s">&quot;hello&quot;</span>
+<span class="n">b</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;hello&quot;
+## [1] &quot;character&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># A logical object.</span>
+<span class="n">c</span> <span class="o">&lt;-</span> <span class="kc">TRUE</span>
+<span class="n">c</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] TRUE
+## [1] &quot;logical&quot;
+</pre></div>
+</div>
+<p>In R variables are stored as vectors. Often vectors will be lists of
+variables such as 1,2,3,4,5. However, even single variables are still
+stored as vectors! Try <code class="docutils literal notranslate"><span class="pre">is.vector()</span></code> on each of the variables you just
+created to see! Vectors are one of the most basic (and useful) ways of
+storing data in R.</p>
+<p>Now we’ll try creating some longer vectors and manipulating them.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generates a sequence from 0 to 9 by intervals of 1. Try ?seq() for more information.</span>
+<span class="n">d</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">9</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> 
+<span class="n">d</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] 0 1 2 3 4 5 6 7 8 9
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Remember that you can find the R help for a particular function by using
+<code class="docutils literal notranslate"><span class="pre">?function</span></code> e.g. <code class="docutils literal notranslate"><span class="pre">?seq</span></code>. You can also use <code class="docutils literal notranslate"><span class="pre">help(seq)</span></code> for the same effect.</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Concatenate variables into one vector.</span>
+<span class="n">e</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">9</span><span class="p">)</span>
+<span class="n">e</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] 0 1 2 3 4 5 6 7 8 9
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">c()</span></code> is one of the most used functions in R! It allows you to join
+together two objects. For example:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine d and e into one vector.</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="n">f</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
+</pre></div>
+</div>
+<p>Vectors can also be strings or logicals.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a vector of strings.</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span>
+<span class="n">g</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;red&quot;   &quot;blue&quot;  &quot;green&quot;
+## [1] &quot;character&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># And a vector of logicals.</span>
+<span class="n">h</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="n">h</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1]  TRUE  TRUE FALSE
+## [1] &quot;logical&quot;
+</pre></div>
+</div>
+<p>We can perform many operations on vectors.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the length of a vector.</span>
+<span class="nf">length</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> 
+
+<span class="c1"># Find the mean of the vector.</span>
+<span class="nf">mean</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+<span class="c1"># Find the variance of the vector.</span>
+<span class="nf">var</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] 10
+## [1] 4.5
+## [1] 9.166667
+</pre></div>
+</div>
+<p>Indexing is an easy way to pull out certain elements of a vector based
+on their position.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the first element of e.</span>
+<span class="n">e</span><span class="p">[</span><span class="m">1</span><span class="p">]</span>
+
+<span class="c1"># Return the fifth element of e.</span>
+<span class="n">e</span><span class="p">[</span><span class="m">5</span><span class="p">]</span>
+
+<span class="c1"># Return the tenth element of e.</span>
+<span class="n">e</span><span class="p">[</span><span class="m">10</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] 0
+## [1] 4
+## [1] 9
+</pre></div>
+</div>
+<p>Indexing can also pull out groups of variables.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Elements 1 to 5.</span>
+<span class="n">e</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">]</span>
+
+<span class="c1"># Elements 1 and 4.</span>
+<span class="n">e</span><span class="p">[</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">4</span><span class="p">)]</span>
+
+<span class="c1"># e without the fourth element.</span>
+<span class="n">e</span><span class="p">[</span><span class="m">-4</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] 0 1 2 3 4
+## [1] 0 3
+## [1] 0 1 2 4 5 6 7 8 9
+</pre></div>
+</div>
+</section>
+<section id="matrices-and-dataframes">
+<h3>Matrices and dataframes<a class="headerlink" href="#matrices-and-dataframes" title="Permalink to this headline">¶</a></h3>
+<p>Often we will need to use structures that are more complex than vectors
+for storing data. The most simple is a matrix, with rows and columns all
+with the same class of data. E.g. a matrix of numbers or strings.</p>
+<p>Vectors can easily be combined into a matrix using <code class="docutils literal notranslate"><span class="pre">cbind</span></code> (short for
+column bind).</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create two vectors.</span>
+<span class="n">numbers</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">5</span><span class="p">)</span>
+<span class="n">other_numbers</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">6</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">8</span><span class="p">,</span><span class="m">9</span><span class="p">,</span><span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># Use the cbind function to bind together the two vectors as columns.</span>
+<span class="n">all_numbers</span> <span class="o">&lt;-</span> <span class="nf">cbind</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">other_numbers</span><span class="p">)</span>
+
+<span class="c1"># View our new matrix.</span>
+<span class="n">all_numbers</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##      numbers other_numbers
+## [1,]       1             6
+## [2,]       2             7
+## [3,]       3             8
+## [4,]       4             9
+## [5,]       5            10
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Look at the class of our new variable.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;matrix&quot; &quot;array&quot;
+</pre></div>
+</div>
+<p>Dataframes are special case of matrices, where each column can be a
+different type. Often this is how ecological data will be collected and
+stored. This is also most often what you will be handling in R.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a vector of numbers.</span>
+<span class="n">numbers</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">5</span><span class="p">)</span>
+
+<span class="c1"># Create a vector of strings.</span>
+<span class="n">characters</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="s">&quot;c&quot;</span><span class="p">,</span><span class="s">&quot;d&quot;</span><span class="p">,</span><span class="s">&quot;e&quot;</span><span class="p">)</span>
+
+<span class="c1"># Bind both types together.</span>
+<span class="n">both_types</span> <span class="o">&lt;-</span> <span class="nf">cbind</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">characters</span><span class="p">)</span>
+<span class="n">both_types</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##      numbers characters
+## [1,] &quot;1&quot;     &quot;a&quot;       
+## [2,] &quot;2&quot;     &quot;b&quot;       
+## [3,] &quot;3&quot;     &quot;c&quot;       
+## [4,] &quot;4&quot;     &quot;d&quot;       
+## [5,] &quot;5&quot;     &quot;e&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the class.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">both_types</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;matrix&quot; &quot;array&quot;
+</pre></div>
+</div>
+<p>What happened there? ‘both_types’ was a matrix and not a dataframe. Be
+careful combining strings and numbers together without specifying that
+you want a dataframe. R will coerce the numbers in strings, so each
+value is represented as “1”, “2”, “3”… rather than as actual numbers.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return values from the column called numbers.</span>
+<span class="n">both_types</span><span class="p">[,</span> <span class="s">&quot;numbers&quot;</span><span class="p">]</span>
+
+<span class="c1"># Check the class of the column called numbers.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">both_types</span><span class="p">[,</span> <span class="s">&quot;numbers&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot;
+## [1] &quot;character&quot;
+</pre></div>
+</div>
+<p>Instead try being more explicit.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dataframe of both vectors.</span>
+<span class="n">both_types</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">numbers</span><span class="p">,</span> <span class="n">characters</span><span class="p">)</span>
+<span class="n">both_types</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##   numbers characters
+## 1       1          a
+## 2       2          b
+## 3       3          c
+## 4       4          d
+## 5       5          e
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the class of both_types.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">both_types</span><span class="p">)</span>
+
+<span class="c1"># Get the class of the numbers column.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">both_types</span><span class="o">$</span><span class="n">numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;data.frame&quot;
+## [1] &quot;numeric&quot;
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>An important note:</strong> It’s tempting to name variables as single letters (a, b, c) as we did at the beginning of the practical. However, for anything slightly more complex than what we’ve done this becomes confusing very quickly. It’s much better to use longer variables like ‘numbers’ or ‘letters’. This describes what the variable is, and makes it easier for yourself and others to read your code and understand it! An easy way to separate words is to use periods ‘.’ or underscores ‘_’.</p>
+</div>
+<p>Dataframes have lots of useful functions that make them easy to use.
+First we’ll make a slightly longer dataframe.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create two vectors.</span>
+<span class="n">small_numbers</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+<span class="n">large_numbers</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">1000</span><span class="p">,</span> <span class="m">100</span><span class="p">)</span>
+
+<span class="c1"># Create a dataframe of the two vectors.</span>
+<span class="n">all_numbers</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">small_numbers</span><span class="p">,</span> <span class="n">large_numbers</span><span class="p">)</span>
+<span class="n">all_numbers</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##    small_numbers large_numbers
+## 1              1           100
+## 2              2           200
+## 3              3           300
+## 4              4           400
+## 5              5           500
+## 6              6           600
+## 7              7           700
+## 8              8           800
+## 9              9           900
+## 10            10          1000
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the top 6 values.</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##   small_numbers large_numbers
+## 1             1           100
+## 2             2           200
+## 3             3           300
+## 4             4           400
+## 5             5           500
+## 6             6           600
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the bottom 6 values.</span>
+<span class="nf">tail</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##    small_numbers large_numbers
+## 5              5           500
+## 6              6           600
+## 7              7           700
+## 8              8           800
+## 9              9           900
+## 10            10          1000
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the structure of the dataframe.</span>
+<span class="nf">str</span><span class="p">(</span><span class="n">both_types</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    5 obs. of  2 variables:
+##  $ numbers   : num  1 2 3 4 5
+##  $ characters: chr  &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; ...
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the number of rows and columns.</span>
+<span class="nf">nrow</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+<span class="nf">ncol</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] 10
+## [1] 2
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the column names.</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;small_numbers&quot;</span><span class="p">,</span> <span class="s">&quot;large_numbers&quot;</span><span class="p">)</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;small_numbers&quot; &quot;large_numbers&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change just one column name.</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;one_to_ten&quot;</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">all_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;one_to_ten&quot;    &quot;large_numbers&quot;
+</pre></div>
+</div>
+<p>Indexing dataframes is similar to indexing vectors. The only difference
+is now there is two dimensions, separated with commas. You can also
+leave either dimension blank to select all the rows or columns.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First row and first column.</span>
+<span class="n">all_numbers</span><span class="p">[</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] 1
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First column.</span>
+<span class="n">all_numbers</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1]  1  2  3  4  5  6  7  8  9 10
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First row (because columns can contain different data types, selecting across </span>
+<span class="c1"># a row returns a dataframe).</span>
+<span class="n">all_numbers</span><span class="p">[</span><span class="m">1</span><span class="p">,]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##   one_to_ten large_numbers
+## 1          1           100
+</pre></div>
+</div>
+<p>You can also specify columns in a dataframe by using column names in two
+ways:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the small numbers.</span>
+<span class="n">all_numbers</span><span class="o">$</span><span class="n">one_to_ten</span>
+
+<span class="c1"># Get the large numbers (the comma specifies to take them from all rows. </span>
+<span class="c1"># Try adding in indexes to the left of the comma).</span>
+<span class="n">all_numbers</span><span class="p">[,</span><span class="s">&quot;large_numbers&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1]  1  2  3  4  5  6  7  8  9 10
+##  [1]  100  200  300  400  500  600  700  800  900 1000
+</pre></div>
+</div>
+</section>
+</section>
+<section id="reading-writing-and-rdata-files">
+<h2>3. Reading, writing and .RData files<a class="headerlink" href="#reading-writing-and-rdata-files" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">R</span></code> can read files in lots of formats, including comma-delimited and
+tab-delimited files. Excel (and many other applications) can output
+files in this format (it’s an option in the <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">As</span></code> dialogue box under
+the <code class="docutils literal notranslate"><span class="pre">File</span></code> menu).</p>
+<p>To practice some plotting we’ll read in some bird trait data from the
+AVONET database:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the avonet data. The file pathway is in quotation marks.</span>
+<span class="n">avonet_data</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="s">&quot;data/avonet_data.csv&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">read.delim</span></code> for tab delimited files or <code class="docutils literal notranslate"><span class="pre">read.csv</span></code> for comma
+delimited files (<strong>c</strong>omma <strong>s</strong>eparated <strong>v</strong>alues). <code class="docutils literal notranslate"><span class="pre">header</span> <span class="pre">=</span> <span class="pre">TRUE</span></code>,
+indicates that the first line of the data contains column headings. We
+include the relative file pathway, so we’re saying we want to look in
+our current working directory for the <code class="docutils literal notranslate"><span class="pre">data/</span></code> folder, and then look
+inside for the <code class="docutils literal notranslate"><span class="pre">avonet_data.csv</span></code> file.</p>
+<p>It’s always good practice to check the data after it’s been read in.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the structure.</span>
+<span class="nf">str</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    9872 obs. of  25 variables:
+##  $ birdlife_name       : chr  &quot;Accipiter albogularis&quot; &quot;Accipiter badius&quot; &quot;Accipiter bicolor&quot; &quot;Accipiter brachyurus&quot; ...
+##  $ birdlife_common_name: chr  &quot;Pied Goshawk&quot; &quot;Shikra&quot; &quot;Bicolored Hawk&quot; &quot;New Britain Sparrowhawk&quot; ...
+##  $ jetz_name           : chr  &quot;Accipiter_albogularis&quot; &quot;Accipiter_badius&quot; &quot;Accipiter_bicolor&quot; &quot;Accipiter_brachyurus&quot; ...
+##  $ jetz_order          : chr  &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; ...
+##  $ jetz_family         : chr  &quot;Accipitridae&quot; &quot;Accipitridae&quot; &quot;Accipitridae&quot; &quot;Accipitridae&quot; ...
+##  $ redlist_cat         : chr  &quot;LC&quot; &quot;LC&quot; &quot;LC&quot; &quot;VU&quot; ...
+##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
+##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
+##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
+##  $ beak_depth          : num  14.7 11.6 12.7 11.9 11.1 12 10.9 9.6 11 13.2 ...
+##  $ tarsus_length       : num  62 43 58.1 61.2 46.4 48.7 52.6 60.3 43.6 62 ...
+##  $ wing_length         : num  235 187 230 202 218 ...
+##  $ kipps_distance      : num  81.8 62.5 56.6 64.1 87.8 42.9 38.9 81.3 49.5 77.8 ...
+##  $ secondary1          : num  160 127 175 138 130 ...
+##  $ hand_wing_index     : num  33.9 32.9 24.6 31.7 40.2 25.8 24 37.8 30 32.3 ...
+##  $ tail_length         : num  169 141 186 141 154 ...
+##  $ mass                : num  249 131 288 142 186 ...
+##  $ habitat_density     : int  1 2 2 1 1 1 1 1 1 2 ...
+##  $ migration           : int  2 3 2 2 3 1 2 2 2 3 ...
+##  $ trophic_level       : chr  &quot;Carnivore&quot; &quot;Carnivore&quot; &quot;Carnivore&quot; &quot;Carnivore&quot; ...
+##  $ trophic_niche       : chr  &quot;Vertivore&quot; &quot;Vertivore&quot; &quot;Vertivore&quot; &quot;Vertivore&quot; ...
+##  $ primary_lifestyle   : chr  &quot;Insessorial&quot; &quot;Insessorial&quot; &quot;Generalist&quot; &quot;Insessorial&quot; ...
+##  $ centroid_latitude   : num  -8.15 8.23 -10.1 -5.45 45.24 ...
+##  $ centroid_longitude  : num  158.5 45 -60 150.7 45.3 ...
+##  $ range_size          : num  37461 22374973 14309701 35581 2936752 ...
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">str</span></code> shows the structure of the data frame (this can be a really useful
+command when you have a big data file). It also tells you what kind of
+variables <code class="docutils literal notranslate"><span class="pre">R</span></code> thinks you have (characters, integers, numeric, factors
+etc.). Some <code class="docutils literal notranslate"><span class="pre">R</span></code> functions need the data to be certain kinds of variables
+so it’s useful to check this.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">head</span></code> function is also useful to check the data is correct.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># See the first 5 rows.</span>
+<span class="nf">head</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family
+## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae
+## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae
+## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae
+## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae
+## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae
+##   redlist_cat beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length
+## 1          LC               27.7              17.8       10.6       14.7          62.0       235.2
+## 2          LC               20.6              12.1        8.8       11.6          43.0       186.7
+## 3          LC               25.0              13.7        8.6       12.7          58.1       229.6
+## 4          VU               22.5              14.0        8.9       11.9          61.2       202.2
+## 5          LC               21.1              12.1        8.7       11.1          46.4       217.6
+##   kipps_distance secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level
+## 1           81.8      159.5            33.9       169.0 248.8               1         2     Carnivore
+## 2           62.5      127.4            32.9       140.6 131.2               2         3     Carnivore
+## 3           56.6      174.8            24.6       186.3 287.5               2         2     Carnivore
+## 4           64.1      138.1            31.7       140.8 142.0               1         2     Carnivore
+## 5           87.8      129.9            40.2       153.5 186.5               1         3     Carnivore
+##   trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
+## 1     Vertivore       Insessorial             -8.15             158.49    37461.21
+## 2     Vertivore       Insessorial              8.23              44.98 22374973.00
+## 3     Vertivore        Generalist            -10.10             -59.96 14309701.27
+## 4     Vertivore       Insessorial             -5.45             150.68    35580.71
+## 5     Vertivore        Generalist             45.24              45.33  2936751.80
+</pre></div>
+</div>
+<p>Briefly, you can export data (especially dataframes) using a few simple
+functions:</p>
+<p>As a tab-separated text file</p>
+<p><code class="docutils literal notranslate"><span class="pre">write.table(dataframe_to_export,</span> <span class="pre">file=&quot;data.txt&quot;,</span> <span class="pre">sep=&quot;\t&quot;,</span> <span class="pre">row.names=FALSE)</span></code></p>
+<p>As a comma-separated file</p>
+<p><code class="docutils literal notranslate"><span class="pre">write.csv(dataframe_to_export,</span> <span class="pre">file=&quot;data.csv&quot;,</span> <span class="pre">row.names=FALSE)</span></code></p>
+<p>Objects can also be saved as .RData and loaded back into R at a later
+time using save() and load(). This is handy when models may take a long
+time to run, and you don’t have to rerun them every time you start a new
+R session. Later on we’ll use .RData files to plot maps of bird ranges.</p>
+</section>
+<section id="plotting-data">
+<h2>4. Plotting data<a class="headerlink" href="#plotting-data" title="Permalink to this headline">¶</a></h2>
+<p>R can be used to produce a wide array of plots and has a large capacity
+for customisation. We will touch upon some basic plots which are useful
+to visual data during your analysis. For more advanced plots, most
+biologists use the package <em>ggplot2</em>. A useful guide is the R cookbook,
+that includes information on customising plots:
+<a class="reference external" href="http://www.cookbook-r.com/Graphs/">http://www.cookbook-r.com/Graphs/</a></p>
+<p>We’ll start with a scatter plot to explore the relationship between body
+mass and tarsus length. We might expect heavier birds to have longer
+legs so we should potentially see a strong pattern. We’ll look in the
+passeriforme order as most birds in this group have a similar body plan.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First subset all our bird data for just passerine birds.</span>
+<span class="n">passerines</span> <span class="o">&lt;-</span> <span class="nf">subset</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">,</span> <span class="n">avonet_data</span><span class="o">$</span><span class="n">jetz_order</span> <span class="o">==</span> <span class="s">&quot;Passeriformes&quot;</span><span class="p">)</span>
+
+<span class="c1"># Remove any missing values.</span>
+<span class="n">passerines</span> <span class="o">&lt;-</span> <span class="nf">na.omit</span><span class="p">(</span><span class="n">passerines</span><span class="p">)</span>
+
+<span class="c1"># Plot a basic scatter plot.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">,</span> <span class="n">passerines</span><span class="o">$</span><span class="n">tarsus_length</span><span class="p">,</span> <span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> 
+     <span class="n">main</span><span class="o">=</span><span class="s">&quot;My plot&quot;</span><span class="p">,</span> <span class="n">xlab</span><span class="o">=</span><span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s">&quot;Tarsus Length&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-41-1.png"><img alt="../../_images/unnamed-chunk-41-1.png" class="align-center" src="../../_images/unnamed-chunk-41-1.png" style="width: 600px;" /></a>
+<p><code class="docutils literal notranslate"><span class="pre">pch</span></code> stands for ‘point character’ and is the symbol to denote values.
+Try changing it to other values!</p>
+<p>There might be a pattern there but it’s hard to tell. This is because
+body size across species is often log-normally distributed, with lots of
+small species and a few large ones. We can check this by using some very
+useful plots: histograms and density plots.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a histogram.</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">,</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My histogram&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-42-1.png"><img alt="../../_images/unnamed-chunk-42-1.png" class="align-center" src="../../_images/unnamed-chunk-42-1.png" style="width: 600px;" /></a>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a density plot instead (where frequency of samples is normalised to sum to 1).</span>
+<span class="nf">plot</span><span class="p">(</span><span class="nf">density</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">),</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My distribution&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-42-2.png"><img alt="../../_images/unnamed-chunk-42-2.png" class="align-center" src="../../_images/unnamed-chunk-42-2.png" style="width: 600px;" /></a>
+<p>You can change the graphical parameters to plot graphs side by side.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># The par function changes parameters. mfrow = c(1,2) means we want 1 row and 2 columns.</span>
+<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span> <span class="o">=</span><span class="nf">c </span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+
+<span class="c1"># Plot both plots as normal.</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">,</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My histogram&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">50</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="nf">density</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">),</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My distribution&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-43-1.png"><img alt="../../_images/unnamed-chunk-43-1.png" class="align-center" src="../../_images/unnamed-chunk-43-1.png" style="width: 600px;" /></a>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When plotting histograms, you can also use the argument <code class="docutils literal notranslate"><span class="pre">breaks</span> <span class="pre">=</span> <span class="pre">n</span></code> to
+manually set the number of breaks.</p>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># To reset your graph parameters to the default, simply turn off the open graphical device.</span>
+<span class="nf">dev.off</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
+</pre></div>
+</div>
+<p>So it’s true that there are many small species and few large. We can
+take the natural log of body mass to better see if a pattern exists
+between mass and tarsus.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new column with the log of body mass.</span>
+<span class="n">passerines</span><span class="o">$</span><span class="n">log_mass</span> <span class="o">&lt;-</span> <span class="nf">log</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">)</span>
+
+<span class="c1"># See the new distribution.</span>
+<span class="nf">hist</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">log_mass</span><span class="p">,</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My histogram&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Log Mass&quot;</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-46-1.png"><img alt="../../_images/unnamed-chunk-46-1.png" class="align-center" src="../../_images/unnamed-chunk-46-1.png" style="width: 600px;" /></a>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Look at the scatter plot.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">log_mass</span><span class="p">,</span> <span class="n">passerines</span><span class="o">$</span><span class="n">tarsus_length</span><span class="p">,</span> <span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> 
+     <span class="n">main</span><span class="o">=</span><span class="s">&quot;My plot&quot;</span><span class="p">,</span> <span class="n">xlab</span><span class="o">=</span><span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s">&quot;Tarsus Length&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-46-2.png"><img alt="../../_images/unnamed-chunk-46-2.png" class="align-center" src="../../_images/unnamed-chunk-46-2.png" style="width: 600px;" /></a>
+<p>Now we can see there’s a clear pattern! Exploring data like this is a
+key part of any analysis.</p>
+<p>We can export plots using <code class="docutils literal notranslate"><span class="pre">pdf()</span></code>, <code class="docutils literal notranslate"><span class="pre">jpeg()</span></code> or <code class="docutils literal notranslate"><span class="pre">png()</span></code>.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Opens a new graphical device called &#39;my_plot.jpg&#39; in the current working directory.</span>
+<span class="nf">jpeg</span><span class="p">(</span><span class="s">&quot;my_plot.jpg&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create a plot as usual.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">log_mass</span><span class="p">,</span> <span class="n">passerines</span><span class="o">$</span><span class="n">tarsus_length</span><span class="p">,</span> <span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> 
+     <span class="n">main</span><span class="o">=</span><span class="s">&quot;My plot&quot;</span><span class="p">,</span> <span class="n">xlab</span><span class="o">=</span><span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s">&quot;Tarsus Length&quot;</span><span class="p">)</span>
+
+<span class="c1"># Turn off the device to save any changes.</span>
+<span class="nf">dev.off</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
+</pre></div>
+</div>
+</section>
+<section id="handling-spatial-data">
+<h2>5. Handling spatial data<a class="headerlink" href="#handling-spatial-data" title="Permalink to this headline">¶</a></h2>
+<p>As conservation biologists, you’ll often be required to handle spatial
+data. This might be for plotting species’ ranges, predicting
+distributions, redlist criteria, and many other reasons. There are two
+common methods for handling spatial data, using GIS software such as
+ARCGIS, or using R. Whilst GIS software is tempting because of its
+visual interface, I would recommend using R. Because you can easily save
+and rerun your scripts, you can perform repeatable analyses that isn’t
+always possible when clicking buttons in a visual interface. You can
+also upload your scripts when you publish papers, so that others can
+verify your results. Furthermore, you’ll often have to do statistical
+tests on your spatial data, and R has a multitude of packages to achieve
+this. For this practical we’ll introduce you to handling simple spatial
+data.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>One time you might want to use GIS software is for exploring your GIS data. It’s
+easier to interactively explore maps using software before loading it into R. If
+you do need software, QGIS is free and open source, so you can continue to use it
+after you’ve finished your degree!</p>
+</div>
+<p>Spatial data is available in a number of formats. Shapefiles contain
+spatial vector data for example spatial lines, points or polygons.
+Rasters contain a grid of values in pixels. In this session we will look
+at some examples.</p>
+<section id="rasters">
+<h3>Rasters<a class="headerlink" href="#rasters" title="Permalink to this headline">¶</a></h3>
+<p>First we will look at plotting rasters from the WorldClim dataset
+(Hijmans et al. 2005). Specifically, we want bioclim variables which are
+often used to describe species’ environmental niches. Google for more
+info!</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raster package for spatial data.</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span>
+
+<span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
+<span class="n">bio</span> <span class="o">&lt;-</span> <span class="nf">getData</span><span class="p">(</span><span class="s">&quot;worldclim&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;bio&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># Get the class for our rasters.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;RasterStack&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;raster&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return details of our rasters.</span>
+<span class="n">bio</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## class      : RasterStack 
+## dimensions : 900, 2160, 1944000, 19  (nrow, ncol, ncell, nlayers)
+## resolution : 0.1666667, 0.1666667  (x, y)
+## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## names      :  bio1,  bio2,  bio3,  bio4,  bio5,  bio6,  bio7,  bio8,  bio9, bio10, bio11, bio12, bio13, bio14, bio15, ... 
+## min values :  -269,     9,     8,    72,   -59,  -547,    53,  -251,  -450,   -97,  -488,     0,     0,     0,     0, ... 
+## max values :   314,   211,    95, 22673,   489,   258,   725,   375,   364,   380,   289,  9916,  2088,   652,   261, ...
+</pre></div>
+</div>
+<p>We’ve downloaded 19 raster layers, with different information on
+rainfall, temperature, and other environmental predictors. They are
+organised in a ‘stack’, which is like a list of raster layers. As you
+can see rasters have dimensions (the number of cells), a resolution (the
+size of each cell), an extent (where it is located geographically) and a
+crs, coordinate reference system (the set of coordinates used). When
+working with spatial data you must ensure all files use the same
+coordinate system. If different objects use different coordinate systems
+you will need to reproject them to the same system using a function such
+as <code class="docutils literal notranslate"><span class="pre">spTransform()</span></code>.</p>
+<p>We can also use indexing to extract a specific raster:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using one set of [] returns a &#39;list&#39; of length 1 with the raster inside.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">bio</span><span class="p">[</span><span class="m">12</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;matrix&quot; &quot;array&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using two sets of [] returns the actual raster layer.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">bio</span><span class="p">[[</span><span class="m">12</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;RasterLayer&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;raster&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the raster layer.</span>
+<span class="n">bio</span><span class="p">[[</span><span class="m">12</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## class      : RasterLayer 
+## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
+## resolution : 0.1666667, 0.1666667  (x, y)
+## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : bio12.bil 
+## names      : bio12 
+## values     : 0, 9916  (min, max)
+</pre></div>
+</div>
+<p>Remember to use two square brackets to get the actual raster.</p>
+<p>Now let’s try plotting our raster.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a scale of 100 rainbow colours.</span>
+<span class="n">rainbow_colours</span> <span class="o">&lt;-</span> <span class="nf">rainbow</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+
+<span class="c1"># Plot annual precipitation (mm) with our colours.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">bio</span><span class="p">[[</span><span class="m">12</span><span class="p">]],</span> <span class="n">col</span><span class="o">=</span><span class="n">rainbow_colours</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-51-1.png"><img alt="../../_images/unnamed-chunk-51-1.png" class="align-center" src="../../_images/unnamed-chunk-51-1.png" style="width: 600px;" /></a>
+<p>You can also create blank rasters of the desired extent and resolution.
+The following code creates a raster of the same extent and resolution as
+the precipitation raster. We can also assign values to the cells, such
+as 0 in this case.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a blank raster in longitude and latitude that matches our bioclim data.</span>
+<span class="n">blank_raster</span> <span class="o">&lt;-</span> <span class="nf">raster</span><span class="p">(</span><span class="n">res</span><span class="o">=</span><span class="m">0.1666667</span><span class="p">,</span> <span class="n">xmn</span><span class="o">=</span><span class="m">-180</span><span class="p">,</span> <span class="n">xmx</span><span class="o">=</span><span class="m">180</span><span class="p">,</span> <span class="n">ymn</span><span class="o">=</span><span class="m">-60</span><span class="p">,</span> <span class="n">ymx</span><span class="o">=</span><span class="m">90</span><span class="p">,</span>
+                  <span class="n">crs</span><span class="o">=</span><span class="s">&quot;+proj=longlat +datum=WGS84 +towgs84=0,0,0&quot;</span><span class="p">)</span>
+
+<span class="c1"># We can assign values to all the cells.</span>
+<span class="nf">values</span><span class="p">(</span><span class="n">blank_raster</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="n">from</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="nf">ncell</span><span class="p">(</span><span class="n">blank_raster</span><span class="p">),</span> <span class="n">by</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+
+<span class="c1"># Return the raster.</span>
+<span class="n">blank_raster</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## class      : RasterLayer 
+## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
+## resolution : 0.1666667, 0.1666667  (x, y)
+## extent     : -180, 180.0001, -60.00003, 90  (xmin, xmax, ymin, ymax)
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## source     : memory
+## names      : layer 
+## values     : 1, 1944000  (min, max)
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the raster.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">blank_raster</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-52-1.png"><img alt="../../_images/unnamed-chunk-52-1.png" class="align-center" src="../../_images/unnamed-chunk-52-1.png" style="width: 600px;" /></a>
+</section>
+<section id="spatial-polygons">
+<h3>Spatial polygons<a class="headerlink" href="#spatial-polygons" title="Permalink to this headline">¶</a></h3>
+<p>A polygon is another way that R stores spatial data. It records the
+coordinates of each corner, which it can use to calculate the full
+shape. Polygons also all have a coordinate reference system (such as
+longitude and latitude) which is how R knows where the shapes belong in
+the world. Unlike rasters, polygons only have an outline of an area, so
+they don’t have cells with values.</p>
+<p>To see some polygons we’ll use bird range data from the family
+Accipitridae, which are birds of prey. For convenience we’ve saved the
+range data as an <code class="docutils literal notranslate"><span class="pre">.RData</span></code> object, as we briefly mentioned in section 3.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load in the spatial packages we&#39;ll need.</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+
+<span class="c1"># Load the data into our environment.</span>
+<span class="nf">load</span><span class="p">(</span><span class="s">&quot;data/accipitridae_ranges.RData&quot;</span><span class="p">)</span>
+
+<span class="c1"># Inspect the maps.</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">accip_ranges</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## [1] &quot;sf&quot;         &quot;data.frame&quot;
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">head</span><span class="p">(</span><span class="n">accip_ranges</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Simple feature collection with 6 features and 3 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -17.53522 ymin: -29.47375 xmax: 167.2831 ymax: 55.85556
+## Geodetic CRS:  WGS 84
+##             ID               SCINAME DATE_                          Shape
+## 10764 22695535 Accipiter_albogularis  2014 MULTIPOLYGON (((167.2819 -9...
+## 1     22695490      Accipiter_badius  2013 MULTIPOLYGON (((-17.4704 14...
+## 14087 22695605  Accipiter_brachyurus  2018 MULTIPOLYGON (((152.9669 -4...
+## 13013 22695499    Accipiter_brevipes  2009 MULTIPOLYGON (((19.3891 39....
+## 10777 22695494     Accipiter_butleri  2014 MULTIPOLYGON (((93.531 8.01...
+## 6618  22695486 Accipiter_castanilius  2013 MULTIPOLYGON (((7.090881 6....
+</pre></div>
+</div>
+<p>You can see that the range maps are stored in a spatial dataframe,
+called an <code class="docutils literal notranslate"><span class="pre">sf</span></code> class of object. We have information about ranges stored
+as text, and the spatial data stored as multipolygons. A multipolygon is
+just a group of polygons, and is easiest to understand by plotting.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#  Take the range polygon from the first row.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">accip_ranges</span><span class="o">$</span><span class="n">Shape</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-54-1.png"><img alt="../../_images/unnamed-chunk-54-1.png" class="align-center" src="../../_images/unnamed-chunk-54-1.png" style="width: 600px;" /></a>
+<p>So we can see a multipolygon is just a collection of individual ranges,
+with coordinates we can see on each axis.</p>
+</section>
+<section id="plotting-maps">
+<h3>Plotting maps<a class="headerlink" href="#plotting-maps" title="Permalink to this headline">¶</a></h3>
+<p>We can do cool things with polygons, like converting them into maps of
+species richness! We’ll do this for the Accipitridae family by
+overlapping ranges.</p>
+<p>First we’re going to convert our sf dataframe of polygons into a raster
+image. To do this we’ll use a function called called <code class="docutils literal notranslate"><span class="pre">fasterize</span></code>. This
+package provides an updated version of the function <code class="docutils literal notranslate"><span class="pre">rasterize()</span></code>, but
+much faster! Both functions take a set of polygons, and transform them
+into rasters, using a template with the right size and resolution. We
+can also tell <code class="docutils literal notranslate"><span class="pre">fasterize</span></code> how to deal with overlapping ranges, which
+we’ll use to build a map of species richness.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load fasterize package.</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">fasterize</span><span class="p">)</span>
+
+<span class="c1"># Start by creating an empty raster stack to store our data in.</span>
+<span class="n">raster_template</span> <span class="o">&lt;-</span> <span class="nf">raster</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="m">2160</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="m">900</span><span class="p">,</span> <span class="n">ymn</span> <span class="o">=</span> <span class="m">-60</span><span class="p">)</span>
+
+<span class="c1"># Create a map of species richness by summing overlapping ranges.</span>
+<span class="n">range_raster</span> <span class="o">&lt;-</span> <span class="nf">fasterize</span><span class="p">(</span><span class="n">accip_ranges</span><span class="p">,</span> <span class="n">raster_template</span><span class="p">,</span> <span class="n">fun</span> <span class="o">=</span> <span class="s">&quot;sum&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot the new map.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">range_raster</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">heat.colors</span><span class="p">(</span><span class="m">50</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-55-1.png"><img alt="../../_images/unnamed-chunk-55-1.png" class="align-center" src="../../_images/unnamed-chunk-55-1.png" style="width: 600px;" /></a>
+<p>So now we can see where the highest species richness is. However, it
+doesn’t look very pretty and countries without any ranges are left off
+the map. We can make a much clearer map using <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+
+<span class="c1"># Convert the raster into a raster dataframe. This will be coordinates of the </span>
+<span class="c1"># raster pixels (cols x and y) and the value of the raster pixels. </span>
+<span class="n">raster_data</span> <span class="o">&lt;-</span> <span class="nf">as.data.frame</span><span class="p">(</span><span class="n">range_raster</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span> 
+
+<span class="c1"># Remove NAs with no information (like parts of the sea)</span>
+<span class="n">raster_data</span> <span class="o">&lt;-</span> <span class="nf">na.omit</span><span class="p">(</span><span class="n">raster_data</span><span class="p">)</span>
+
+<span class="c1"># Change the column names to something sensible.</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">raster_data</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;long&quot;</span><span class="p">,</span> <span class="s">&quot;lat&quot;</span><span class="p">,</span> <span class="s">&quot;richness&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that our raster information is stored in a dataframe, we can use
+<code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>. When we make plots, we first initialise a plot using
+<code class="docutils literal notranslate"><span class="pre">ggplot()</span></code>, and then add more instructions on top using <code class="docutils literal notranslate"><span class="pre">+</span></code>.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a plot with ggplot (the plus signs at the end of a line carry over to the next line).</span>
+<span class="n">range_plot</span> <span class="o">&lt;-</span> <span class="nf">ggplot</span><span class="p">(</span><span class="n">raster_data</span><span class="p">)</span> <span class="o">+</span>
+  
+  <span class="c1"># borders imports all the country outlines onto the map. </span>
+  <span class="c1"># colour changes the colour of the outlines.</span>
+  <span class="c1"># fill changes the colour of the insides of the countries.</span>
+  <span class="c1"># this will grey out any terrestrial area which isn&#39;t part of a range.</span>
+  <span class="nf">borders</span><span class="p">(</span><span class="n">ylim</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">-60</span><span class="p">,</span><span class="m">90</span><span class="p">),</span> <span class="n">fill</span> <span class="o">=</span> <span class="s">&quot;grey90&quot;</span><span class="p">,</span> <span class="n">colour</span> <span class="o">=</span> <span class="s">&quot;grey90&quot;</span><span class="p">)</span> <span class="o">+</span>
+  
+  <span class="c1"># Borders() xlim is -160/200 to catch the edge of russia. </span>
+  <span class="c1"># We need to reset the xlim to -180/180 to fit our raster_stack.</span>
+  <span class="nf">xlim</span><span class="p">(</span><span class="m">-180</span><span class="p">,</span> <span class="m">180</span><span class="p">)</span> <span class="o">+</span> 
+  
+  <span class="c1"># Add the range information on top.</span>
+  <span class="nf">geom_tile</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span> <span class="n">richness</span><span class="p">))</span> <span class="o">+</span>
+  
+  <span class="c1"># Add a colour blind friendly scale.</span>
+  <span class="nf">scale_fill_viridis_c</span><span class="p">()</span> <span class="o">+</span>
+  
+  <span class="c1"># Add title.</span>
+  <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Accipitidae Species Richness&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  
+  <span class="c1"># Add the classic theme (things like gridlines, font etc.)</span>
+  <span class="nf">theme_classic</span><span class="p">()</span> <span class="o">+</span>
+  
+  <span class="c1"># Add axes labels.</span>
+  <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Latitude&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Longitude&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  
+  <span class="c1"># coord_fixed() makes ggplot keep our aspect ratio the same.</span>
+  <span class="nf">coord_fixed</span><span class="p">()</span> 
+
+<span class="c1"># Change the size of the plot window and return the plot.</span>
+<span class="c1">#options(repr.plot.width=15, repr.plot.height=10)</span>
+<span class="n">range_plot</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-57-1.png"><img alt="../../_images/unnamed-chunk-57-1.png" class="align-center" src="../../_images/unnamed-chunk-57-1.png" style="width: 600px;" /></a>
+<p>That looks much better than the first. Later you’ll experiment with your
+own maps for your report. Try changing the colour scheme on this one!</p>
+<p>You can save your plots as a file using different formats like a jpeg.
+Watch out for how the map transforms when it’s saved and edit your plots
+accordingly.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open up a new plotting device which will save a photo.</span>
+<span class="nf">jpeg</span><span class="p">(</span><span class="s">&quot;my_map.jpeg&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add the plot to the plotting device.</span>
+<span class="n">range_plot</span>
+
+<span class="c1"># Turn off the plotting device to save it.</span>
+<span class="nf">dev.off</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
+</pre></div>
+</div>
+<p>Of course, you can play around with plot settings to create some
+impressive maps!</p>
+<blockquote>
+<div><p>Extra task: Can you recreate the plots from section 4 using ggplot2?
+You can use the R cookbook to learn more!
+<a class="reference external" href="http://www.cookbook-r.com/Graphs/">http://www.cookbook-r.com/Graphs/</a> If you’re stuck don’t be afraid to
+ask demonstrators for advice.</p>
+</div></blockquote>
+<div class="dropdown admonition">
+<p class="admonition-title">Show the answer…  </p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># A basic ggplot structure. Main data for plotting goes inside ggplot()</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">passerines</span><span class="p">)</span> <span class="o">+</span> <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log_mass</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">tarsus_length</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-59-1.png"><img alt="../../_images/unnamed-chunk-59-1.png" class="align-center" src="../../_images/unnamed-chunk-59-1.png" style="width: 600px;" /></a>
+<p>Can you customise it further with axes labels? Change the colour? Try
+adding alpha = 0.5 inside geom_point. What does it do? Also try out
+histograms and density plots! The <code class="docutils literal notranslate"><span class="pre">ggpubr</span></code> package makes nice themes!</p>
+</div>
+</section>
+</section>
+<section id="using-the-tidyverse">
+<h2>6. Using the Tidyverse<a class="headerlink" href="#using-the-tidyverse" title="Permalink to this headline">¶</a></h2>
+<p>We have chosen to teach the BCB practicals predominantly using base <code class="docutils literal notranslate"><span class="pre">R</span></code>.
+This is because anyone new to <code class="docutils literal notranslate"><span class="pre">R</span></code> needs to learn how base <code class="docutils literal notranslate"><span class="pre">R</span></code> works
+first. However, more and more researchers are choosing to use a group of
+packages for data handling called the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code>. These packages
+provide a slightly different way of coding in <code class="docutils literal notranslate"><span class="pre">R</span></code>, which makes data
+handling easier. I’ve already mentioned <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>, a <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code>
+package, and one of the most useful in <code class="docutils literal notranslate"><span class="pre">R</span></code>!. We’ll cover a few key
+packages for some of the practical tasks, but if you’d like to know
+about coding in the ‘tidy’ way:</p>
+<p><a class="reference external" href="https://www.tidyverse.org/">https://www.tidyverse.org/</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./markdowns/practical_1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../../intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Introduction</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../practical_2/practical_2.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Phylogenetics in R</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
