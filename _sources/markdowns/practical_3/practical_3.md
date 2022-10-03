@@ -1,598 +1,33 @@
-## Macroecology analyses
+## Setting conservation priorities
 
 ### 1. Introduction and resources
 
-This practical should be a refresher on linear models in `R`, before
-introducing you to a phylogenetic least squares model, or a PGLS.
-Because species that are closely related often share similar traits,
-this means we can’t treat them as statistically independent. However, if
-we look at how the traits are spread throughout the tree, we can
-‘control’ for this non-independence. We’ll go into more detail when we
-run our PGLS.
+This practical is aimed to introduce you to the EDGE & EcoEDGE scores
+that you’ll need for your conservation strategy coursework. Put briefly,
+these scores balance the distinctiveness of species against their risk
+of extinction to detirmine conservation priorities. You can find out
+more information about EDGE scores from the ZSL website:
 
-### 2. Linear models
+<https://www.zsl.org/conservation/our-priorities/wildlife-back-from-the-brink/animals-on-the-edge>
 
-For this practical we’ll be working data from the family Anatidae
-(ducks) to investigate Bergmann’s rule - if there is a relationship
-between latitude and body mass. First, we’ll load in the data and
-inspect it:
+We will also try plotting a simple map of IUCN categories so we can
+visual the risk to our clade across the globe.
 
-``` r
-# Remember to clear your workspace before starting a new project.
-rm(list=ls())
+### 2. Preparing data
 
-# Load the duck latitudinal and body mass data.
-duck_data <- read.csv("data/duck_data.csv", header = TRUE) 
+To calculate EDGE metrics, we need data on the species we’re interested
+in, and their phylogenetic relationship. For the coursework we’re
+interested in EDGE scores for a specific clade, however it’s also common
+to look at areas such as national parks.
 
-# Check it's been imported.
-str(duck_data)
-head(duck_data)
-
-# Remove any NAs in the data (make sure to check you're not loosing too much data!)
-duck_data <- na.omit(duck_data)
-```
-
-    ## 'data.frame':    156 obs. of  3 variables:
-    ##  $ jetz_name: chr  "Dendrocygna viduata" "Dendrocygna autumnalis" "Dendrocygna guttata" "Dendrocygna arborea" ...
-    ##  $ latitude : num  -5.68 -5.68 -3.41 19.66 -0.38 ...
-    ##  $ body_mass: num  690 755 800 1150 756 ...
-    ##                jetz_name latitude body_mass
-    ## 1    Dendrocygna viduata    -5.68    689.99
-    ## 2 Dendrocygna autumnalis    -5.68    755.30
-    ## 3    Dendrocygna guttata    -3.41    800.00
-    ## 4    Dendrocygna arborea    19.66   1150.00
-    ## 5    Dendrocygna bicolor    -0.38    756.37
-    ## 6     Dendrocygna eytoni   -21.27    789.99
-
-The midpoint latitude is the centre of the distribution of each species.
-Because we’re interested in the distance from equator, we’ll use the
-`abs()` function to convert our data.
+For this practical we’re going to use the same family as Practical 3,
+Accipitridae. We’ll use the same table of traits from Practical 3 to
+import our data and filter it.
 
 ``` r
-# The abs function takes absolute value.
-duck_data$abs_latitude <- abs(duck_data$latitude)
-```
-
-We’ll start by looking at the relationship between body mass and
-latitude using a scatter plot.
-
-``` r
-# Create a basic plot for data visualisation.
-# Notice we can add a data argument instead of using $
-plot(body_mass ~ abs_latitude, data = duck_data)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-3-1.png
-:align: center
-:width: 600px
-```
-
-Now there doesn’t seem to be much of a relationship at all from our
-plot. However, if we remember back to practical 1, body mass is often
-logarithmically distributed, with lots of small species and fewer large
-ones. Therefore we might not be seeing the true relationship!
-
-``` r
-# We'll use a histogram to look at the spread.
-hist(duck_data$body_mass)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-4-1.png
-:align: center
-:width: 600px
-```
-
-As we suspected! The histogram suggests a log-normal distribution. If we
-take logs we might see a more normal distribution.
-
-``` r
-# Create a new variable and take logs.
-duck_data$log_BM <- log(duck_data$body_mass)
-hist(duck_data$log_BM)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-5-1.png
-:align: center
-:width: 600px
-```
-
-Now we’ve got some data that resembles a more normal distribution! Let’s
-look at the new relationship between the two variables:
-
-``` r
-# Create a new plot.
-plot(log_BM ~ abs_latitude, data = duck_data)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-6-1.png
-:align: center
-:width: 600px
-```
-
-Now we’re starting to see some kind of relationship! There’s a lot of
-spread to the points, but we can see the smallest species at the lowest
-latitudes, and the largest at the highest. To really find out if there’s
-a relationship we can test our hypothesis with a linear model.
-
-``` r
-# Run a basic linear model. We separate our dependant variables from predictors using a tilda ~
-duck_model <- lm(log_BM ~ abs_latitude, data = duck_data)
-
-# Inspect our linear model.
-summary(duck_model)
-```
-
-    ## 
-    ## Call:
-    ## lm(formula = log_BM ~ abs_latitude, data = duck_data)
-    ## 
-    ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -1.3202 -0.5291 -0.0613  0.3249  2.1978 
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  6.505760   0.124237  52.366  < 2e-16 ***
-    ## abs_latitude 0.011639   0.002933   3.969 0.000112 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 0.725 on 150 degrees of freedom
-    ## Multiple R-squared:  0.09503,    Adjusted R-squared:  0.089 
-    ## F-statistic: 15.75 on 1 and 150 DF,  p-value: 0.0001117
-
-Now we can investigate if there is a relationship. There’s quite a lot
-going on with our output, but for this practical we’ll focus on just a
-few main things:
-
-`Coefficients`: This tells us about our predictors in the model. In this
-one there’s 2, the intercept, and latitude. We’ll break each section
-down further.
-
-`Estimate`: This tells us what mean values of our coefficients should
-have. For the intercept this will be the point that crosses the y axis.
-For latitude, this will be the gradient of the relationship between
-latitude and body mass.
-
-`Std. Error`: This shows how much faith we have in our estimates. We’re
-fairly certain that our estimates will fall within the range: Estimate
-+- Standard Error.
-
-`t value`: This is our test statistic. In a linear model we’re testing
-if each of our estimated values are significantly different from zero.
-If the Estimate +- (2 x Standard Errors) doesn’t overlap zero, it
-normally means they are significant.
-
-`Pr(>|t|)`: This is our p values for each predictor. This is calculated
-by weighing up the degrees of freedom against our test statistic, and
-tells us what the chance is that we observed the same pattern in our
-data given that there was no relationship, i.e. the null hypothesis is
-true.
-
-`Multiple R-squared`: This tells us how much of the variation in our
-response variable is explained by our model. Large values are better,
-but often in macro-evolution we see smaller values. Because traits at a
-macro scale are often driven by multiple selection pressures, which may
-sometimes be species-specific, we expect less variation to be explained
-than in smaller more targeted studies.
-
-`Adjusted R squared`: This also tells us the varition explained in
-response, but penalises us for including more predictors. This reduces
-the chances of over-fitting models with lots of predictors that don’t
-contribute much. This is the R-squared that tends to be reported in
-publications.
-
-`F Statistc` & `DF` & `p-value`: The last line reports the overall
-results of our model. When reporting the statistic tests in the results
-section, we tend to quote these values for the model. This test is
-comparing our model line against a flat horizontal line at the mean body
-mass. Simply put, does our latitude model explain more of the variance
-in body mass than the mean. This is easiest to explain with a quick
-example:
-
-``` r
-# Create some data.
-x <- c(12, 18, 21, 36, 44, 54, 59)
-y <- c(2, 4, 7, 11, 12, 14, 15)
-
-# Create a linear model based only on the mean of y.
-mean <- lm(y ~ 1)
-
-# Create a linear model where x predicts y.
-linear <- lm(y ~ x)
-
-# Create a plot window with one row and two columns.
-par(mfrow = c(1, 2))
-
-# Plot our data for the mean.
-plot(x,y, xlim = c(0, 60), ylim =c(0, 15), main = "Mean") 
-
-# Add the line of the linear model based on the mean.
-abline(mean, col="red")
-
-# Add in lines to show the distance from each point to mean line (the residuals).
-segments(x, y, x, predict(mean))
-
-# Do the same to plot our data with the linear model based on x.
-plot(x,y, xlim = c(0,60), ylim =c(0,15), main = "Linear")  
-abline(linear, col="blue")
-segments(x, y, x, predict(linear))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-8-1.png
-:align: center
-:width: 600px
-```
-
-From the plots we can see that the blue linear model line passes closer
-to all of our data points than simply using the mean line. The black
-lines from our data points to the linear model are the residual
-variation left over once we’ve accounted for x. This is often referred
-to as the residuals.
-
-The F statistic in our summary output is testing if there is a
-siginificant difference between the residuals from using our mean line
-against using our linear model instead. This is weighed up against the
-number of degrees of freedom to calculate our p-value.
-
-Degrees of freedom are often poorly known but are actually quite simple
-to understand. They are calculated from the number of independent data
-points in your model, minus the number of predictors. This is to prevent
-models that over-fit the data. So models with lots of data points have
-high degrees of freedom which means we need lower F statistic values to
-be certain of our model. For models with few data points it depends on
-the number of predictors. If there’s few predictors, like in our model,
-that means that we can accept lower F statistics. We can be more
-confident in our relationship if we used fewer predictors to describe
-it. If we use lots of predictors, we can be less certain in our model,
-because each predictor may explain some of the variation just by chance.
-Therefore we need a higher F statistic. When you report your models,
-report both the degrees of freedom and the F statistic alongside your
-p-value for the whole model.
-
-Now that we understand a bit more about our summary report, lets look at
-it again to investigate the relationship between body mass and latitude.
-
-``` r
-# Get the summary of our model.
-summary(duck_model)
-```
-
-    ## 
-    ## Call:
-    ## lm(formula = log_BM ~ abs_latitude, data = duck_data)
-    ## 
-    ## Residuals:
-    ##     Min      1Q  Median      3Q     Max 
-    ## -1.3202 -0.5291 -0.0613  0.3249  2.1978 
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  6.505760   0.124237  52.366  < 2e-16 ***
-    ## abs_latitude 0.011639   0.002933   3.969 0.000112 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 0.725 on 150 degrees of freedom
-    ## Multiple R-squared:  0.09503,    Adjusted R-squared:  0.089 
-    ## F-statistic: 15.75 on 1 and 150 DF,  p-value: 0.0001117
-
-We can see from our model that both the intercept and latitude are
-significant predictors. That the intercept is significant isn’t very
-interesting. It means at 0 latitude (the equator), body mass is
-significantly different from zero. Seeing as it’s impossible to have a
-species with zero body mass, this isn’t surprising! What’s more
-interesting is latitude. We can see a significant p-value, so there is a
-relationship between latitude and body mass. As the estimate is
-positive, we can see that as latitude increases, so does body mass. For
-every 1 degree of latitude, log(body mass) increases by 0.012,
-supporting Bergmann’s rule. We can see that by plotting our model line
-with our data.
-
-``` r
-# Plot our model.
-plot(log_BM ~ abs_latitude, data = duck_data)
-abline(duck_model)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-10-1.png
-:align: center
-:width: 600px
-```
-
-Of course, we can see that many data points don’t fit this line. If we
-look at the adjusted R-squared, we can see that our model explains
-roughly 9% of the variation in body size. Most macro-evolutionary
-studies have low R-squared values, so this is quite high! We could
-potentially increase this more by including other predictors which
-influence body size. Have a think about what these predictors could be.
-
-We can also see from the bottom line of output that our overall model is
-significant. Because there is only one predictor (except the intercept),
-this value will be the same as our p-value for body mass.
-
-As we’ve ran a standard linear model, we should also check our residuals
-to see if they are normally distributed. This is one of the assumptions
-of parametric tests, and if not we might consider using a generalised
-linear model instead.
-
-``` r
-# Plot a density curve of the residuals.
-plot(density(duck_model$residuals))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-11-1.png
-:align: center
-:width: 600px
-```
-
-Our residuals look pretty normally distributed. It’s often good enough
-just to inspect these plots by eye, to check there’s no extreme left or
-right skew to the distribution.
-
-### 3. Phylogenetic generalised least squares models
-
-Up until now we have been treating all our species as independent data
-points. However, technically this isn’t true. Each species is related to
-each other, and some are more closely related than others. We might
-expect closely related species in the same genus to have a similar body
-mass, compared to species from different genera. If true, it could mean
-there are more large species at higher latitudes because they all shared
-one common ancestor (who happened to be a large species). This would
-suggest that the evolutionary history of ducks is responsible for the
-patterns of body mass, rather than a true relationship between latitude
-and body mass. Fortunately, we can test this using
-phylogenetically-controlled linear models. One of the easiest to use is
-a PGLS.
-
-First let’s load up the packages we need and the phylogenetic tree of
-ducks.
-
-``` r
-# Load phylogenetic packages.
-library(ape)
-library(caper)
-
-# Read in the tree.
-duck_tree <- read.tree("data/duck_tree.tre")
-plot(duck_tree, cex=0.3)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-12-1.png
-:align: center
-:width: 600px
-```
-
-We now need to attach our body mass data and tree together, and we can
-do this by creating a comparative data object from the `caper` package.
-
-``` r
-# We need to change the Jetz names so that they match the tip labels.
-duck_data$jetz_name <- gsub(" ", "_", duck_data$jetz_name)
-
-# We specify the phylogeny we need, the data, and which column has the tip label names in.
-duck_comp <- comparative.data(phy = duck_tree, data = duck_data, names.col = "jetz_name")
-```
-
-We can inspect our comparative data object to check that it’s worked.
-
-``` r
-# Return the data.
-head(duck_comp$data)
-```
-
-    ##                        latitude body_mass abs_latitude   log_BM
-    ## Dendrocygna_arborea       19.66   1150.00        19.66 7.047517
-    ## Dendrocygna_autumnalis    -5.68    755.30         5.68 6.627115
-    ## Dendrocygna_arcuata       -7.97    796.18         7.97 6.679825
-    ## Dendrocygna_javanica      18.86    519.61        18.86 6.253079
-    ## Dendrocygna_eytoni       -21.27    789.99        21.27 6.672020
-    ## Dendrocygna_guttata       -3.41    800.00         3.41 6.684612
-
-``` r
-# Plot the phylogeny.
-plot(duck_comp$phy, cex=0.3)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-15-1.png
-:align: center
-:width: 600px
-```
-
-So we can see that our comparative object has worked as it should. Now
-we can run a pgls to see if information on the phylogeny makes any
-difference.
-
-**Warning** If you’re using R studio Cloud, you’ll need an extra
-argument: `bounds = list(lambda = c(0.05, 1))`. So it looks like this:
-
-`duck_pgls <- pgls(log_BM ~ abs_latitude, data = duck_comp, lambda = "ML", bounds = list(lambda = c(0.05, 1)))`
-
-This limits where the model searches for the lambda value, but won’t
-change your result. It’s just a weird way cloud is set up, and doesn’t
-happen for every pgls. For your coursework, try models without this
-argument first.
-
-``` r
-# Run a PGLS model.
-duck_pgls <- pgls(log_BM ~ abs_latitude, data = duck_comp, lambda = "ML")
-```
-
-The code for a pgls looks largely the same. The only difference is that
-we have a third argument, which is the lambda value. The lambda value
-tells us how randomly body mass and latitude are spread throughout the
-tree. By saying `"ML"` we’ve asked the function to calculate lambda
-using maximum likelihood methods, rather than give it an exact value.
-
-Let’s take a look at the results of the pgls.
-
-``` r
-# You can see the summary the same way.
-summary(duck_pgls)
-```
-
-    ## 
-    ## Call:
-    ## pgls(formula = log_BM ~ abs_latitude, data = duck_comp, lambda = "ML")
-    ## 
-    ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -0.97464 -0.17081 -0.00968  0.11650  0.54058 
-    ## 
-    ## Branch length transformations:
-    ## 
-    ## kappa  [Fix]  : 1.000
-    ## lambda [ ML]  : 0.983
-    ##    lower bound : 0.000, p = < 2.22e-16
-    ##    upper bound : 1.000, p = < 2.22e-16
-    ##    95.0% CI   : (0.959, 0.993)
-    ## delta  [Fix]  : 1.000
-    ## 
-    ## Coefficients:
-    ##               Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  6.7827025  0.7205697  9.4130   <2e-16 ***
-    ## abs_latitude 0.0026244  0.0019744  1.3292   0.1858    
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 0.2301 on 150 degrees of freedom
-    ## Multiple R-squared: 0.01164, Adjusted R-squared: 0.005052 
-    ## F-statistic: 1.767 on 1 and 150 DF,  p-value: 0.1858
-
-The output of the summary look largely the same as our linear model. The
-key difference is we now have information on the branch length
-transformations, which shows how our trait is influenced by phylogeny.
-We can also see that our p-value for latitude is now much higher, and
-above the 0.05 threshold. When we look at our estimate, we can see that
-it’s a positive value, so the same relationship is there, but we can no
-longer be confident enough to reject our null hypothesis. This is why
-for macro-evolutionary studies, we always have to include information on
-the phylogeny!
-
-We should take a second to look at the lambda value. Ours is 0.98
-according to the pgls summary. But what does it mean?
-
-Lambda is scaled between 0 and 1, and it’s easiest to think of it as how
-much our trait is bunched up in the tree. Values closer to zero suggest
-that body mass would be spread randomly among the tree, and the
-phylogeny does not matter. Values closer to one suggest that body mass
-is organised strongly throughout the tree, with closer species having
-more similar sizes.
-
-For an excellent explanation of lambda values, check out this paper by
-Natalie Cooper at the Natural History Museum, who helped write the
-second practical on this course.
-
-<https://royalsocietypublishing.org/doi/full/10.1098/rstb.2012.0341>
-
-What the lambda value actually does is change the length of the branches
-on the tree, to reflect how body mass is related between species. We can
-visualise this by plotting trees with different lambda values.
-
-``` r
-# Load the package geiger that has the rescale function. You'll have to install it if you're in Rstudio on your own laptops.
-library(geiger)
-
-# We'll create six trees with different lambda values .
-lambda_1_tree <- rescale(duck_tree, "lambda", 1)
-lambda_0.8_tree <- rescale(duck_tree, "lambda", 0.8)
-lambda_0.6_tree <- rescale(duck_tree, "lambda", 0.6)
-lambda_0.4_tree <- rescale(duck_tree, "lambda", 0.4)
-lambda_0.2_tree <- rescale(duck_tree, "lambda", 0.2)
-lambda_0_tree <- rescale(duck_tree, "lambda", 0)
-
-# Now we'll plot them alongside each other to see the difference.
-
-# Change the number of plots and resize the window.
-par(mfrow = c(2,3))
-options(repr.plot.width=15, repr.plot.height=15)
-
-plot(lambda_1_tree, show.tip.label = FALSE, direction = "downwards", main = "1.0")
-plot(lambda_0.8_tree, show.tip.label = FALSE, direction = "downwards", main = "0.8")
-plot(lambda_0.6_tree, show.tip.label = FALSE, direction = "downwards", main = "0.6")
-plot(lambda_0.4_tree, show.tip.label = FALSE, direction = "downwards", main = "0.4")
-plot(lambda_0.2_tree, show.tip.label = FALSE, direction = "downwards", main = "0.2")
-plot(lambda_0_tree, show.tip.label = FALSE, direction = "downwards", main = "0.0")
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-18-1.png
-:align: center
-:width: 600px
-```
-
-What’s actually happening is the lambda value shortens all the internal
-branches (everything except the tips). This reduces the difference
-between species. In the last plot we can see a lambda value of zero, and
-all the branches are equally close to the root, and therefore to each
-other. This means that all our species are now independent points, and
-if we ran a pgls we would get similar results to a linear model. Try it
-out running a pgls with different lambda values and see what happens!
-
-We can plot the profile of the lambda value from our pgls and see how we
-came to this number.
-
-``` r
-# Change the plot margins to fit the plot in.
-par(mar = c(7, 5, 5, 2))
-
-# Get the potential values of lambda.
-lambda_likelihood <- pgls.profile(duck_pgls, which = "lambda")
-
-# Plot them.
-plot(lambda_likelihood)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-19-1.png
-:align: center
-:width: 600px
-```
-
-On the horizontal axis we can see potential lambda values, and on the
-vertical is how likely they are. Red lines show the 95% confidence
-intervals. This shows that we are fairly confident in our lambda value.
-It’s always worth plotting the our lambda profile, as a flatter line
-would mean we’re less confident in our lambda, and might not have
-controlled for our phylogeny properly. Also be wary of smaller
-phylogenies, as the lambda value is harder to estimate. Try and pick a
-group with more than 100 species for your coursework just to be safe.
-
-Don’t worry if you struggled to understand any of this! Lambda values
-can be tricky to get your head around. At this stage, it’s only
-important to be aware that a pgls uses a lambda value to decide how much
-to weight up the importance of the phylogeny.
-
-For more information on using a pgls check out this very useful papers
-that are aimed at beginners. In particular chapeter 6 which you find on
-researchgate:
-
-<http://www.mpcm-evolution.com/book-sections/part-introduction/5-primer-phylogenetic-generalised-least-squares>
-
-<http://www.mpcm-evolution.com/book-sections/part-introduction/6-statistical-issues-assumptions-phylogenetic-generalised-least-squares>
-
-<https://onlinelibrary.wiley.com/doi/full/10.1111/j.1420-9101.2009.01757.x>
-
-### 4. Rapoport’s rule
-
-For your coursework you might choose to investigate Rapoport’s rule:
-does range size increase with latitude? To do this we’ll use a pgls like
-the previous section. We’ll then use some of the mapping skills that we
-learnt from Practical 1 to extract range size and latitude. For this
-example we’ll use the family Accipitridae, which includes some birds of
-prey.
-
-#### Phylogenetic analysis
-
-First we’ll load in our data. This is the same data from practical 1
-from the AVONET database. The citation for this data is:
-
-Tobias, J.A., Sheard, C., Pigot, A.L., Devenish, A.J.M., Yang, J.,
-Sayol, F. et al. (2021) AVONET: morphological, ecological and
-geographical data for all birds. Ecology Letters (in press).
-
-``` r
-# Read in the avonet data.
-avonet_data <- read.csv("data/avonet_data.csv")
-str(avonet_data)
+# Read in the avonet data again.
+trait_data <- read.csv("data/avonet_data.csv")
+str(trait_data)
 ```
 
     ## 'data.frame':    9872 obs. of  25 variables:
@@ -622,172 +57,663 @@ str(avonet_data)
     ##  $ centroid_longitude  : num  158.5 45 -60 150.7 45.3 ...
     ##  $ range_size          : num  37461 22374973 14309701 35581 2936752 ...
 
-``` r
-head(avonet_data)
-```
-
-    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family
-    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae
-    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae
-    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae
-    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae
-    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae
-    ## 6     Accipiter butleri     Nicobar Sparrowhawk     Accipiter_butleri Accipitriformes Accipitridae
-    ##   redlist_cat beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length
-    ## 1          LC               27.7              17.8       10.6       14.7          62.0       235.2
-    ## 2          LC               20.6              12.1        8.8       11.6          43.0       186.7
-    ## 3          LC               25.0              13.7        8.6       12.7          58.1       229.6
-    ## 4          VU               22.5              14.0        8.9       11.9          61.2       202.2
-    ## 5          LC               21.1              12.1        8.7       11.1          46.4       217.6
-    ## 6          VU               20.0              11.9        6.6       12.0          48.7       166.0
-    ##   kipps_distance secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level
-    ## 1           81.8      159.5            33.9       169.0 248.8               1         2     Carnivore
-    ## 2           62.5      127.4            32.9       140.6 131.2               2         3     Carnivore
-    ## 3           56.6      174.8            24.6       186.3 287.5               2         2     Carnivore
-    ## 4           64.1      138.1            31.7       140.8 142.0               1         2     Carnivore
-    ## 5           87.8      129.9            40.2       153.5 186.5               1         3     Carnivore
-    ## 6           42.9      123.1            25.8       127.0 122.0               1         1     Carnivore
-    ##   trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
-    ## 1     Vertivore       Insessorial             -8.15             158.49    37461.21
-    ## 2     Vertivore       Insessorial              8.23              44.98 22374973.00
-    ## 3     Vertivore        Generalist            -10.10             -59.96 14309701.27
-    ## 4     Vertivore       Insessorial             -5.45             150.68    35580.71
-    ## 5     Vertivore        Generalist             45.24              45.33  2936751.80
-    ## 6     Vertivore       Insessorial              8.42              93.17      327.84
-
-So we can see the data is a near complete species list for the world’s
-birds, with some information on morphological data, range data and IUCN
-categories. We’ve included two different taxonomies, Birdlife and Jetz,
-however we’ll just use Jetz which matches our phylogeny.
-
-For more info on the tree, and where download your own in the future,
-look here:
-
-<http://birdtree.org/>
-
-So we’ll first filter our traits based on the Jetz families.
+And again filter for Accipitridae.
 
 ``` r
-# Load the dplyr package to use filter.
+# Load dplyr so we can filter.
 library(dplyr)
-
-# Filter will subset our trait data based on the Jetz family column.
-accip_data <- avonet_data %>% filter(jetz_family == "Accipitridae")
+accip_data <- trait_data %>% filter(jetz_family == "Accipitridae")
 ```
 
-> Extra task: Can you use skills from Practical 2 and 3 to run a PGLS to
-> detirmine if Rapoport’s rule is true in Accipitridae? You’ll need to
-> read in the ‘all\_birds.tre’ and drop the tips for all the other
-> species.
-
-::::{admonition} Show the answer…  
-:class: dropdown
+Because we’re going to use EDGE scores, we should check for any extinct
+species we need to remove.
 
 ``` r
-# First we need to get absolute latitude.
-accip_data$abs_latitude <- abs(accip_data$centroid_latitude)
+# This operator | means OR. EW means extinct in the wild.
+accip_data %>% filter(redlist_cat == "EX" | redlist_cat == "EW")
+```
 
-# Read in the tree.
+    ##  [1] birdlife_name        birdlife_common_name jetz_name            jetz_order           jetz_family          redlist_cat         
+    ##  [7] beak_length_culmen   beak_length_nares    beak_width           beak_depth           tarsus_length        wing_length         
+    ## [13] kipps_distance       secondary1           hand_wing_index      tail_length          mass                 habitat_density     
+    ## [19] migration            trophic_level        trophic_niche        primary_lifestyle    centroid_latitude    centroid_longitude  
+    ## [25] range_size          
+    ## <0 rows> (or 0-length row.names)
+
+Great, no extinct species in this family! There shouldn’t really be many
+in our Jetz phylogeny, but some do turn up occasionally.
+
+Now we need to load in our tree. For this practical we’re using a random
+tree extracted from <http://birdtree.org/>
+
+Because we’re not sure on the exact placement of some species tips, the
+Jetz tree has multiple versions, each with a slightly different layout.
+Normally this only means a few species have swapped places slightly.
+This is why we’ve chosen a random tree for our analysis. There are other
+methods for dealing with this uncertainty, but for these practicals it
+will be enough to use a random tree.
+
+``` r
+# Load phylogenetic packages.
+library(ape)
+library(caper)
+
+# Load in and plot the tree.
 bird_tree <- read.tree("data/all_birds.tre")
-
-# Get the tips we don't want.
-drop_tips <- setdiff(bird_tree$tip.label, accip_data$jetz_name)
-
-# Drop the tips.
-accip_tree <- drop.tip(bird_tree, drop_tips)
-
-# Create a comparative data object.
-accip_comp <- comparative.data(phy = accip_tree, data = accip_data, names.col = "jetz_name")
-
-# Run the pgls.
-accip_pgls <- pgls(range_size ~ abs_latitude, data = accip_comp, lambda = "ML")
-
-# Get the summary.
-summary(accip_pgls)
+plot(bird_tree, cex=0.01)
 ```
 
-    ## 
-    ## Call:
-    ## pgls(formula = range_size ~ abs_latitude, data = accip_comp, 
-    ##     lambda = "ML")
-    ## 
-    ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -3306385  -615255   -38880   532818  5382176 
-    ## 
-    ## Branch length transformations:
-    ## 
-    ## kappa  [Fix]  : 1.000
-    ## lambda [ ML]  : 0.000
-    ##    lower bound : 0.000, p = 1    
-    ##    upper bound : 1.000, p = < 2.22e-16
-    ##    95.0% CI   : (NA, 0.140)
-    ## delta  [Fix]  : 1.000
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error t value  Pr(>|t|)    
-    ## (Intercept)   4384350     654706  6.6967 1.556e-10 ***
-    ## abs_latitude    71425      27595  2.5884   0.01024 *  
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Residual standard error: 995300 on 235 degrees of freedom
-    ## Multiple R-squared: 0.02772, Adjusted R-squared: 0.02358 
-    ## F-statistic:   6.7 on 1 and 235 DF,  p-value: 0.01024
-
-So it looks like Rapoport’s rule is true for Accipitridae! But there are
-some interesting values in the summary worth discussing. What does a
-lambda value of zero mean? Try running a normal linear model to see if
-there are any differences. We can also plot lambda again.
-
-``` r
-# Change the plot margins to fit the plot in.
-par(mar = c(7, 5, 5, 2))
-
-# Get the potential values of lambda.
-lambda_likelihood <- pgls.profile(accip_pgls, which = "lambda")
-
-# Plot them.
-plot(lambda_likelihood)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-23-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-4-1.png
 :align: center
 :width: 600px
 ```
 
-So the curve for lambda is flatter than for our Bergmann’s rule
-analysis, but it’s still steep enough to be confident we’ve got the
-right lambda value. If we wanted to be very sure, we could redo our pgls
-with `lambda = 0.15` to check if it changes our result.
+There’s a lot of tips so that’s a pretty ugly tree!
 
-::::
+### 3. ED Scores
 
-#### Plotting range size
+Now that we’ve got our tree and our species we can start calculating our
+ED (Evolutionary Distinctiveness) scores. Then we can out if specific
+Accipitridae species are closely related to others in the tree, or
+represent distinct lineages that might want to conserve to protect
+valuable evolutionary diversity.
 
-Now we need to load in our range data. For convenience we’ve saved the
-range data as an `.Rdata` object, which `R` can load back into the
-working environment. `.Rdata` objects can be extremely useful,
-especially when you’ve ran a model that’s taken a long time, and wish to
-save the result without converting it to a specific file format. The
-maps for each family are available as a separate `R.data` file on
-blackboard.
+We can do this easily using a simple function from the `caper` package.
+This sometimes takes a while to run.
+
+``` r
+# We first transform our tree into a matrix of distances from each tip to tip. 
+# This step is optional but stops a warning from ed.calc, which prefers a matrix.
+bird_matrix <- clade.matrix(bird_tree)
+
+# Now we can run the ed.calc function, which calculates ED scores for each species. 
+# The output gives two dataframes, but we only want the species names and scores so we use $spp
+ED <- ed.calc(bird_matrix)$spp
+head(ED)
+```
+
+    ##                  species       ED
+    ## 1       Nothura_maculosa 12.22294
+    ## 2          Nothura_minor 12.22294
+    ## 3       Nothura_darwinii 10.19624
+    ## 4      Nothura_boraquira 10.19624
+    ## 5     Nothura_chacoensis 13.05058
+    ## 6 Nothoprocta_perdicaria 15.18505
+
+Now that we’ve got our ED scores for each species, we need to log
+transform and normalise our scores.
+
+``` r
+# By adding 1 to our scores, this prevents negative logs when our ED scores are below 1.
+ED$EDlog <- log(1+ED$ED)
+
+# We can normalise our scores so they're scaled between 0 and 1.
+ED$EDn <- (ED$EDlog - min(ED$EDlog)) / (max(ED$EDlog) - min(ED$EDlog))
+head(ED)
+```
+
+    ##                  species       ED    EDlog       EDn
+    ## 1       Nothura_maculosa 12.22294 2.581953 0.5385864
+    ## 2          Nothura_minor 12.22294 2.581953 0.5385864
+    ## 3       Nothura_darwinii 10.19624 2.415578 0.4955765
+    ## 4      Nothura_boraquira 10.19624 2.415578 0.4955765
+    ## 5     Nothura_chacoensis 13.05058 2.642663 0.5542808
+    ## 6 Nothoprocta_perdicaria 15.18505 2.784088 0.5908408
+
+Now that we have our normalised scores for all birds, we need to subset
+the list for just Accipitridae.
+
+``` r
+# Pull out the ED row numbers for our species list.
+accip_ED <- ED %>% filter(species %in% accip_data$jetz_name)
+str(accip_ED)
+```
+
+    ## 'data.frame':    237 obs. of  4 variables:
+    ##  $ species: chr  "Elanus_caeruleus" "Elanus_axillaris" "Elanus_leucurus" "Elanus_scriptus" ...
+    ##  $ ED     : num  18.5 18.5 21.2 21.2 26.8 ...
+    ##  $ EDlog  : num  2.97 2.97 3.1 3.1 3.33 ...
+    ##  $ EDn    : num  0.638 0.638 0.672 0.672 0.731 ...
+
+We now have the ED scores of 237 species in Accipitridae. With these
+scores we can see how unique our species are in terms of the
+evolutionary pathway.
+
+``` r
+# Find the highest ED score.
+accip_ED[accip_ED$EDn == max(accip_ED$EDn),]
+```
+
+    ##                    species       ED    EDlog       EDn
+    ## 8513 Chelictinia_riocourii 26.82268 3.325852 0.7308933
+    ## 8514  Gampsonyx_swainsonii 26.82268 3.325852 0.7308933
+
+The highest ED scores belong to *Chelictinia riocourii*, the
+scissor-tailed kite, and *Gampsonyx swainsonii*, the pearl kite. Both
+species are the only member of a monotypic genus, and part of the small
+subfamily Elaninae, the elanine kites. This subfamily only has six
+species, and all the others form one genus. Therefore, with so few close
+relatives, we might consider this species a conservation priority to
+protect as much diversity as we can. However we don’t yet know if this
+species needs conserving…
+
+### 4. EDGE Scores
+
+This is where EDGE scores come in. By combining ED scores with IUCN
+categories we can select the species that need conservation action, and
+represent unique evolutionary variation.
+
+First we need to convert the IUCN status in GE (Globally Endangered)
+scores. This is relatively simple as we’re just assigning numeric
+rankings, but we’ll use a `for loop` to practice our skills! We’ll also
+use an `if` statement as well because we have two categories with the
+same GE score (near threatened and deficient).
+
+``` r
+# Create an empty column to store our GE scores.
+accip_data$GE <- NA
+
+# Create a vector to increase with each new ranking, starting at 0 for least concern.
+i <- 0
+
+# Create a list to loop through in the order of GE scores.
+redlist_cats <- c("LC", "NT", "DD", "VU", "EN", "CR")
+
+# Loop through each different category in the redlist categories.
+for (category in redlist_cats){
+
+  # Add the GE score for that category.
+  accip_data[accip_data$redlist_cat == category, "GE"] <- i
+  
+  # Because DD comes after NT, and both are scored as 1, don't want to change i if the category is NT.
+  # We can use an if statement to do this. != means not equal to.
+  if (category != "NT"){
+    i = i + 1
+  }
+}
+```
+
+``` r
+# We can check our loop worked using distinct.
+accip_data %>% distinct(redlist_cat, GE)
+```
+
+    ##   redlist_cat GE
+    ## 1          LC  0
+    ## 2          VU  2
+    ## 3          NT  1
+    ## 4          EN  3
+    ## 5          CR  4
+    ## 6          DD  1
+
+Now we’ll merge our GE scores with our ED scores in one dataframe.
+
+``` r
+# Join the last two columns of UK_Jetz to ED scores. 
+# This time we'll use the 'by' argument rather than change the column names.
+accip_EDGE <- left_join(accip_data, accip_ED,  by = c("jetz_name" = "species"))
+
+# Head but we'll view just the first and last few columns.
+head(accip_EDGE)[,c(2:3, 26:29)]
+```
+
+    ##      birdlife_common_name             jetz_name GE        ED    EDlog       EDn
+    ## 1            Pied Goshawk Accipiter_albogularis  0  8.271480 2.226943 0.4468120
+    ## 2                  Shikra      Accipiter_badius  0  5.204116 1.825213 0.3429598
+    ## 3          Bicolored Hawk     Accipiter_bicolor  0  7.899108 2.185951 0.4362150
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus  2 10.931999 2.479224 0.5120296
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes  0  5.595169 1.886337 0.3587612
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri  2 11.335471 2.512479 0.5206265
+
+We can now calculate our EDGE scores using some simple maths:
+
+```{math}
+EDGE=ln⁡(1+ED)+GE×ln⁡(2)
+```
+
+We have already done the first half. Now we just need to multiply GE
+scores by the natural log of 2, and combine them.
+
+``` r
+# The log function uses natural logarithms by default.
+accip_EDGE$EDGE <- accip_EDGE$EDlog + accip_EDGE$GE * log(2)
+head(accip_EDGE)[,c(2:3, 26:30)]
+```
+
+    ##      birdlife_common_name             jetz_name GE        ED    EDlog       EDn     EDGE
+    ## 1            Pied Goshawk Accipiter_albogularis  0  8.271480 2.226943 0.4468120 2.226943
+    ## 2                  Shikra      Accipiter_badius  0  5.204116 1.825213 0.3429598 1.825213
+    ## 3          Bicolored Hawk     Accipiter_bicolor  0  7.899108 2.185951 0.4362150 2.185951
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus  2 10.931999 2.479224 0.5120296 3.865518
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes  0  5.595169 1.886337 0.3587612 1.886337
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri  2 11.335471 2.512479 0.5206265 3.898773
+
+Now we have our EDGE scores, we can see if our conservation priority has
+changed in light of IUCN categories.
+
+``` r
+# Find the highest EDGE score.
+accip_EDGE[accip_EDGE$EDGE == max(accip_EDGE$EDGE), c(2:3, 26:30)]
+```
+
+    ##     birdlife_common_name             jetz_name GE       ED    EDlog       EDn   EDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi  4 22.25013 3.146311 0.6844798 5.9189
+
+``` r
+# Find the EDGE score for our previous highest species.
+accip_EDGE[accip_EDGE$EDn == max(accip_EDGE$EDn), c(2:3, 26:30)]
+```
+
+    ##     birdlife_common_name             jetz_name GE       ED    EDlog       EDn     EDGE
+    ## 103  Scissor-tailed Kite Chelictinia_riocourii  0 26.82268 3.325852 0.7308933 3.325852
+    ## 135           Pearl Kite  Gampsonyx_swainsonii  0 26.82268 3.325852 0.7308933 3.325852
+
+So now we can see that the top conservation priority is the Philippine
+Eagle, *Pithecophaga jefferyi*. Whilst our previous kites are still
+high, their low IUCN score means its less of a priority than P.
+jefferyi, which is critically endangered.
+
+In reality, you want to preserve more than just one species! We can see
+from the spread of EDGE scores that there are few species with high EDGE
+scores, and we would ideally like to create a plan that maximises the
+conservation of all of them (if it’s possible). Based on your own taxa
+you’ll decide what constitutes a high EDGE score.
+
+``` r
+# Plot a histogram of EDGE values.
+hist(accip_EDGE$EDGE, breaks = 20)
+```
+
+```{image} practical_3_files/figure-gfm/unnamed-chunk-15-1.png
+:align: center
+:width: 600px
+```
+
+``` r
+# WE can use the select function to pull out only the columns we want to view.
+# Because there's another function called select, we specify it's from dplyr.
+accip_EDGE %>% filter(EDGE > 5) %>% dplyr::select(birdlife_common_name, jetz_name, redlist_cat, EDGE)
+```
+
+    ##       birdlife_common_name               jetz_name redlist_cat     EDGE
+    ## 1               Cuban Kite  Chondrohierax_wilsonii          CR 5.237042
+    ## 2 Madagascar Serpent-eagle       Eutriorchis_astur          EN 5.357568
+    ## 3           Hooded Vulture    Necrosyrtes_monachus          CR 5.396246
+    ## 4         Egyptian Vulture   Neophron_percnopterus          EN 5.273640
+    ## 5         Philippine Eagle   Pithecophaga_jefferyi          CR 5.918900
+    ## 6       Red-headed Vulture        Sarcogyps_calvus          CR 5.393195
+    ## 7     White-headed Vulture Trigonoceps_occipitalis          CR 5.157038
+
+```{tip}
+In the above code we used the pipe operator `%>%` twice! This is why it's called a pipe. 
+We can get the end product of each function to "flow" down to the next, like water 
+down a pipe! 
+```
+
+### 5. EcoDGE Scores
+
+Instead of evolutionary distinctiveness, we might instead be interested
+in what functional traits each species provides. Species with low
+functional diversity may be ‘functionally redundant’ in the ecosystem,
+whereas those with high functional diversity may provide key ecosystem
+services that aren’t easily replaceable. We call these scores EcoDGE
+scores, with “eco” short for ecologically diverse.
+
+Unlike ED, we will not calculate functional distinctiveness (FD and FDn)
+in relation to all species within the order worldwide. Instead, we will
+calculate FD and FDn for just our chosen species. The reason for this is
+that FD is traditionally used in the context of a specific community or
+radiation of species (i.e. all birds found within a national park, or
+all species of lemur).
+
+We need to change row names to species names and remove all the columns
+except traits. Then normalise our trait data so that body_mass and beak
+have the same scale (the same variance).
+
+``` r
+# Make a copy of our data.
+accip_traits <- accip_EDGE
+
+# Change row names and keep just trait data.
+rownames(accip_traits) <- accip_traits$jetz_name
+accip_traits <- accip_traits[,7:17]
+
+# Make each column have the same scale.
+accip_traits <- scale(accip_traits, scale=TRUE)
+head(accip_traits)
+```
+
+    ##                       beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1
+    ## Accipiter_albogularis         -0.7433418        -0.5866492 -0.5282422 -0.5329013    -0.4380073  -0.9721188     -0.7745186 -0.9281820
+    ## Accipiter_badius              -1.1979544        -1.1153733 -0.9611877 -0.9706012    -1.2618782  -1.3351297     -1.0777692 -1.3265690
+    ## Accipiter_bicolor             -0.9162227        -0.9669595 -1.0092927 -0.8152883    -0.6071177  -1.0140334     -1.1704728 -0.7382966
+    ## Accipiter_brachyurus          -1.0762975        -0.9391319 -0.9371351 -0.9282431    -0.4726966  -1.2191159     -1.0526293 -1.1937733
+    ## Accipiter_brevipes            -1.1659395        -1.1153733 -0.9852402 -1.0411979    -1.1144487  -1.1038506     -0.6802438 -1.2955420
+    ## Accipiter_butleri             -1.2363724        -1.1339250 -1.4903432 -0.9141238    -1.0147170  -1.4900642     -1.3857336 -1.3799355
+    ##                       hand_wing_index tail_length       mass
+    ## Accipiter_albogularis      -0.1263950  -0.7249344 -0.6082705
+    ## Accipiter_badius           -0.2537573  -1.1555232 -0.6780068
+    ## Accipiter_bicolor          -1.3108642  -0.4626392 -0.5853216
+    ## Accipiter_brachyurus       -0.4065920  -1.1524909 -0.6716024
+    ## Accipiter_brevipes          0.6759874  -0.9599389 -0.6452141
+    ## Accipiter_butleri          -1.1580294  -1.3617206 -0.6834623
+
+To calculate functional diversity we’ll create a distance matrix of our
+traits. Species with similar traits will have smaller ‘distances’.
+
+``` r
+# Create a matrix.
+traits_matrix <- as.matrix(accip_traits)
+
+# Converts traits into 'distance' in trait space.
+distance_matrix <- dist(traits_matrix)
+```
+
+The next step is to create a new tree using the neighbour-joining method
+(Saitou & Nei, 1987) (Google for more information!). This will create a
+tree where branch lengths show how similar species are in trait space
+rather than evolutionary distance. This function may take a while with
+more species so don’t be alarmed if the group you’ve chosen takes much
+longer.
+
+``` r
+# Create the tree.
+trait_tree <- nj(distance_matrix)
+
+# Test to see if it's worked. The tree looks different to a normal one because tips 
+# don't line up neatly at the present time period like with evolutionary relationships.
+plot(trait_tree, cex=0.4)
+```
+
+```{image} practical_3_files/figure-gfm/unnamed-chunk-20-1.png
+:align: center
+:width: 600px
+```
+
+FD trees can fail if there are too many NAs in the data. If this is the
+case for your taxa, remove species or traits with high NA counts from FD
+analysis. Note, however, that the bird data is very complete so there
+should be no need to remove NA species from the dataset; this should be
+a last resort so only do this if the analyses are failing repeatedly.
+
+With our tree of functional space, we can now calculate FD scores the
+same way we calculated ED scores.
+
+``` r
+# Create a matrix of distance from tip to tip.
+tree_matrix <- clade.matrix(trait_tree)
+
+# Calculate FD scores.
+FD <- ed.calc(tree_matrix)$spp
+
+# Change the name to FD.
+colnames(FD)[2] <- "FD"
+head(FD)
+```
+
+    ##                 species        FD
+    ## 1 Accipiter_albogularis 0.1515376
+    ## 2      Accipiter_badius 0.3797113
+    ## 3     Accipiter_bicolor 0.3908214
+    ## 4  Accipiter_brachyurus 0.3674620
+    ## 5    Accipiter_brevipes 0.3574219
+    ## 6     Accipiter_butleri 0.4128270
+
+Log and normalise the data as we did before with ED so we could compare
+FD scores from different groups.
+
+``` r
+# Calculate the scores again.
+FD$FDlog <- log(1+FD$FD)
+FD$FDn <- (FD$FDlog - min(FD$FDlog)) / (max(FD$FDlog) - min(FD$FDlog))
+
+# Find the highest FD score.
+FD[FD$FDn == max(FD$FDn),]
+```
+
+    ##               species      FD    FDlog FDn
+    ## 138 Gypaetus_barbatus 2.93894 1.370912   1
+
+So the species with the largest FD score is *Gypaetus barbatus*, the
+Bearded Vulture. This means G. barbatus is the most ecologically diverse
+species in our clade, based on the morphological values we’ve supplied.
+You might be interested to know that G. barbatus is a very unique
+vulture, with long narrow wings, and wedge shaped tail that makes it
+unmistakable in flight! Moreover, they live on a diet of up to 90% bone
+marrow, which makes them the only living bird that specialises on
+marrow! This will be reflected in the beak morphological traits we used
+to calculate FD. Pretty cool right!
+
+We can also combine GE scores to see how IUCN categories change our
+priorities. We use the same formula as before:
+
+```{math}
+ecoDGE=ln⁡(1+FD)+GE×ln⁡(2)
+```
+
+``` r
+# Join FD and GE scores.
+accip_ecoDGE <- left_join(accip_data, FD, by = c("jetz_name" = "species"))
+
+# Calculate ecoDGE scores.
+accip_ecoDGE$ecoDGE <- accip_ecoDGE$FDlog + accip_ecoDGE$GE * log(2)
+head(accip_ecoDGE)[,c(2:3, 26:30)]
+```
+
+    ##      birdlife_common_name             jetz_name GE        FD     FDlog       FDn    ecoDGE
+    ## 1            Pied Goshawk Accipiter_albogularis  0 0.1515376 0.1410981 0.0000000 0.1410981
+    ## 2                  Shikra      Accipiter_badius  0 0.3797113 0.3218743 0.1469948 0.3218743
+    ## 3          Bicolored Hawk     Accipiter_bicolor  0 0.3908214 0.3298945 0.1535163 0.3298945
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus  2 0.3674620 0.3129565 0.1397435 1.6992508
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes  0 0.3574219 0.3055872 0.1337513 0.3055872
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri  2 0.4128270 0.3455926 0.1662809 1.7318870
+
+And does including IUCN categories change our conservation priorities?
+
+``` r
+# Find the highest ecoDGE score.
+accip_ecoDGE[accip_ecoDGE$ecoDGE == max(accip_ecoDGE$ecoDGE), c(2:3, 26:30)]
+```
+
+    ##     birdlife_common_name             jetz_name GE      FD    FDlog       FDn  ecoDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi  4 2.83493 1.344151 0.9782403 4.11674
+
+``` r
+# Find the ecoDGE score for Gypaetus barbatus.
+accip_ecoDGE[accip_ecoDGE$jetz_name == "Gypaetus_barbatus", c(2:3, 26:30)]
+```
+
+    ##     birdlife_common_name         jetz_name GE      FD    FDlog FDn   ecoDGE
+    ## 138      Bearded Vulture Gypaetus_barbatus  1 2.93894 1.370912   1 2.064059
+
+Yes! Funnily enough the Philippine Eagle is again the species we need to
+check. This may be because the GE component of ecoDGE scores is weighted
+much higher than the FD component.
+
+``` r
+# Get the top 5% of FD scores.
+accip_ecoDGE[accip_ecoDGE$FD > quantile(accip_ecoDGE$FD, 0.95), c(2:3, 26:30)]
+```
+
+    ##     birdlife_common_name               jetz_name GE       FD     FDlog       FDn    ecoDGE
+    ## 47     Cinereous Vulture       Aegypius_monachus  1 2.130645 1.1412390 0.8132459 1.8343861
+    ## 54        Gurney's Eagle          Aquila_gurneyi  1 1.500756 0.9165931 0.6305793 1.6097403
+    ## 127  Swallow-tailed Kite    Elanoides_forficatus  0 1.430271 0.8880028 0.6073317 0.8880028
+    ## 138      Bearded Vulture       Gypaetus_barbatus  1 2.938940 1.3709116 1.0000000 2.0640588
+    ## 139     Palm-nut Vulture   Gypohierax_angolensis  0 1.525275 0.9263500 0.6385130 0.9263500
+    ## 144    Himalayan Griffon       Gyps_himalayensis  1 1.707854 0.9961565 0.6952748 1.6893036
+    ## 152  Steller's Sea-eagle    Haliaeetus_pelagicus  2 1.960934 1.0855046 0.7679266 2.4717990
+    ## 164         Papuan Eagle Harpyopsis_novaeguineae  2 2.346738 1.2079860 0.8675201 2.5942804
+    ## 217     Philippine Eagle   Pithecophaga_jefferyi  4 2.834930 1.3441512 0.9782403 4.1167400
+    ## 233        Crowned Eagle Stephanoaetus_coronatus  1 1.413409 0.8810401 0.6016701 1.5741873
+    ## 234             Bateleur   Terathopius_ecaudatus  1 1.752398 1.0124726 0.7085420 1.7056198
+    ## 235 Lappet-faced Vulture     Torgos_tracheliotos  3 2.032191 1.1092855 0.7872635 3.1887270
+
+``` r
+# Get the top 5% of ecoDGE scores.
+accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 26:30)]
+```
+
+    ##       birdlife_common_name               jetz_name GE        FD     FDlog       FDn   ecoDGE
+    ## 105             Cuban Kite  Chondrohierax_wilsonii  4 1.0566988 0.7211022 0.4716195 3.493691
+    ## 140   White-backed Vulture          Gyps_africanus  4 0.5639157 0.4471927 0.2488952 3.219781
+    ## 141   White-rumped Vulture        Gyps_bengalensis  4 0.6793770 0.5184229 0.3068147 3.291012
+    ## 145         Indian Vulture            Gyps_indicus  4 0.6518839 0.5019164 0.2933927 3.274505
+    ## 146      Rüppell's Vulture         Gyps_rueppellii  4 0.7110013 0.5370787 0.3219843 3.309667
+    ## 147 Slender-billed Vulture       Gyps_tenuirostris  4 0.9128431 0.6485906 0.4126581 3.421179
+    ## 155  Madagascar Fish-eagle Haliaeetus_vociferoides  4 0.8499630 0.6151656 0.3854792 3.387754
+    ## 203         Hooded Vulture    Necrosyrtes_monachus  4 1.0619417 0.7236481 0.4736897 3.496237
+    ## 208      Flores Hawk-eagle         Nisaetus_floris  4 0.5802147 0.4575607 0.2573257 3.230149
+    ## 217       Philippine Eagle   Pithecophaga_jefferyi  4 2.8349303 1.3441512 0.9782403 4.116740
+    ## 222     Red-headed Vulture        Sarcogyps_calvus  4 1.0009571 0.6936256 0.4492775 3.466214
+    ## 236   White-headed Vulture Trigonoceps_occipitalis  4 1.2212488 0.7980696 0.5342041 3.570658
+
+As we can see, all of the highest ecoDGE scores are critically
+endangered. This has been a criticism of ecoDGE scores, that functional
+diversity isn’t weighted highly enough. Of course for our taxa these are
+probably the species we want to protect, and maybe GE should be the more
+pressing issue. However if your taxa has very few CR species, it’s worth
+checking FD scores as well, as you may want to adjust your GE scores to
+give more weighting to FD.
+
+### 6. EcoEDGE Scores
+
+So we’ve used EDGE scores to combine extinction risk with evolutionary
+diversity, and ecoDGE scores to do the same with functional diversity.
+However, both are important, and we might want to combine all three into
+one metric. This is exactly what EcoEDGE scores do (confusingly, their
+creators decided to use very very similar names). And we’ve pretty much
+done all the hard work already. The equation is similar to the ones
+we’ve used, but we give ED and FD scores equal weighting:
+
+```{math}
+EcoEDGE= (0.5×EDn + 0.5×FDn) + GE×ln⁡(2)
+```
+
+And remember our EDn and FDn scores have already been logged, so we
+don’t need to log them now.
+
+``` r
+# Merge FD and ED scores.
+accip_EcoEDGE <- left_join(accip_EDGE, accip_ecoDGE)
+```
+
+    ## Joining, by = c("birdlife_name", "birdlife_common_name", "jetz_name", "jetz_order", "jetz_family", "redlist_cat", "beak_length_culmen",
+    ## "beak_length_nares", "beak_width", "beak_depth", "tarsus_length", "wing_length", "kipps_distance", "secondary1", "hand_wing_index",
+    ## "tail_length", "mass", "habitat_density", "migration", "trophic_level", "trophic_niche", "primary_lifestyle", "centroid_latitude",
+    ## "centroid_longitude", "range_size", "GE")
+
+``` r
+# Calculate EcoEDGE scores.
+accip_EcoEDGE$EcoEDGE <- (0.5*accip_EcoEDGE$EDn + 0.5*accip_EcoEDGE$FDn) + accip_EcoEDGE$GE*log(2)
+
+# Select just the relevant columns.
+accip_EcoEDGE <- accip_EcoEDGE %>% dplyr::select(birdlife_common_name, jetz_name, 
+                                                 redlist_cat, GE, EDGE, ecoDGE, EcoEDGE)
+
+# Check it's worked.
+head(accip_EcoEDGE)
+```
+
+    ##      birdlife_common_name             jetz_name redlist_cat GE     EDGE    ecoDGE   EcoEDGE
+    ## 1            Pied Goshawk Accipiter_albogularis          LC  0 2.226943 0.1410981 0.2234060
+    ## 2                  Shikra      Accipiter_badius          LC  0 1.825213 0.3218743 0.2449773
+    ## 3          Bicolored Hawk     Accipiter_bicolor          LC  0 2.185951 0.3298945 0.2948657
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus          VU  2 3.865518 1.6992508 1.7121809
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes          LC  0 1.886337 0.3055872 0.2462563
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri          VU  2 3.898773 1.7318870 1.7297481
+
+We can again look at the spread and see which are the highest species.
+
+``` r
+# Get the highest scoring species.
+accip_EcoEDGE[accip_EcoEDGE$EcoEDGE == max(accip_EcoEDGE$EcoEDGE),]
+```
+
+    ##     birdlife_common_name             jetz_name redlist_cat GE   EDGE  ecoDGE  EcoEDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi          CR  4 5.9189 4.11674 3.603949
+
+``` r
+# Get the top 10% of EcoEDGE scores.
+accip_EcoEDGE[accip_EcoEDGE$EcoEDGE > quantile(accip_EcoEDGE$EcoEDGE, 0.9),]
+```
+
+    ##         birdlife_common_name                jetz_name redlist_cat GE     EDGE   ecoDGE  EcoEDGE
+    ## 18           Gundlach's Hawk      Accipiter_gundlachi          EN  3 3.965779 2.603643 2.414579
+    ## 92            Ridgway's Hawk           Buteo_ridgwayi          CR  4 4.336146 3.052206 2.966565
+    ## 105               Cuban Kite   Chondrohierax_wilsonii          CR  4 5.237042 3.493691 3.262504
+    ## 120    Reunion Marsh-harrier         Circus_maillardi          EN  3 4.270122 2.497123 2.410610
+    ## 121            Black Harrier            Circus_maurus          EN  3 4.107043 2.425928 2.360585
+    ## 134 Madagascar Serpent-eagle        Eutriorchis_astur          EN  3 5.357568 2.440742 2.528246
+    ## 140     White-backed Vulture           Gyps_africanus          CR  4 4.726423 3.219781 3.085141
+    ## 141     White-rumped Vulture         Gyps_bengalensis          CR  4 4.583339 3.291012 3.095607
+    ## 142             Cape Vulture         Gyps_coprotheres          EN  3 3.681765 2.838908 2.473519
+    ## 145           Indian Vulture             Gyps_indicus          CR  4 4.374936 3.274505 3.061958
+    ## 146        Rüppell's Vulture          Gyps_rueppellii          CR  4 4.393093 3.309667 3.078601
+    ## 147   Slender-billed Vulture        Gyps_tenuirostris          CR  4 4.374913 3.421179 3.121588
+    ## 151      Pallas's Fish-eagle   Haliaeetus_leucoryphus          EN  3 4.356964 2.474009 2.412437
+    ## 155    Madagascar Fish-eagle  Haliaeetus_vociferoides          CR  4 4.866478 3.387754 3.171536
+    ## 162   Crowned Solitary Eagle Harpyhaliaetus_coronatus          EN  3 3.644918 2.682003 2.404964
+    ## 180      White-collared Kite         Leptodon_forbesi          EN  3 4.554955 2.446426 2.426814
+    ## 203           Hooded Vulture     Necrosyrtes_monachus          CR  4 5.396246 3.496237 3.284117
+    ## 204         Egyptian Vulture    Neophron_percnopterus          EN  3 5.273640 2.902952 2.705317
+    ## 208        Flores Hawk-eagle          Nisaetus_floris          CR  4 4.638980 3.230149 3.078054
+    ## 217         Philippine Eagle    Pithecophaga_jefferyi          CR  4 5.918900 4.116740 3.603949
+    ## 222       Red-headed Vulture         Sarcogyps_calvus          CR  4 5.393195 3.466214 3.271517
+    ## 229 Black-and-chestnut Eagle        Spizaetus_isidori          EN  3 4.417788 2.684303 2.505797
+    ## 235     Lappet-faced Vulture      Torgos_tracheliotos          EN  3 4.344917 3.188727 2.701460
+    ## 236     White-headed Vulture  Trigonoceps_occipitalis          CR  4 5.157038 3.570658 3.283455
+
+``` r
+# See the spread.
+hist(accip_EcoEDGE$EcoEDGE, breaks = 20)
+```
+
+```{image} practical_3_files/figure-gfm/unnamed-chunk-31-1.png
+:align: center
+:width: 600px
+```
+
+Unsuprisingly, the Philippine Eagle is again the highest species.
+However, most birds in Accipitridae are not currently threatened by
+extinction according to IUCN criteria. For your own taxa, this may be a
+very different story, and ED and FD scores may matter a lot more. It’s
+also up to you if you want to down weight GE scores, or you agree that
+conservation priority goes to those species most threatened with
+extinction. How you chose to interpret and present your results is up to
+you, and will depend on the group that you’ve chosen.
+
+For the practicals and coursework we’ve chosen to use a simplified
+version of EcoEDGE scores. If you’re interested in learning more, check
+out this paper which first proposed the use of EcoEDGE scores:
+
+<https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320>
+
+### 7. Plotting a map of IUCN categories
+
+You may wish to plot maps of your IUCN redlist categories, especially if
+you’re intersted in what areas of the world are most threatened by
+extinction. We can do this easily using similar code from practical 3.
 
 ``` r
 # First load in the spatial packages we'll need.
 library(raster)
 library(sf)
-
+library(fasterize)
 
 # Load the data into our environment.
 load("data/accipitridae_ranges.RData")
 
 # Inspect the maps.
 class(accip_ranges)
-head(accip_ranges)
 ```
 
     ## [1] "sf"         "data.frame"
+
+``` r
+head(accip_ranges)
+```
+
     ## Simple feature collection with 6 features and 3 fields
     ## Geometry type: MULTIPOLYGON
     ## Dimension:     XY
@@ -801,219 +727,26 @@ head(accip_ranges)
     ## 10777 22695494     Accipiter_butleri  2014 MULTIPOLYGON (((93.531 8.01...
     ## 6618  22695486 Accipiter_castanilius  2013 MULTIPOLYGON (((7.090881 6....
 
-As a reminder from practical 1, we can see that the range maps are
-stored in a spatial dataframe, called and `sf` class of object. We can
-plot the polygons again to see what they look like.
+We’ll run the same code as before to compile our spatial dataframe into
+a single raster layer. The only difference is this time we’re assigning
+values based on GE rating rather than range size.
 
 ``` r
-#  Take the range polygon from the first row.
-plot(accip_ranges$Shape[1], axes=TRUE)
-```
+# Combine the two datasets into one object. (This turns our maps into a normal dataframe)
+accip_ranges <- left_join(accip_EcoEDGE, accip_ranges, by = c("jetz_name" = "SCINAME"))
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-25-1.png
-:align: center
-:width: 600px
-```
-
-We can then plot the range sizes to view them at a global scale. For
-this practical we’ll split ranges in small and large, and highlight the
-smaller ranges on the map. To do this we need to utilise a `for loop`
-and an `if statement` to decide if each range size is bigger than
-1,000,000 km<sup>2</sup>. This value works well for accipitridae with
-large ranges, but for your own clade you may wish to choose a smaller
-value to best show the data. There is no correct value, as it’s all
-about data presentation.
-
-We’ll now try using a `for loop` and `if statement`, and explain the
-code in more detail below. Don’t worry if it seems complicated! Here’s a
-cute example from [Allison
-Horst](https://github.com/allisonhorst/stats-illustrations), who does
-loads of cool stats illustrations to help understand bits of ecology and
-coding.
-
-```{image} ../../memes/monster_for_loop.png
-:align: center
-:width: 600px
-```
-
-``` r
-# And lets add a column to our data for storing if it's a small or large range.
-accip_data$range_large <- NA
-
-# We'll use a basic loop that goes from 1 to 237.
-row_numbers <- 1:nrow(accip_data)
-
-# The curly brackets show the beginning and the end of the loop.
-for (x in row_numbers){
-  
-  # Pull out the range size we want for each iteration (x) of the loop.
-  range <- accip_data$range_size[x]
-  
-  # Calculate if it's small range or a large range.
-  if (range > 1000000){
-    range_large <- 1
-  } else {
-    range_large <- 0
-  }
-  
-  # Lastly we want to add our new value to the dataframe.
-  accip_data$range_large[x] <- range_large
-}
-```
-
-IF functions have a logical expression inside the brackets. If it’s TRUE
-it will run the line between the curly brackets. If it’s FALSE, it will
-run what’s inside `else{}`.
-
-```{tip}
-You can also run each line of a loop one by one to better understand what's happening.
-Just set `x <- 1` and then skip the for() line to see the other lines one at a time.
-```
-
-To plot the ranges we’re going to convert our sf dataframe of polygons
-into a raster image, like we did in Practical 1. For `fasterize`, we’ll
-ask the function to take the minimum value so that small ranges are on
-top of big ones. certain values, such as range\_size.
-
-``` r
-# Load fasterize package.
-library(fasterize)
-
-# Combine the two datasets into one object so we have range size info and the polygons together. 
-# This turns our sf object into a normal dataframe.
-Accip_all <- left_join(accip_data, accip_ranges, by = c("jetz_name" = "SCINAME"))
-
-# Start by creating an empty raster stack to store our data in.
+# Create an empty raster stack to store our data in.
 raster_template <- raster(ncols=2160, nrows = 900, ymn = -60)
 
-# 'fasterize' needs objects to be an sf class so we'll convert it back.
-Accip_all <- st_sf(Accip_all)
+# 'fasterize' needs objects to be an sf class so we'll convert it back into an sf dataframe.
+accip_ranges <- st_sf(accip_ranges)
 
-# Use the fasterize function with the raster template. We want to use the 
-# range_large field, and the function min takes the smallest value when they overlap. 
-# (so small ranges are shown on top of large ranges)
-range_raster <- fasterize(Accip_all, raster_template, field = "range_large", fun = "min")
+# Use the fasterize function with the raster template. 
+# We want to use the GE field, and the function max takes the highest value when they overlap.
+GE_raster <- fasterize(accip_ranges, raster_template, field = "GE", fun = "max")
 
 # Plot the new map.
-plot(range_raster, col=rainbow(2))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-29-1.png
-:align: center
-:width: 600px
-```
-
-So now we can see where all the small range sizes are relative to the
-large ones. However, it doesn’t look very pretty and countries without
-any ranges are left off the map. We can make a much clearer map using
-`ggplot2`.
-
-``` r
-library(tidyr)
-library(ggplot2)
-
-# Convert the raster into a raster dataframe.
-raster_data <- as.data.frame(range_raster, xy=TRUE) %>% drop_na()
-colnames(raster_data) <- c("long", "lat", "index")
-
-# Add labels for the range sizes so that ggplot colours them as discrete, rather than a continuous number.
-raster_data$ranges[raster_data$index == 0] <- "Small"
-raster_data$ranges[raster_data$index == 1] <- "Large"
-
-# We can then plot this in ggplot. We have to first create the colour scheme for our map.
-myColors <- c("grey80", "red")
-
-# Assign names to these colors that correspond to each range size.
-names(myColors) <- unique(raster_data$ranges)
-
-# Create the colour scale.
-colScale <- scale_fill_manual(name = "Range Sizes", values = myColors)
-```
-
-``` r
-# Create a plot with ggplot (the plus signs at the end of a line carry over to the next line).
-range_plot <- ggplot() +
-  # borders imports all the country outlines onto the map. 
-  # colour changes the colour of the outlines, 
-  # fill changes the colour of the insides of the countries.
-  # This will grey out any terrestrial area which isn't part of a range.
-  borders(ylim = c(-60,90), fill = "grey90", colour = "grey90") +
-  
-  # Borders() xlim is -160/200 to catch the edge of Russia. We need to reset the 
-  # xlim to -180/180 to fit our raster_stack.
-  xlim(-180, 180) + 
-  
-  # Add the range information on top.
-  geom_tile(aes(x=long, y=lat, fill= ranges), data=raster_data) +
-  # Add colours.
-  colScale +
-  # Add title.
-  ggtitle("Small range sizes in the Accipitidae") + 
-  # Add the classic theme (things like gridlines, font etc.)
-  theme_classic() +
-  # Add axes labels.
-  ylab("Latitude") + 
-  xlab("Longitude") + 
-  # coord_fixed() makes ggplot keep our aspect ratio the same.
-  coord_fixed() 
-
-# Return the plot so we can view it.
-options(repr.plot.width=15, repr.plot.height=10)
-range_plot
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-31-1.png
-:align: center
-:width: 600px
-```
-
-That looks much better than the first. Experiment with your own maps to
-create a map for your report. Try changing how you show ranges, such as
-what determines if a range is large or small, or anything else you can
-think of! You can save your plots as a file using different formats like
-a jpeg. Watch out for how the map transforms when it’s saved and edit
-your plots accordingly.
-
-``` r
-# Open up a new plotting device which will save a photo.
-jpeg("my_map.jpeg")
-
-# Add the plot to the plotting device.
-range_plot
-
-# Turn off the plotting device to save it.
-dev.off()
-```
-
-    ## RStudioGD 
-    ##         2
-
-### 5. Latitudinal diversity gradient
-
-Another question you might pick for your coursework is to investigate
-the latitudinal diversity gradient for your chosen taxa. We’ll explore
-the same relationship with Accipitridae. We’ve already extracted
-latitude but we for this model we will lump species into bins at 5
-degree latitudes and see if some bins are bigger closer to the equator.
-
-``` r
-# First lets create a bin range (from 0 to 90 which is max latitude) and size (by=5).
-range <- seq(0, 90, by=5) 
-
-# Create labels for our bins. We want to skip zero, as the labels refer to the upper limits of each break. 
-labels <- seq(5, 90, 5)
-
-# We can now 'cut' up our latitude and put them into bins. 
-# This function adds an extra column, and adds a label for which bin each species should be in.
-accip_data$lat.bins <- cut(accip_data$abs_latitude, breaks=range, labels=labels) 
-
-# The cut function creates the labels as factors, so we'll turn them back into numbers to plot. 
-# We turn them into characters first because as.numeric will convert factors into their level order, 
-# rather than their value.
-accip_data$lat.bins <- as.numeric(as.character(accip_data$lat.bins))
-
-# Plot our bins as a histogram
-hist(accip_data$lat.bins, breaks = 7) 
+plot(GE_raster)
 ```
 
 ```{image} practical_3_files/figure-gfm/unnamed-chunk-33-1.png
@@ -1021,209 +754,75 @@ hist(accip_data$lat.bins, breaks = 7)
 :width: 600px
 ```
 
-It definitely looks like a pattern is going on there! We can investigate
-this using a model.
+Now we’ve created our stack of range maps, and each are coded for their
+IUCN category. In this case we’ll take the maximum GE score as the one
+that’s shown. So if two ranges overlap, we take the highest score.
 
-#### Generalised linear models
+> Extra task: Do you think this is a good way to show the data? What
+> would you do differently? Could you use another metric from today’s
+> practical? And is taking the highest score when cells overlap the best
+> option? Try and make another map to show the data.
 
-Because the data is count, it looks like it has a poisson distribution.
-For this reason we might want to utilise a generalised linear model
-instead. Also because we’ve binned species, we won’t use a pgls for this
-question. First let’s generate species richness.
-
-``` r
-# Get the frequency of each bin
-species_richness <- count(accip_data, lat.bins)
-colnames(species_richness)[2] <- "richness"
-species_richness
-```
-
-    ##    lat.bins richness
-    ## 1         5       57
-    ## 2        10       59
-    ## 3        15       19
-    ## 4        20       18
-    ## 5        25       24
-    ## 6        30       13
-    ## 7        35        9
-    ## 8        40        4
-    ## 9        45       11
-    ## 10       50        9
-    ## 11       55        9
-    ## 12       60        4
-    ## 13       70        1
-
-Now to run a glm, using a poisson error structure given our data is very
-skewed.
+So now you can see the spread of GE scores throughout the globe. For
+your own species you may wish to focus on a specific area of Earth using
+the `crop()` function. Again we’ll use ggplot2 to make them a little
+nicer to look at.
 
 ``` r
-# The only difference with running a glm is now we have to specify the family as well.
-accip_model <- glm(richness ~ lat.bins, data = species_richness, family = "poisson")
-summary(accip_model)
-```
+library(tidyr)
+library(ggplot2)
 
-    ## 
-    ## Call:
-    ## glm(formula = richness ~ lat.bins, family = "poisson", data = species_richness)
-    ## 
-    ## Deviance Residuals: 
-    ##     Min       1Q   Median       3Q      Max  
-    ## -2.6681  -0.9765   0.2406   1.2114   2.3963  
-    ## 
-    ## Coefficients:
-    ##              Estimate Std. Error z value Pr(>|z|)    
-    ## (Intercept)  4.245447   0.108752   39.04   <2e-16 ***
-    ## lat.bins    -0.049699   0.004366  -11.38   <2e-16 ***
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## (Dispersion parameter for poisson family taken to be 1)
-    ## 
-    ##     Null deviance: 194.745  on 12  degrees of freedom
-    ## Residual deviance:  29.126  on 11  degrees of freedom
-    ## AIC: 88.839
-    ## 
-    ## Number of Fisher Scoring iterations: 4
+# Convert the raster into a raster dataframe. 
+# Remove rows with NA values from this dataframe.
+raster_data <- as.data.frame(GE_raster, xy=TRUE) %>% drop_na()
+colnames(raster_data) <- c("long", "lat", "index")
 
-You should be able to figure out if there’s a relationship there! One
-thing to remember about a glm is that we’ve applied a link function. For
-a poisson model this is a log-link function. This means that the
-relationship between our variables isn’t as simple as a 0.05 decrease in
-species richness with 1 degree of latitude. A log-link function takes a
-log of the entire right side of the model formula. For interpretation,
-we first need to back-transform the equation and write out our model as:
+# Turn the GE score values to a factor to give a discrete raster rather than continuous values.
+raster_data$index <- as.factor(raster_data$index)
 
-```{math}
-Richness \sim e^{(4.232\ -\ 0.049\ \times lat.bins)}
-```
+# we can then plot this in ggplot. We have to first create the colour scheme for our map.
+# The six character codes (hexcodes) signify a colour. There are many stock colours 
+# (i.e. "grey80" yellow" "orange" "red") but hexcodes give more flexibility.
+# Find colour hexcodes here: https://www.rapidtables.com/web/color/RGB_Color.html
+myColors <- c("grey80", "grey80", "#FCF7B7", "#FFD384", "#FFA9A9")
 
-Because of the law of exponents, we can rearrange it to:
+# Assign names to these colours that correspond to each GE score. 
+# We also use the sort() function to make sure the numbers are in ascending order.
+names(myColors) <- unique(sort(raster_data$index))
 
-```{math}
-Richness \sim \frac{e^{4.232}} {e^{0.049 \times lat.bins}}  
-```
+# Create the colour scale.
+colScale <- scale_fill_manual(name = "IUCN Status", values = myColors)
 
-The top half of the fraction is the intercept, which simplifies to
-approximately 69. This is the predicted species richness at the equator.
-We’re more interested in the change with latitude so we can simplify the
-bottom. We sub in `1` for `lat.bins` to know the change with every 1
-degree. This gives us 1.05 on the bottom. Dividing by 1.05 is the same
-as a decrease of 5%. Therefore, for every increase of 1 degree of
-latitude, there is a 5% decrease in species richness (starting from the
-equator at 69). We can see this relationship by plotting our model.
-
-``` r
-# We first plot raw values as just a scatter plot.
-plot(richness ~ lat.bins, data = species_richness)
-
-# And then add a line of the fitted values of the model.
-lines(species_richness$lat.bins, accip_model$fitted.values)
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-38-1.png
-:align: center
-:width: 600px
-```
-
-Don’t worry if that seems confusing! It’s initially quite hard to
-understand, but in the plot you can see that there’s roughly a 5%
-decrease in species richness with every 1 degree latitude increase. For
-most macro-ecological research we’re less concerned with predictions,
-and more interested in determining if we can reject our null hypothesis.
-
-> Extra task: Can you recreate this plot using your `ggplot2` skills?
-
-::::{admonition} Show the answer…  
-:class: dropdown
-
-``` r
-# We need the predictions from our model. Type "response" gives us y after the log-link.
-predictions <- predict(accip_model, type = "response", se.fit = TRUE)
-
-# Add the predictions to our dataframe.
-species_richness$fit <- predictions$fit
-species_richness$y_max <- predictions$fit + predictions$se.fit
-species_richness$y_min <- predictions$fit - predictions$se.fit
-
-# Create a normal scatter plot.
-ggplot(species_richness, aes(x = lat.bins, y = richness)) + geom_point() +
+# Create a plot with ggplot (the plus signs at the end of a line carry over to the next line).
+GE_plot <- ggplot() +
   
-  # Add in the main model line. Turn se off so we add it manually after.
-  geom_smooth(aes(y = fit), fullrange=FALSE, se = FALSE) + 
-  
-  # Now add the standard errors.
-  geom_ribbon(aes(ymin = y_min, ymax = y_max), alpha = 0.2, fill = "blue") +
-  
-  # Add labels.
-  xlab("Latitude") + ylab("Species Richness") +
-  
-  # Lastly add a theme to remove the grey background and grid lines.
-  theme_classic()
-```
-
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-39-1.png
-:align: center
-:width: 600px
-```
-
-Think how you could change the plot to make it nicer. Can you figure out
-how to change the font sizes? Does adding more bins for latitude change
-your model results, or make the plot nicer?
-
-::::
-
-#### Plotting species richness
-
-Lastly, you might also want to plot a map of species richness to go
-alongside your plot. This is the map we made in practical 1. We can make
-the same map using a different colour scheme.
-
-For this we just use the fasterize function again, but this time we
-leave out the field arguement. This means fasterize will count every
-range as 1, and will sum them where they overlap to get species
-richness.
-
-``` r
-# Use the fasterize function with the raster template, summing species for species richness.
-SR_raster <- fasterize(Accip_all, raster_template, fun = "sum")
-
-# Convert the raster into a raster dataframe.
-raster_data <- as.data.frame(SR_raster, xy=TRUE) %>% drop_na()
-colnames(raster_data) <- c("long", "lat", "richness")
-
-# Plot with ggplot.
-richness_plot <- ggplot() +
+  # Add the borders again.
   borders(ylim = c(-60,90), fill = "grey90", colour = "grey90") +
-  xlim(-180, 180) + 
-  geom_tile(aes(x=long, y=lat, fill= richness), data=raster_data) +
   
-  # Here we add a name to the legend, and set manual colours for either end of a gradient.
-  scale_fill_gradientn(name = "Species Richness", colors = c("skyblue", "red")) +
+  # We need to reset the xlim to -180/180 again.
+  xlim(-180, 180) +
+
+  # Add the GE information on top.
+  geom_tile(aes(x = long, y = lat, fill = index), data = raster_data) +
   
-  # You should be getting used to this code!
-  ggtitle("Accipitridae Species Richness Heat Map") + 
+  # Add the formatting again!
+  colScale +
+  ggtitle("Accipitridae Threat Map") +
   theme_classic() +
-  ylab("Latitude") + 
+  ylab("Latitude") +
   xlab("Longitude") + 
   coord_fixed()
 
-# Return the plot so we can view it.
-richness_plot
+# Resize the plotting window and return the plot so we can view it.
+options(repr.plot.width=15, repr.plot.height=10)
+GE_plot
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-40-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-34-1.png
 :align: center
 :width: 600px
 ```
 
-Does this look nicer than the plot in practical 1? Figure presentation
-is an important skill in ecology (and wider science), and will be useful
-for your future projects no matter what the topic! It’s worth taking the
-time now to play around with different colour schemes, and learn how to
-edit figures using ggplot. I highly recommend checking out this page for
-more information on how to effectively use colours, including links for
-figure presentation in general.
-
-<https://www.molecularecologist.com/2020/04/23/simple-tools-for-mastering-color-in-scientific-figures/>
+There’s our finished map! Think how you’d change it yourself if you want
+to include one in your report. It’s up to you and what you think is the
+best way to visualise your data!
