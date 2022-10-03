@@ -10,6 +10,16 @@ we look at how the traits are spread throughout the tree, we can
 ‘control’ for this non-independence. We’ll go into more detail when we
 run our PGLS.
 
+It’s useful to remove any objects from our working directory before
+starting a new project. You shouldn’t need to do this if you’ve just
+started `RStudio`, but if you’ve been working on something before you
+want to clear your workspace:
+
+``` r
+# Clear your workspace before starting a new project.
+rm(list=ls())
+```
+
 ### 2. Linear models
 
 For this practical we’ll be working data from the family Anatidae
@@ -18,9 +28,6 @@ between latitude and body mass. First, we’ll load in the data and
 inspect it:
 
 ``` r
-# Remember to clear your workspace before starting a new project.
-rm(list=ls())
-
 # Load the duck latitudinal and body mass data.
 duck_data <- read.csv("data/duck_data.csv", header = TRUE) 
 
@@ -62,7 +69,7 @@ latitude using a scatter plot.
 plot(body_mass ~ abs_latitude, data = duck_data)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-3-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-4-1.png
 :align: center
 :width: 600px
 ```
@@ -77,7 +84,7 @@ ones. Therefore we might not be seeing the true relationship!
 hist(duck_data$body_mass)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-4-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-5-1.png
 :align: center
 :width: 600px
 ```
@@ -91,7 +98,7 @@ duck_data$log_BM <- log(duck_data$body_mass)
 hist(duck_data$log_BM)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-5-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-6-1.png
 :align: center
 :width: 600px
 ```
@@ -104,7 +111,7 @@ look at the new relationship between the two variables:
 plot(log_BM ~ abs_latitude, data = duck_data)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-6-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-7-1.png
 :align: center
 :width: 600px
 ```
@@ -219,7 +226,7 @@ abline(linear, col="blue")
 segments(x, y, x, predict(linear))
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-8-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-9-1.png
 :align: center
 :width: 600px
 ```
@@ -295,7 +302,7 @@ plot(log_BM ~ abs_latitude, data = duck_data)
 abline(duck_model)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-10-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-11-1.png
 :align: center
 :width: 600px
 ```
@@ -321,7 +328,7 @@ linear model instead.
 plot(density(duck_model$residuals))
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-11-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-12-1.png
 :align: center
 :width: 600px
 ```
@@ -352,30 +359,13 @@ ducks.
 # Load phylogenetic packages.
 library(ape)
 library(caper)
-```
 
-    ## Loading required package: MASS
-
-    ## 
-    ## Attaching package: 'MASS'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     select
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     area, select
-
-    ## Loading required package: mvtnorm
-
-``` r
 # Read in the tree.
 duck_tree <- read.tree("data/duck_tree.tre")
 plot(duck_tree, cex=0.3)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-12-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-13-1.png
 :align: center
 :width: 600px
 ```
@@ -411,7 +401,7 @@ head(duck_comp$data)
 plot(duck_comp$phy, cex=0.3)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-15-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-16-1.png
 :align: center
 :width: 600px
 ```
@@ -509,18 +499,7 @@ visualise this by plotting trees with different lambda values.
 ``` r
 # Load the package geiger that has the rescale function. You'll have to install it if you're in Rstudio on your own laptops.
 library(geiger)
-```
 
-    ## Warning: package 'geiger' was built under R version 4.1.3
-
-    ## 
-    ## Attaching package: 'geiger'
-
-    ## The following object is masked from 'package:raster':
-    ## 
-    ##     hdr
-
-``` r
 # We'll create six trees with different lambda values .
 lambda_1_tree <- rescale(duck_tree, "lambda", 1)
 lambda_0.8_tree <- rescale(duck_tree, "lambda", 0.8)
@@ -543,7 +522,7 @@ plot(lambda_0.2_tree, show.tip.label = FALSE, direction = "downwards", main = "0
 plot(lambda_0_tree, show.tip.label = FALSE, direction = "downwards", main = "0.0")
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-18-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-19-1.png
 :align: center
 :width: 600px
 ```
@@ -570,7 +549,7 @@ lambda_likelihood <- pgls.profile(duck_pgls, which = "lambda")
 plot(lambda_likelihood)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-19-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-20-1.png
 :align: center
 :width: 600px
 ```
@@ -772,7 +751,7 @@ lambda_likelihood <- pgls.profile(accip_pgls, which = "lambda")
 plot(lambda_likelihood)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-23-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-24-1.png
 :align: center
 :width: 600px
 ```
@@ -831,7 +810,7 @@ plot the polygons again to see what they look like.
 plot(accip_ranges$Shape[1], axes=TRUE)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-25-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-26-1.png
 :align: center
 :width: 600px
 ```
@@ -852,7 +831,7 @@ Horst](https://github.com/allisonhorst/stats-illustrations), who does
 loads of cool stats illustrations to help understand bits of ecology and
 coding.
 
-``` image
+```{image} ../../memes/monster_for_loop.png
 :align: center
 :width: 600px
 ```
@@ -919,7 +898,7 @@ range_raster <- fasterize(Accip_all, raster_template, field = "range_large", fun
 plot(range_raster, col=rainbow(2))
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-29-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-30-1.png
 :align: center
 :width: 600px
 ```
@@ -983,7 +962,7 @@ options(repr.plot.width=15, repr.plot.height=10)
 range_plot
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-31-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-32-1.png
 :align: center
 :width: 600px
 ```
@@ -1037,7 +1016,7 @@ accip_data$lat.bins <- as.numeric(as.character(accip_data$lat.bins))
 hist(accip_data$lat.bins, breaks = 7) 
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-33-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-34-1.png
 :align: center
 :width: 600px
 ```
@@ -1114,13 +1093,13 @@ species richness with 1 degree of latitude. A log-link function takes a
 log of the entire right side of the model formula. For interpretation,
 we first need to back-transform the equation and write out our model as:
 
-``` math
+```{math}
 Richness \sim e^{(4.232\ -\ 0.049\ \times lat.bins)}
 ```
 
 Because of the law of exponents, we can rearrange it to:
 
-``` math
+```{math}
 Richness \sim \frac{e^{4.232}} {e^{0.049 \times lat.bins}}  
 ```
 
@@ -1141,7 +1120,7 @@ plot(richness ~ lat.bins, data = species_richness)
 lines(species_richness$lat.bins, accip_model$fitted.values)
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-38-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-39-1.png
 :align: center
 :width: 600px
 ```
@@ -1184,7 +1163,7 @@ ggplot(species_richness, aes(x = lat.bins, y = richness)) + geom_point() +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-39-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-40-1.png
 :align: center
 :width: 600px
 ```
@@ -1234,7 +1213,7 @@ richness_plot <- ggplot() +
 richness_plot
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-40-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-41-1.png
 :align: center
 :width: 600px
 ```

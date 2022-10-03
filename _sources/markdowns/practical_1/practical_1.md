@@ -4,8 +4,22 @@
 
 The aim of this practical is to revise some basic functions in `R`
 relating to data management and plotting. We will then look at handling
-spatial data. One aim of this practical is to make sure everyone’s set
-up is working well and fix any problems!
+spatial data and phylogenies, two skills essential for macro-ecology.
+One aim of this practical is to make sure everyone’s set up is working
+well and fix any problems!
+
+We will review importing phylogenetic trees as data files, displaying
+phylogenetic trees visually, and some basic evolutionary computations
+that can be conducted with phylogenetic trees. This practical will
+deliver some of the important background for Coursework 1. Below you
+will find some of the relevant resources required for this practical.
+
+Parts (sections 2,3,4) of this practical are written by [Natalie
+Cooper](http://nhcooper123.github.io/). The original can be found
+[here](https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd).
+Whereas, parts (section 5 & 6) of this practical are written by Adam
+Devenish & Rob Barber (<a.devenish@imperial.ac.uk>)
+(<r.barber19@imperial.ac.uk>).
 
 #### Working directory
 
@@ -27,11 +41,10 @@ to the folders location, for example:
 
 `setwd("C:/Users/rb417/Desktop/BCB_Practicals")`
 
-If you’re using RStudio Cloud, you should already be in the correct
-directory, but if you’re working on your laptop I recommend storing all
-the files you need for the practicals in one folder called
-“BCB_practicals”. You should then set your working directory to this
-folder at the start of each R session.
+For the duration of the BCB course, I recommend storing all the files
+you need for the practicals in one folder called “BCB_practicals”. You
+should then set your working directory to this folder at the start of
+each R session.
 
 ```{tip}
 If you're in `RStudio` you can also use 
@@ -77,9 +90,13 @@ future work much easier!
 #### Installing and using packages for practicals
 
 Throughout the practicals we will be using different R packages to
-tackle different tasks. If you’re using `RStudio Cloud` all the
-necessary packages should come pre-installed. If you are using your own
-laptop you will need to install packages like so:
+tackle different tasks. One of the strengths of using `R` is that there
+are a ton of packages designed for ecological analysis. This can
+streamline analysis, and means researchers can easily use similar
+methods for different research projects.
+
+`R` comes with a few essential packages pre-installed, but normally you
+will have to install them like so:
 
 ``` r
 # Install ggplot2 for making fancy plots.
@@ -97,9 +114,28 @@ packages. To load the package `ggplot2` into your current `R` session:
 library(ggplot2)
 ```
 
+Because we know which packages are in the practicals, we can save time
+and install them all now. We’ll use the script `install.R`. You can open
+it up and run each line of code manually, or you can run the script all
+in one go using source:
+
+``` r
+# Install packages for the BCB practicals.
+source("install.R")
+```
+
+```{tip}
+Installing packages can often throw up errors, especially if you're using a Mac 
+to run spatial packages (like we use in this practical). Please ask for help if 
+you run into issues, demonstrators will be on hand! Once the packages are installed, 
+you shouldn't have any issues running them in the future.
+```
+
 ### 2. Revision of data types
 
-We’ll start with some basic data manipulation in R to get started.
+We’ll start with some basic data manipulation in R to get started. For
+anyone already quite familiar with `R`, feel free to skim over this
+section.
 
 #### Vectors
 
@@ -604,9 +640,9 @@ R session. Later on we’ll use .RData files to plot maps of bird ranges.
 
 R can be used to produce a wide array of plots and has a large capacity
 for customisation. We will touch upon some basic plots which are useful
-to visual data during your analysis. For more advanced plots, most
-biologists use the package *ggplot2*. A useful guide is the R cookbook,
-that includes information on customising plots:
+to visual data during your analysis. For more advanced plots useful in
+your coursework, most biologists use the package *ggplot2*. A useful
+guide is the R cookbook, that includes information on customising plots:
 <http://www.cookbook-r.com/Graphs/>
 
 We’ll start with a scatter plot to explore the relationship between body
@@ -626,7 +662,7 @@ plot(passerines$mass, passerines$tarsus_length, pch=16, col="blue",
      main="My plot", xlab="Body Mass", ylab="Tarsus Length")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-41-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-43-1.png
 :align: center
 :width: 600px
 ```
@@ -644,7 +680,7 @@ useful plots: histograms and density plots.
 hist(passerines$mass, main = "My histogram", xlab = "Body Mass", breaks = 50)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-42-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-44-1.png
 :align: center
 :width: 600px
 ```
@@ -654,7 +690,7 @@ hist(passerines$mass, main = "My histogram", xlab = "Body Mass", breaks = 50)
 plot(density(passerines$mass), main = "My distribution", xlab = "Body Mass")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-42-2.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-44-2.png
 :align: center
 :width: 600px
 ```
@@ -670,7 +706,7 @@ hist(passerines$mass, main = "My histogram", xlab = "Body Mass", breaks = 50)
 plot(density(passerines$mass), main = "My distribution", xlab = "Body Mass")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-43-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-45-1.png
 :align: center
 :width: 600px
 ```
@@ -700,7 +736,7 @@ passerines$log_mass <- log(passerines$mass)
 hist(passerines$log_mass, main = "My histogram", xlab = "Log Mass", breaks = 50)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-46-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-48-1.png
 :align: center
 :width: 600px
 ```
@@ -711,7 +747,7 @@ plot(passerines$log_mass, passerines$tarsus_length, pch=16, col="blue",
      main="My plot", xlab="Body Mass", ylab="Tarsus Length")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-46-2.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-48-2.png
 :align: center
 :width: 600px
 ```
@@ -760,9 +796,9 @@ after you've finished your degree!
 ```
 
 Spatial data is available in a number of formats. Shapefiles contain
-spatial vector data for example spatial lines, points or polygons.
-Rasters contain a grid of values in pixels. In this session we will look
-at some examples.
+spatial vector data such as spatial lines, points or polygons. Rasters
+contain a grid of values in cells. This is very similar to pixels in a
+normal image. In this session we will look at polygons and rasters.
 
 #### Rasters
 
@@ -855,15 +891,14 @@ rainbow_colours <- rainbow(100)
 plot(bio[[12]], col=rainbow_colours)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-51-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-53-1.png
 :align: center
 :width: 600px
 ```
 
 You can also create blank rasters of the desired extent and resolution.
 The following code creates a raster of the same extent and resolution as
-the precipitation raster. We can also assign values to the cells, such
-as 0 in this case.
+the precipitation raster. We can also assign values to the cells.
 
 ``` r
 # Create a blank raster in longitude and latitude that matches our bioclim data.
@@ -891,7 +926,7 @@ blank_raster
 plot(blank_raster)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-52-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-54-1.png
 :align: center
 :width: 600px
 ```
@@ -900,7 +935,7 @@ plot(blank_raster)
 
 A polygon is another way that R stores spatial data. It records the
 coordinates of each corner, which it can use to calculate the full
-shape. Polygons also all have a coordinate reference system (such as
+shape. Polygons also have a coordinate reference system (such as
 longitude and latitude) which is how R knows where the shapes belong in
 the world. Unlike rasters, polygons only have an outline of an area, so
 they don’t have cells with values.
@@ -942,14 +977,14 @@ head(accip_ranges)
 You can see that the range maps are stored in a spatial dataframe,
 called an `sf` class of object. We have information about ranges stored
 as text, and the spatial data stored as multipolygons. A multipolygon is
-just a group of polygons, and is easiest to understand by plotting.
+a group of single polygons, and is easiest to understand by plotting.
 
 ``` r
 #  Take the range polygon from the first row.
 plot(accip_ranges$Shape[1], axes=TRUE)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-54-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-56-1.png
 :align: center
 :width: 600px
 ```
@@ -967,9 +1002,9 @@ First we’re going to convert our sf dataframe of polygons into a raster
 image. To do this we’ll use a function called called `fasterize`. This
 package provides an updated version of the function `rasterize()`, but
 much faster! Both functions take a set of polygons, and transform them
-into rasters, using a template with the right size and resolution. We
-can also tell `fasterize` how to deal with overlapping ranges, which
-we’ll use to build a map of species richness.
+into rasters, using a template raster with the right size and
+resolution. We can also tell `fasterize` how to deal with overlapping
+ranges, which we’ll use to build a map of species richness.
 
 ``` r
 # Load fasterize package.
@@ -985,7 +1020,7 @@ range_raster <- fasterize(accip_ranges, raster_template, fun = "sum")
 plot(range_raster, col=heat.colors(50))
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-55-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-57-1.png
 :align: center
 :width: 600px
 ```
@@ -1051,7 +1086,7 @@ range_plot <- ggplot(raster_data) +
 range_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-57-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-59-1.png
 :align: center
 :width: 600px
 ```
@@ -1093,7 +1128,7 @@ impressive maps!
 ggplot(passerines) + geom_point(aes(x = log_mass, y = tarsus_length))
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-59-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-61-1.png
 :align: center
 :width: 600px
 ```
@@ -1104,39 +1139,19 @@ histograms and density plots! The `ggpubr` package makes nice themes!
 
 ::::
 
-### 6. Using the Tidyverse
+```{tip}
+We have chosen to teach the BCB practicals predominantly using base `R`. This is because anyone new to `R` needs to learn how base `R` works first. However, more and more researchers are choosing to use a group of packages for data handling called the `tidyverse`. These packages provide a slightly different way of coding in `R`, which makes data handling easier. I've already mentioned `ggplot2`, a `tidyverse` package, and one of the most useful in `R`!. We'll cover a few key packages for some  of the practical tasks, but if you'd like to know about coding in the 'tidy' way: 
 
-We have chosen to teach the BCB practicals predominantly using base `R`.
-This is because anyone new to `R` needs to learn how base `R` works
-first. However, more and more researchers are choosing to use a group of
-packages for data handling called the `tidyverse`. These packages
-provide a slightly different way of coding in `R`, which makes data
-handling easier. I’ve already mentioned `ggplot2`, a `tidyverse`
-package, and one of the most useful in `R`!. We’ll cover a few key
-packages for some of the practical tasks, but if you’d like to know
-about coding in the ‘tidy’ way:
+https://www.tidyverse.org/
+```
 
-<https://www.tidyverse.org/>
+### 6. An introduction to phylogenetic trees
 
-## Phylogenetics in R
-
-### 1. Introduction and resources
-
-This practical introduces you to basic phylogenetic computing in `R`. We
-will review importing phylogenetic trees as data files, displaying
-phylogenetic trees visually, and some basic evolutionary computations
-that can be conducted with phylogenetic trees. This practical will
-deliver some of the important background for Coursework 1. Below you
-will find some of the relevant resources required for this practical.
-
-Parts (sections 2,3,4) of this practical are written by [Natalie
-Cooper](http://nhcooper123.github.io/). The original can be found
-[here](https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd).
-Whereas, parts (section 5 & 6) of this practical are written by Adam
-Devenish & Rob Barber (<a.devenish@imperial.ac.uk>)
-(<r.barber19@imperial.ac.uk>).
-
-#### Starting a new R session
+This section will review some basic aspects of phylogenetic trees and
+introduce how trees are handled at the level of software. Because you
+are now interacting with phylogenetic trees for things like plotting, it
+is also helpful to know some of the names for parts of phylogenetic
+trees used in computer science.
 
 To plot phylogenies (or use any specialized analysis) in R, you need one
 or more additional packages from the basic R installation. For this
@@ -1146,37 +1161,11 @@ practical you will need to load the following packages:
 
 • phytools
 
-Because we’ve started a new R session we shouldn’t have any packages
-loaded. We need to load packages the same way as last session:
-
 ``` r
 # Load packages.
 library(ape)
 library(phytools)
 ```
-
-You can think of `install.packages` like installing an app from the App
-Store on your smart phone - you only do this once - and `library` as
-being like pushing the app button on your phone - you do this every time
-you want to use the app.
-
-It’s also useful to remove any objects from our working directory before
-starting a new project. You shouldn’t need to do this if you’ve just
-started `RStudio`, but if you’ve been working on something before you
-want to clear your workspace:
-
-``` r
-# rm removes objects. ls() returns everything in your environment.
-rm(list=ls())
-```
-
-### 2. A refresher of phylogenetic trees
-
-This section will review some basic aspects of phylogenetic trees and
-introduce how trees are handled at the level of software. Because you
-are now interacting with phylogenetic trees for things like plotting, it
-is also helpful to know some of the names for parts of phylogenetic
-trees used in computer science.
 
 #### Tree parameters
 
@@ -1217,7 +1206,7 @@ arrows(-0.15,2.8,-0.45,2.95, length = 0.125, angle = 20, code = 1)
 text(-0.6, 3, "Tip")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-62-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-64-1.png
 :align: center
 :width: 600px
 ```
@@ -1238,7 +1227,7 @@ arrows(0.03,3.18,0.35,3.18, length = 0.125, angle = 20, code = 1)
 text(0.5, 3.18, "Root")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-63-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-65-1.png
 :align: center
 :width: 600px
 ```
@@ -1263,7 +1252,7 @@ plot(tree)
 axisPhylo()
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-64-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-66-1.png
 :align: center
 :width: 600px
 ```
@@ -1299,61 +1288,7 @@ In this practical we are going to use the `elopomorph.tre` newick tree.
 You can open it with a simple text editor to see the newick tree
 structure.
 
-#### Edge table
-
-It is also possible to represent a phylogenetic tree as a matrix of
-edges and vertices called an edge table. This is an even less intuitive
-representation, but it is implemented in `R` and worth reviewing here.
-
-There are a number of conventions that can be used to create an edge
-table. The general concept consists of numbering the tips *1 - n*, and
-all internal nodes labeled *n+1 … n+n-1*. The numbers for the internal
-nodes can be assigned arbitrarily or according to an algorithm.
-
-In `R` packages like `ape`, edge tables are constructed as follows:
-
-| node | connects to |
-|------|-------------|
-| 5    | 6           |
-| 6    | 7           |
-| 7    | 1           |
-| 7    | 2           |
-| 6    | 3           |
-| 5    | 4           |
-
-You read the table as follows: node `5` (root) connects to node `6`. The
-node `6` connects to node `7`. Node `7` connects to node `1` that happen
-to be the first tip (`Homo`) and to node `2` (`Pan`) etc… Note that in a
-binary tree (i.e. a tree where each node has only two descendants) each
-node always connects to two elements (nodes or tips).
-
-``` r
-# Create a tree.
-tree <- read.tree(text = "(((Homo, Pan), Gorilla), Pongo);")
-
-# Plot the tree.
-plot(tree, label.offset = 0.1)
-
-# Add node labels and tip labels to the existing plot.
-nodelabels()
-tiplabels()
-```
-
-```{image} practical_1_files/figure-gfm/unnamed-chunk-65-1.png
-:align: center
-:width: 600px
-```
-
-#### Records & pointers
-
-At a lower level, phylogenetic trees can be represented in computer
-memory as more complex data objects. We don’t need to go into detail
-here, but if you consider nodes and tips as data objects (i.e. a
-dataframe), a tree could be stored as an array of dataframes which store
-information about which members of that same array are descendants and
-which are ancestors.
-
-### 3. Basic tree viewing in `R`
+### 7. Basic tree viewing in `R`
 
 Now let’s visualise some phylogenies! We’ll use the Elopomorpha (eels
 and similar fishes) tree to start as it is simple.
@@ -1413,7 +1348,7 @@ species and 61 internal nodes. We can plot the tree by using the
 plot(fishtree, cex = 0.5)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-69-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-70-1.png
 :align: center
 :width: 600px
 ```
@@ -1429,7 +1364,7 @@ interested in:
 zoom(fishtree, grep("Gymnothorax", fishtree$tip.label), subtree = FALSE, cex = 0.8)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-70-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-71-1.png
 :align: center
 :width: 600px
 ```
@@ -1443,15 +1378,15 @@ example, `grep` is going to search for all the elements in
 members of the *Gymnothorax* genus.
 
 In this example, we just display the tree for the *Gymnothorax* genus
-but you can also see how the species fit into the rest of the tree
-using:
+but you can also see how the species fit into the rest of the tree using
+`subtree = TRUE`:
 
 ``` r
 # Pull out the Gymnothorax tips.
 zoom(fishtree, grep("Gymnothorax", fishtree$tip.label), subtree = TRUE, cex = 0.8)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-71-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-72-1.png
 :align: center
 :width: 600px
 ```
@@ -1498,7 +1433,7 @@ tips (`edge.color`, `tip.color`), and the size of the tip labels
 plot(fishtree, type = "unrooted", edge.color = "deeppink", tip.color = "springgreen",  cex = 0.7)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-76-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-77-1.png
 :align: center
 :width: 600px
 ```
@@ -1509,7 +1444,7 @@ Or try
 plot(ladderize(fishtree), type = "c", edge.color = "darkviolet", tip.color = "hotpink",  cex = 0.7)
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-77-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-78-1.png
 :align: center
 :width: 600px
 ```
@@ -1521,7 +1456,7 @@ longest.
 > of the nodes, etc.) to obtain the most beautiful or ugliest
 > Elopomorpha phylogeny!
 
-### 4. Manipulating phylogenetic trees in `R`
+### 8. Manipulating phylogenetic trees in `R`
 
 There are a range of ways in which we can manipulate trees in R. To
 start lets take a look at the bird family Turdidae.
@@ -1543,7 +1478,7 @@ ran_turdidae_tree <- sample(turdidae_tree, size=1)[[1]]
 plotTree(ran_turdidae_tree, type="fan", fsize=0.4, lwd=0.5,ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-79-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-80-1.png
 :align: center
 :width: 600px
 ```
@@ -1567,12 +1502,10 @@ instance we first find all the associated tip.labels.
 
 ``` r
 # Create an string object of the name we want to remove.
-drop_pattern <- ("Myadestes")
+drop_pattern <- "Myadestes"
 
-# sapply will iterate a given function over a vector (check out apply, lapply, 
-# mapply for more info)
-# in this case, we're using the grep function to ask if any species name in our
-# tip label list matches the drop.species pattern. 
+# sapply will iterate a given function over a vector (check out apply, lapply, apply for more info).
+# In this case, we're using the grep function to ask if any species name in our tip label list matches the drop pattern. 
 tip_numbers <- sapply(drop_pattern, grep, ran_turdidae_tree$tip.label)
 
 # We then use the tip numbers to select only the tips we want.
@@ -1594,7 +1527,7 @@ ran_turdidae_tree_NM <- drop.tip(ran_turdidae_tree, drop_species)
 plotTree(ran_turdidae_tree_NM, type="fan", fsize=0.4, lwd=0.5, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-82-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-83-1.png
 :align: center
 :width: 600px
 ```
@@ -1614,7 +1547,7 @@ pruned_birdtree <- drop.tip(ran_turdidae_tree, species_we_dont_want)
 plotTree(pruned_birdtree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-83-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-84-1.png
 :align: center
 :width: 600px
 ```
@@ -1707,7 +1640,7 @@ genera_tree <- drop.tip(ran_turdidae_tree, drop_tips)
 plotTree(genera_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-87-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-88-1.png
 :align: center
 :width: 600px
 ```
@@ -1726,56 +1659,12 @@ genera_tree$tip.label <- bird_genera$Genus
 plotTree(genera_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-88-1.png
-:align: center
-:width: 600px
-```
-
-It is important to note, that a big limitation with this approach is
-that by selecting only one species per genus to keep, that you may run
-the risk of unintentially dropping tips of species that are
-paraphyletic. For example, Zoothera genus is spread throughout Turdidae
-tree.
-
-``` r
-# Zoom into zoothera tree.
-plotTree(ran_turdidae_tree, fsize=0.2, lwd=0.2, ftype="i")
-```
-
 ```{image} practical_1_files/figure-gfm/unnamed-chunk-89-1.png
 :align: center
 :width: 600px
 ```
 
-``` r
-zoom(ran_turdidae_tree, grep("Zoothera", ran_turdidae_tree$tip.label), subtree = TRUE, cex = 0.8)
-```
-
-```{image} practical_1_files/figure-gfm/unnamed-chunk-89-2.png
-:align: center
-:width: 600px
-```
-
-This means that when collapsing a phylogenetic tree you run the risk of
-miss representing the relationship between the different genera. The
-only way to get round this is by:
-
-1)  making sure check to see how paraphyletic your tree is at the start;
-    this can be done more easily by uploading and viewing your tree file
-    @ <https://itol.embl.de/>.
-2)  Renaming your conflicting paraphyletic clades within your phylogeny,
-    by altering the individual species names.
-
-``` r
-ran_turdidae_tree$tip.label[ran_turdidae_tree$tip.label=="Turdus_philomelos"]<-"Turdus1_philomelos"
-```
-
-```{tip}
-For your coursework you don't need to worry about paraphyletic tips. It's just 
-worth knowing that this can happen if you use trees in the future! 
-```
-
-### 5. Adding trait data to trees in `R`
+### 9. Adding trait data to trees in `R`
 
 Often basic tree plots in R are all you need for exploring data and your
 analysis. However, for publications and presentations it may be useful
@@ -1830,7 +1719,7 @@ turdidae_data$jetz_name %in% ran_turdidae_tree$tip.label
     ##  [45]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
     ##  [67]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
     ##  [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
     ## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
     ## [155]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 
@@ -1845,21 +1734,16 @@ index <- !(turdidae_data$jetz_name %in% ran_turdidae_tree$tip.label)
 turdidae_data[index,]
 ```
 
-    ##              jetz_name habitat body_mass
-    ## 23  Chaetops_aurantius    Open     41.10
-    ## 24   Chaetops_frenatus    Open     45.60
-    ## 117  Turdus_philomelos   Dense     67.74
+    ##             jetz_name habitat body_mass
+    ## 23 Chaetops_aurantius    Open      41.1
+    ## 24  Chaetops_frenatus    Open      45.6
 
-One of them we renamed so we’ll change that back for our plots. The
-others aren’t in our taxonomy. This is because they’ve been moved to
-Chaetopidae, a new family of just rockjumpers. This often happens as
-there are three main bird taxonomies: Jetz, Birdlife, and American
-Ornithological Society. We’ll just remove them from our dataset.
+These two species aren’t in our taxonomy. This is because they’ve been
+moved to Chaetopidae, a new family of just rockjumpers. This often
+happens when using multiple bird taxonomies, such as Jetz and Birdlife.
+We’ll just remove them from our dataset.
 
 ``` r
-# Change the name back.
-ran_turdidae_tree$tip.label[ran_turdidae_tree$tip.label=="Turdus1_philomelos"]<-"Turdus_philomelos"
-
 # Get the species that ARE in the tips.
 index <- turdidae_data$jetz_name %in% ran_turdidae_tree$tip.label
 
@@ -1882,35 +1766,20 @@ turdi_tree <- drop.tip(ran_turdidae_tree, drop_tips)
 plotTree(turdi_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-97-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-95-1.png
 :align: center
 :width: 600px
 ```
 
 ::::
 
-Now lets try using ggtree to plot our data with our phylogeny.
-
-If you’re using your own laptop, you need to install `ggtree`. Because
-not all packages are available from `CRAN` directly through `R`, we’ll
-install `BiocManager`. This is a package manager that can install
-packages from other servers and is used a lot in bioinformatics.
+Now lets try using ggtree to plot our data with our phylogeny. This
+package produces really nice plots you can use for coursework
+assignments.
 
 ``` r
-install.packages("BiocManager")
-BiocManager::install("ggtree")
-```
-
-```{tip}
-Notice that we used `::` to specify we want to use the `BiocManager` package to 
-install `ggtree`. Using `::` means we don't have to load the package, and can be
-handy when we only need to use a function once.
-```
-
-``` r
-# Load plotting packages.
+# Load ggtree for plotting phylogenies.
 library(ggtree)
-library(ggplot2)
 ```
 
 `ggtree` is a bit more complicated than just normal tree plots, but you
@@ -1925,7 +1794,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular")
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-101-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-97-1.png
 :align: center
 :width: 600px
 ```
@@ -1941,7 +1810,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular") + geom_tiplab()
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-102-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-98-1.png
 :align: center
 :width: 600px
 ```
@@ -1958,7 +1827,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular") + geom_tiplab(size = 1.
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-103-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-99-1.png
 :align: center
 :width: 600px
 ```
@@ -1984,7 +1853,7 @@ Now we can make our plot!
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-105-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-101-1.png
 :align: center
 :width: 600px
 ```
@@ -2033,7 +1902,7 @@ We can try using points on the end of tips.
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-107-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-103-1.png
 :align: center
 :width: 600px
 ```
@@ -2066,7 +1935,7 @@ library(ggtreeExtra)
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-108-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-104-1.png
 :align: center
 :width: 600px
 ```
