@@ -6,85 +6,83 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Basics &amp; Phylogenetics in R &#8212; Biodiversity and Conservation Biology</title>
+    <title>Basics in R &#8212; Biodiversity and Conservation Biology</title>
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     
       
 
     
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/blank.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/copybutton_funcs.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery-3.5.1.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <script src="../../_static/searchtools.js"></script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="../../_static/sphinx-thebe.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
-    <script src="../../_static/underscore-1.13.1.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-    <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/copybutton_funcs.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery-3.5.1.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/underscore-1.13.1.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+    <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
     </script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Macroecology analyses" href="../practical_2/practical_2.html" />
-    <link rel="prev" title="Introduction" href="../../intro.html" />
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -104,43 +102,43 @@
 <div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
     
         <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
       
       
       
       <h1 class="site-logo" id="site-title">Biodiversity and Conservation Biology</h1>
       
     </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../intro.html">
+  <a class="reference internal" href="../../../intro.html">
    Introduction
   </a>
  </li>
 </ul>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../markdowns/practical_1/practical_1.html">
    Basics &amp; Phylogenetics in R
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../practical_2/practical_2.html">
+  <a class="reference internal" href="../../../markdowns/practical_2/practical_2.html">
    Macroecology analyses
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../practical_3/practical_3.html">
+  <a class="reference internal" href="../../../markdowns/practical_3/practical_3.html">
    Setting conservation priorities
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../links.html">
+  <a class="reference internal" href="../../../links.html">
    Useful links
   </a>
  </li>
@@ -185,7 +183,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/markdowns/practical_1/practical_1.md"><button type="button"
+        <a class="dropdown-buttons" href="../../../_sources/_sources/markdowns/practical_1/practical_1.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -356,23 +354,26 @@
         
               <div>
                 
-  <section id="basics-phylogenetics-in-r">
-<h1>Basics &amp; Phylogenetics in R<a class="headerlink" href="#basics-phylogenetics-in-r" title="Permalink to this headline">¶</a></h1>
+  <section id="basics-in-r">
+<h1>Basics in R<a class="headerlink" href="#basics-in-r" title="Permalink to this headline">¶</a></h1>
 <section id="introduction-and-resources">
 <h2>1. Introduction and resources<a class="headerlink" href="#introduction-and-resources" title="Permalink to this headline">¶</a></h2>
 <p>The aim of this practical is to revise some basic functions in <code class="docutils literal notranslate"><span class="pre">R</span></code>
 relating to data management and plotting. We will then look at handling
-spatial data and phylogenies, two skills essential for macroecology. One
-aim of this practical is to make sure everyone’s set up is working well
-and fix any problems!</p>
+spatial data and phylogenies, two skills essential for macro-ecology.
+One aim of this practical is to make sure everyone’s set up is working
+well and fix any problems!</p>
 <p>We will review importing phylogenetic trees as data files, displaying
 phylogenetic trees visually, and some basic evolutionary computations
 that can be conducted with phylogenetic trees. This practical will
 deliver some of the important background for Coursework 1. Below you
 will find some of the relevant resources required for this practical.</p>
-<p>Parts (sections 6,7) of this practical are written by <a class="reference external" href="http://nhcooper123.github.io/">Natalie
+<p>Parts (sections 2,3,4) of this practical are written by <a class="reference external" href="http://nhcooper123.github.io/">Natalie
 Cooper</a>. The original can be found
-<a class="reference external" href="https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd">here</a>.</p>
+<a class="reference external" href="https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd">here</a>.
+Whereas, parts (section 5 &amp; 6) of this practical are written by Adam
+Devenish &amp; Rob Barber (<a class="reference external" href="mailto:a&#46;devenish&#37;&#52;&#48;imperial&#46;ac&#46;uk">mailto:a<span>&#46;</span>devenish<span>&#64;</span>imperial<span>&#46;</span>ac<span>&#46;</span>uk</a>)
+(<a class="reference external" href="mailto:r&#46;barber19&#37;&#52;&#48;imperial&#46;ac&#46;uk">mailto:r<span>&#46;</span>barber19<span>&#64;</span>imperial<span>&#46;</span>ac<span>&#46;</span>uk</a>).</p>
 <section id="working-directory">
 <h3>Working directory<a class="headerlink" href="#working-directory" title="Permalink to this headline">¶</a></h3>
 <p>The first step when starting a new session is to set your working
@@ -974,7 +975,7 @@ passeriforme order as most birds in this group have a similar body plan.</p>
      <span class="n">main</span><span class="o">=</span><span class="s">&quot;My plot&quot;</span><span class="p">,</span> <span class="n">xlab</span><span class="o">=</span><span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s">&quot;Tarsus Length&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-43-1.png"><img alt="../../_images/unnamed-chunk-43-1.png" class="align-center" src="../../_images/unnamed-chunk-43-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-43-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-43-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-43-1.png" style="width: 600px;" /></a>
 <p><code class="docutils literal notranslate"><span class="pre">pch</span></code> stands for ‘point character’ and is the symbol to denote values.
 Try changing it to other values!</p>
 <p>There might be a pattern there but it’s hard to tell. This is because
@@ -985,12 +986,12 @@ useful plots: histograms and density plots.</p>
 <span class="nf">hist</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">,</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My histogram&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">50</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-44-1.png"><img alt="../../_images/unnamed-chunk-44-1.png" class="align-center" src="../../_images/unnamed-chunk-44-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-44-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-44-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-44-1.png" style="width: 600px;" /></a>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot a density plot instead (where frequency of samples is normalised to sum to 1).</span>
 <span class="nf">plot</span><span class="p">(</span><span class="nf">density</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">),</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My distribution&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-44-2.png"><img alt="../../_images/unnamed-chunk-44-2.png" class="align-center" src="../../_images/unnamed-chunk-44-2.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-44-2.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-44-2.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-44-2.png" style="width: 600px;" /></a>
 <p>You can change the graphical parameters to plot graphs side by side.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># The par function changes parameters. mfrow = c(1,2) means we want 1 row and 2 columns.</span>
 <span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span> <span class="o">=</span><span class="nf">c </span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
@@ -1000,7 +1001,7 @@ useful plots: histograms and density plots.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="nf">density</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">mass</span><span class="p">),</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My distribution&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Body Mass&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-45-1.png"><img alt="../../_images/unnamed-chunk-45-1.png" class="align-center" src="../../_images/unnamed-chunk-45-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-45-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-45-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-45-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>When plotting histograms, you can also use the argument <code class="docutils literal notranslate"><span class="pre">breaks</span> <span class="pre">=</span> <span class="pre">n</span></code> to
@@ -1024,13 +1025,13 @@ between mass and tarsus.</p>
 <span class="nf">hist</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">log_mass</span><span class="p">,</span> <span class="n">main</span> <span class="o">=</span> <span class="s">&quot;My histogram&quot;</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;Log Mass&quot;</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">50</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-48-1.png"><img alt="../../_images/unnamed-chunk-48-1.png" class="align-center" src="../../_images/unnamed-chunk-48-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-48-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-48-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-48-1.png" style="width: 600px;" /></a>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Look at the scatter plot.</span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">passerines</span><span class="o">$</span><span class="n">log_mass</span><span class="p">,</span> <span class="n">passerines</span><span class="o">$</span><span class="n">tarsus_length</span><span class="p">,</span> <span class="n">pch</span><span class="o">=</span><span class="m">16</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> 
      <span class="n">main</span><span class="o">=</span><span class="s">&quot;My plot&quot;</span><span class="p">,</span> <span class="n">xlab</span><span class="o">=</span><span class="s">&quot;Body Mass&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s">&quot;Tarsus Length&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-48-2.png"><img alt="../../_images/unnamed-chunk-48-2.png" class="align-center" src="../../_images/unnamed-chunk-48-2.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-48-2.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-48-2.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-48-2.png" style="width: 600px;" /></a>
 <p>Now we can see there’s a clear pattern! Exploring data like this is a
 key part of any analysis.</p>
 <p>We can export plots using <code class="docutils literal notranslate"><span class="pre">pdf()</span></code>, <code class="docutils literal notranslate"><span class="pre">jpeg()</span></code> or <code class="docutils literal notranslate"><span class="pre">png()</span></code>.</p>
@@ -1084,12 +1085,8 @@ often used to describe species’ environmental niches. Google for more
 info!</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raster package for spatial data.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: sp
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
+
+<span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
 <span class="n">bio</span> <span class="o">&lt;-</span> <span class="nf">getData</span><span class="p">(</span><span class="s">&quot;worldclim&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;bio&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
 
 <span class="c1"># Get the class for our rasters.</span>
@@ -1165,7 +1162,7 @@ as <code class="docutils literal notranslate"><span class="pre">spTransform()</s
 <span class="nf">plot</span><span class="p">(</span><span class="n">bio</span><span class="p">[[</span><span class="m">12</span><span class="p">]],</span> <span class="n">col</span><span class="o">=</span><span class="n">rainbow_colours</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-53-1.png"><img alt="../../_images/unnamed-chunk-53-1.png" class="align-center" src="../../_images/unnamed-chunk-53-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-53-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-53-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-53-1.png" style="width: 600px;" /></a>
 <p>You can also create blank rasters of the desired extent and resolution.
 The following code creates a raster of the same extent and resolution as
 the precipitation raster. We can also assign values to the cells.</p>
@@ -1194,7 +1191,7 @@ the precipitation raster. We can also assign values to the cells.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="n">blank_raster</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-54-1.png"><img alt="../../_images/unnamed-chunk-54-1.png" class="align-center" src="../../_images/unnamed-chunk-54-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-54-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-54-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-54-1.png" style="width: 600px;" /></a>
 </section>
 <section id="spatial-polygons">
 <h3>Spatial polygons<a class="headerlink" href="#spatial-polygons" title="Permalink to this headline">¶</a></h3>
@@ -1209,12 +1206,8 @@ Accipitridae, which are birds of prey. For convenience we’ve saved the
 range data as an <code class="docutils literal notranslate"><span class="pre">.RData</span></code> object, as we briefly mentioned in section 3.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load in the spatial packages we&#39;ll need.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Linking to GEOS 3.9.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data into our environment.</span>
+
+<span class="c1"># Load the data into our environment.</span>
 <span class="nf">load</span><span class="p">(</span><span class="s">&quot;data/accipitridae_ranges.RData&quot;</span><span class="p">)</span>
 
 <span class="c1"># Inspect the maps.</span>
@@ -1249,7 +1242,7 @@ a group of single polygons, and is easiest to understand by plotting.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="n">accip_ranges</span><span class="o">$</span><span class="n">Shape</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="n">axes</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-56-1.png"><img alt="../../_images/unnamed-chunk-56-1.png" class="align-center" src="../../_images/unnamed-chunk-56-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-56-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-56-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-56-1.png" style="width: 600px;" /></a>
 <p>So we can see a multipolygon is just a collection of individual ranges,
 with coordinates we can see on each axis.</p>
 </section>
@@ -1267,23 +1260,8 @@ resolution. We can also tell <code class="docutils literal notranslate"><span cl
 ranges, which we’ll use to build a map of species richness.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load fasterize package.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">fasterize</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Warning: package &#39;fasterize&#39; was built under R version 4.1.3
 
-## 
-## Attaching package: &#39;fasterize&#39;
-
-## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     plot
-
-## The following object is masked from &#39;package:base&#39;:
-## 
-##     plot
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start by creating an empty raster stack to store our data in.</span>
+<span class="c1"># Start by creating an empty raster stack to store our data in.</span>
 <span class="n">raster_template</span> <span class="o">&lt;-</span> <span class="nf">raster</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="m">2160</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="m">900</span><span class="p">,</span> <span class="n">ymn</span> <span class="o">=</span> <span class="m">-60</span><span class="p">)</span>
 
 <span class="c1"># Create a map of species richness by summing overlapping ranges.</span>
@@ -1293,22 +1271,12 @@ ranges, which we’ll use to build a map of species richness.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="n">range_raster</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="nf">heat.colors</span><span class="p">(</span><span class="m">50</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-57-1.png"><img alt="../../_images/unnamed-chunk-57-1.png" class="align-center" src="../../_images/unnamed-chunk-57-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-57-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-57-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-57-1.png" style="width: 600px;" /></a>
 <p>So now we can see where the highest species richness is. However, it
 doesn’t look very pretty and countries without any ranges are left off
 the map. We can make a much clearer map using <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;tidyr&#39;
-
-## The following object is masked from &#39;package:raster&#39;:
-## 
-##     extract
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
 
 <span class="c1"># Convert the raster into a raster dataframe. This will be coordinates of the </span>
 <span class="c1"># raster pixels (cols x and y) and the value of the raster pixels. </span>
@@ -1361,7 +1329,7 @@ the map. We can make a much clearer map using <code class="docutils literal notr
 <span class="n">range_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-59-1.png"><img alt="../../_images/unnamed-chunk-59-1.png" class="align-center" src="../../_images/unnamed-chunk-59-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-59-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-59-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-59-1.png" style="width: 600px;" /></a>
 <p>That looks much better than the first. Later you’ll experiment with your
 own maps for your report. Try changing the colour scheme on this one!</p>
 <p>You can save your plots as a file using different formats like a jpeg.
@@ -1395,7 +1363,7 @@ ask demonstrators for advice.</p>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">passerines</span><span class="p">)</span> <span class="o">+</span> <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">log_mass</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">tarsus_length</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-61-1.png"><img alt="../../_images/unnamed-chunk-61-1.png" class="align-center" src="../../_images/unnamed-chunk-61-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-61-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-61-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-61-1.png" style="width: 600px;" /></a>
 <p>Can you customise it further with axes labels? Change the colour? Try
 adding alpha = 0.5 inside geom_point. What does it do? Also try out
 histograms and density plots! The <code class="docutils literal notranslate"><span class="pre">ggpubr</span></code> package makes nice themes!</p>
@@ -1421,20 +1389,7 @@ practical you will need to load the following packages:</p>
 <p>• phytools</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load packages.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ape</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;ape&#39;
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     rotate, zoom
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">phytools</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: maps
+<span class="nf">library</span><span class="p">(</span><span class="n">phytools</span><span class="p">)</span>
 </pre></div>
 </div>
 <section id="tree-parameters">
@@ -1474,7 +1429,7 @@ to form a <strong>clade</strong> (or <strong>monophyletic group</strong>).</p>
 <span class="nf">text</span><span class="p">(</span><span class="m">-0.6</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="s">&quot;Tip&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-64-1.png"><img alt="../../_images/unnamed-chunk-64-1.png" class="align-center" src="../../_images/unnamed-chunk-64-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-64-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-64-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-64-1.png" style="width: 600px;" /></a>
 <p>When we select a node to act as the base of a tree, the tree is said to
 be <strong>rooted</strong>. At the bottom of a tree, is the <strong>root node</strong> (or simply
 the <strong>root</strong>).</p>
@@ -1489,7 +1444,7 @@ the <strong>root</strong>).</p>
 <span class="nf">text</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">3.18</span><span class="p">,</span> <span class="s">&quot;Root&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-65-1.png"><img alt="../../_images/unnamed-chunk-65-1.png" class="align-center" src="../../_images/unnamed-chunk-65-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-65-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-65-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-65-1.png" style="width: 600px;" /></a>
 <p>Phylogenetic trees of the kind shown above are fairly simple and lack
 information about time or character changes occurring along a branch. We
 can assign branch length in the form of either time or the amount of
@@ -1507,7 +1462,7 @@ at the top. This representation is called an <strong>ultrametric</strong> tree.<
 <span class="nf">axisPhylo</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-66-1.png"><img alt="../../_images/unnamed-chunk-66-1.png" class="align-center" src="../../_images/unnamed-chunk-66-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-66-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-66-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-66-1.png" style="width: 600px;" /></a>
 </section>
 <section id="informatic-representations-of-tree">
 <h3>Informatic representations of tree<a class="headerlink" href="#informatic-representations-of-tree" title="Permalink to this headline">¶</a></h3>
@@ -1589,7 +1544,7 @@ species and 61 internal nodes. We can plot the tree by using the
 <span class="nf">plot</span><span class="p">(</span><span class="n">fishtree</span><span class="p">,</span> <span class="n">cex</span> <span class="o">=</span> <span class="m">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-70-1.png"><img alt="../../_images/unnamed-chunk-70-1.png" class="align-center" src="../../_images/unnamed-chunk-70-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-70-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-70-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-70-1.png" style="width: 600px;" /></a>
 <p><code class="docutils literal notranslate"><span class="pre">cex</span> <span class="pre">=</span> <span class="pre">0.5</span></code> reduces the size of the tip labels so we can read them.
 (just about)</p>
 <p>We can also zoom into different sections of the tree that you’re
@@ -1598,7 +1553,7 @@ interested in:</p>
 <span class="nf">zoom</span><span class="p">(</span><span class="n">fishtree</span><span class="p">,</span> <span class="nf">grep</span><span class="p">(</span><span class="s">&quot;Gymnothorax&quot;</span><span class="p">,</span> <span class="n">fishtree</span><span class="o">$</span><span class="n">tip.label</span><span class="p">),</span> <span class="n">subtree</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">cex</span> <span class="o">=</span> <span class="m">0.8</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-71-1.png"><img alt="../../_images/unnamed-chunk-71-1.png" class="align-center" src="../../_images/unnamed-chunk-71-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-71-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-71-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-71-1.png" style="width: 600px;" /></a>
 <p>The <code class="docutils literal notranslate"><span class="pre">grep</span></code> function is a generic function in <code class="docutils literal notranslate"><span class="pre">R</span></code> that allows to <em>grab</em>
 any element in an object containing the desired characters. In this
 example, <code class="docutils literal notranslate"><span class="pre">grep</span></code> is going to search for all the elements in
@@ -1613,7 +1568,7 @@ but you can also see how the species fit into the rest of the tree using
 <span class="nf">zoom</span><span class="p">(</span><span class="n">fishtree</span><span class="p">,</span> <span class="nf">grep</span><span class="p">(</span><span class="s">&quot;Gymnothorax&quot;</span><span class="p">,</span> <span class="n">fishtree</span><span class="o">$</span><span class="n">tip.label</span><span class="p">),</span> <span class="n">subtree</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">cex</span> <span class="o">=</span> <span class="m">0.8</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-72-1.png"><img alt="../../_images/unnamed-chunk-72-1.png" class="align-center" src="../../_images/unnamed-chunk-72-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-72-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-72-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-72-1.png" style="width: 600px;" /></a>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">zoom</span></code> is a specific plotting function that will automatically
 set the plotting window to display two plots at once. This might create
 some conflicts if you’re using RStudio. The bug can be easily solved
@@ -1649,12 +1604,12 @@ tips (<code class="docutils literal notranslate"><span class="pre">edge.color</s
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">plot</span><span class="p">(</span><span class="n">fishtree</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;unrooted&quot;</span><span class="p">,</span> <span class="n">edge.color</span> <span class="o">=</span> <span class="s">&quot;deeppink&quot;</span><span class="p">,</span> <span class="n">tip.color</span> <span class="o">=</span> <span class="s">&quot;springgreen&quot;</span><span class="p">,</span>  <span class="n">cex</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-77-1.png"><img alt="../../_images/unnamed-chunk-77-1.png" class="align-center" src="../../_images/unnamed-chunk-77-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-77-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-77-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-77-1.png" style="width: 600px;" /></a>
 <p>Or try</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">plot</span><span class="p">(</span><span class="nf">ladderize</span><span class="p">(</span><span class="n">fishtree</span><span class="p">),</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="n">edge.color</span> <span class="o">=</span> <span class="s">&quot;darkviolet&quot;</span><span class="p">,</span> <span class="n">tip.color</span> <span class="o">=</span> <span class="s">&quot;hotpink&quot;</span><span class="p">,</span>  <span class="n">cex</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-78-1.png"><img alt="../../_images/unnamed-chunk-78-1.png" class="align-center" src="../../_images/unnamed-chunk-78-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-78-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-78-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-78-1.png" style="width: 600px;" /></a>
 <p>The <code class="docutils literal notranslate"><span class="pre">ladderize</span></code> function allows to display the branches from shortest to
 longest.</p>
 <blockquote>
@@ -1682,7 +1637,7 @@ first choose one random tree before we start.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">ran_turdidae_tree</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">fsize</span><span class="o">=</span><span class="m">0.4</span><span class="p">,</span> <span class="n">lwd</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-80-1.png"><img alt="../../_images/unnamed-chunk-80-1.png" class="align-center" src="../../_images/unnamed-chunk-80-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-80-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-80-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-80-1.png" style="width: 600px;" /></a>
 <p>First, lets see what species are in the tree.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lets see the first 10 species.</span>
 <span class="nf">head</span><span class="p">(</span><span class="n">ran_turdidae_tree</span><span class="o">$</span><span class="n">tip.label</span><span class="p">,</span> <span class="m">10</span><span class="p">)</span>
@@ -1722,7 +1677,7 @@ instance we first find all the associated tip.labels.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">ran_turdidae_tree_NM</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">fsize</span><span class="o">=</span><span class="m">0.4</span><span class="p">,</span> <span class="n">lwd</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-83-1.png"><img alt="../../_images/unnamed-chunk-83-1.png" class="align-center" src="../../_images/unnamed-chunk-83-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-83-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-83-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-83-1.png" style="width: 600px;" /></a>
 <p>Alternatively, lets say we want to extract the clade within the tree
 that includes the pre identified selected range of species. We’ll now
 keep the drop species and remove everything else.</p>
@@ -1736,7 +1691,7 @@ keep the drop species and remove everything else.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">pruned_birdtree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-84-1.png"><img alt="../../_images/unnamed-chunk-84-1.png" class="align-center" src="../../_images/unnamed-chunk-84-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-84-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-84-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-84-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>You can save your new revised tree. This can save time reading in a big tree just
@@ -1755,22 +1710,6 @@ want.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load packages from the tidyverse. </span>
 <span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;dplyr&#39;
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     intersect, select, union
-
-## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag
-
-## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union
 </pre></div>
 </div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy a list of all the tips from the tree.</span>
@@ -1833,7 +1772,7 @@ tips in the tree.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">genera_tree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-88-1.png"><img alt="../../_images/unnamed-chunk-88-1.png" class="align-center" src="../../_images/unnamed-chunk-88-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-88-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-88-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-88-1.png" style="width: 600px;" /></a>
 <p>As the tree has dropped all but one species per genus, this means we
 will finally need to also rename the tip labels as well to reflect this
 change.</p>
@@ -1846,7 +1785,7 @@ change.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">genera_tree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-89-1.png"><img alt="../../_images/unnamed-chunk-89-1.png" class="align-center" src="../../_images/unnamed-chunk-89-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-89-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-89-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-89-1.png" style="width: 600px;" /></a>
 </section>
 <section id="adding-trait-data-to-trees-in-r">
 <h2>9. Adding trait data to trees in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#adding-trait-data-to-trees-in-r" title="Permalink to this headline">¶</a></h2>
@@ -1940,37 +1879,13 @@ this yourself?</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">turdi_tree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-95-1.png"><img alt="../../_images/unnamed-chunk-95-1.png" class="align-center" src="../../_images/unnamed-chunk-95-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-95-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-95-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-95-1.png" style="width: 600px;" /></a>
 </div>
 <p>Now lets try using ggtree to plot our data with our phylogeny. This
 package produces really nice plots you can use for coursework
 assignments.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load ggtree for plotting phylogenies.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ggtree</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
-## 
-## If you use ggtree in published research, please cite the most appropriate paper(s):
-## 
-## 1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
-## 2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
-## 3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
-
-## 
-## Attaching package: &#39;ggtree&#39;
-
-## The following object is masked from &#39;package:ape&#39;:
-## 
-##     rotate
-
-## The following object is masked from &#39;package:tidyr&#39;:
-## 
-##     expand
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     flip, rotate
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">ggtree</span></code> is a bit more complicated than just normal tree plots, but you
@@ -1983,7 +1898,7 @@ and then add tip labels and traits after.</p>
 <span class="n">turdidae_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-97-1.png"><img alt="../../_images/unnamed-chunk-97-1.png" class="align-center" src="../../_images/unnamed-chunk-97-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-97-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-97-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-97-1.png" style="width: 600px;" /></a>
 <p>This is a pretty basic plot. We can add tip labels and customize our
 plot the same way as if we were using <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a plot of the tree with a circular layout.</span>
@@ -1993,7 +1908,7 @@ plot the same way as if we were using <code class="docutils literal notranslate"
 <span class="n">turdidae_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-98-1.png"><img alt="../../_images/unnamed-chunk-98-1.png" class="align-center" src="../../_images/unnamed-chunk-98-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-98-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-98-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-98-1.png" style="width: 600px;" /></a>
 <p>Our plot is now a bit big and falling out of the plotting window. We can
 fix this by expanding the x axis, which unlike normal plots comes out
 from the middle. We can also make the tips smaller as well.</p>
@@ -2004,7 +1919,7 @@ from the middle. We can also make the tips smaller as well.</p>
 <span class="n">turdidae_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-99-1.png"><img alt="../../_images/unnamed-chunk-99-1.png" class="align-center" src="../../_images/unnamed-chunk-99-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-99-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-99-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-99-1.png" style="width: 600px;" /></a>
 <p>If we want to add trait data to our plot, we can combine our tree and
 data together.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a column that&#39;s the node number matching the tree.</span>
@@ -2023,7 +1938,7 @@ data together.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will replace the existing scale.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-101-1.png"><img alt="../../_images/unnamed-chunk-101-1.png" class="align-center" src="../../_images/unnamed-chunk-101-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-101-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-101-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-101-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Notice when we put an extra <code class="docutils literal notranslate"><span class="pre">()</span></code> around the entire line of code, it saves the plot
@@ -2066,7 +1981,7 @@ the tree than habitat?</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will replace the existing scale.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-103-1.png"><img alt="../../_images/unnamed-chunk-103-1.png" class="align-center" src="../../_images/unnamed-chunk-103-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-103-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-103-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-103-1.png" style="width: 600px;" /></a>
 <p>Notice how we use <code class="docutils literal notranslate"><span class="pre">open.angle</span> <span class="pre">=</span> <span class="pre">15</span></code> so that we can fit the legend in the
 gap. Think how you can play around with the size of each part of the
 plot to make it look nicer!</p>
@@ -2076,18 +1991,7 @@ plot to make it look nicer!</p>
 <p>Or we can use bars. Maybe we could add clade labels after?</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the ggtree extra package for adding plots to circular trees.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ggtreeExtra</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## ggtreeExtra v1.4.2 For help: https://yulab-smu.top/treedata-book/
-## 
-## If you use the ggtree package suite in published research, please cite the appropriate paper(s):
-## 
-## S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L Zhan, T Wu, E Hu, Y Jiang, X Bo, G Yu. ggtreeExtra:
-## Compact visualization of richly annotated phylogenetic data. Molecular Biology and Evolution. 2021, 38(9):4039-4042. doi:
-## 10.1093/molbev/msab166
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">turdidae_plot</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">turdi_tree_data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span> <span class="o">+</span>
+<span class="p">(</span><span class="n">turdidae_plot</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">turdi_tree_data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span> <span class="o">+</span>
     
     <span class="c1"># Geom fruit allows us to specify the ggplot geom we want.</span>
     <span class="nf">geom_fruit</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">geom_bar</span><span class="p">,</span>
@@ -2102,7 +2006,7 @@ plot to make it look nicer!</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will replace the existing scale.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-104-1.png"><img alt="../../_images/unnamed-chunk-104-1.png" class="align-center" src="../../_images/unnamed-chunk-104-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-104-1.png"><img alt="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-104-1.png" class="align-center" src="_sources/markdowns/practical_1/practical_1_files/figure-gfm/unnamed-chunk-104-1.png" style="width: 600px;" /></a>
 <p>Geom fruit can be confusing as we have the y value as the node, and x as
 our variable, but this code can easily be subbed in with your own data.</p>
 <p>This guide goes into lots of detail plotting with ggtree, and is worth
@@ -2124,7 +2028,7 @@ your time! <a class="reference external" href="https://yulab-smu.top/treedata-bo
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./markdowns/practical_1"
+            path: "./_sources/markdowns/practical_1"
         },
         predefinedOutput: true
     }
@@ -2135,21 +2039,7 @@ your time! <a class="reference external" href="https://yulab-smu.top/treedata-bo
               
         
             <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../../intro.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Introduction</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="../practical_2/practical_2.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Macroecology analyses</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
+<div class='prev-next-area'>
 </div>
         
         </div>
@@ -2170,7 +2060,7 @@ your time! <a class="reference external" href="https://yulab-smu.top/treedata-bo
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
   </body>
 </html>
