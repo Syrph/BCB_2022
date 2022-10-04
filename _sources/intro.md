@@ -15,12 +15,12 @@ sidebar:
 ## Introduction
 
 
-The practicals for Biodiversity and Conservation Biology aim to introduce basic concepts and skills to conduct macroecology research. Each practical will introduce new skills using the computing language `R`, popular among ecologists. Most focus is on phylogenetic methods used in comparative analysis between species, but you will also learn the basics of GIS in `R`, a highly valued skill in research and conservation.
+The practicals for Biodiversity and Conservation Biology aim to introduce basic concepts and skills to conduct macro-ecology research. Each practical will introduce new skills using the computing language 'R', popular among ecologists. Most focus is on phylogenetic methods used in comparative analysis between species, but you will also learn the basics of GIS in R, a highly valued skill in research and conservation.
 
 
 ### Getting started
 
-There is a single zip folder containing all the data for the practicals that you should download first (ideally before the first practical). This also contains the install.R script that will help set up your `R` session for macroecology research.
+Each practical has it's own project in `RStudio Cloud`. This is an online resource that allows us to run code through a web browser. The benefit using `RStudio Cloud` is that all the data and packages are pre-installed, and will work on everyone's laptops regardless of computing power. If you'd prefer to work on your own laptop you can download the data from blackboard. However, some code may take much longer to run on your own computer. If you find it's taking too long, it's always easy to convert back to `RStudio Cloud` later. 
 
 Mac users may need to install `GDAL` on their laptop. This is software for 
 handling spatial data, which R uses and is preinstalled on Windows. This can be 
