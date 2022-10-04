@@ -11,8 +11,7 @@ and fix any problems!
 We will review importing phylogenetic trees as data files, displaying
 phylogenetic trees visually, and some basic evolutionary computations
 that can be conducted with phylogenetic trees. This practical will
-deliver some of the important background for Coursework 1. Below you
-will find some of the relevant resources required for this practical.
+deliver some of the important background for Coursework 1.
 
 Parts (sections 6,7) of this practical are written by [Natalie
 Cooper](http://nhcooper123.github.io/). The original can be found
@@ -807,11 +806,7 @@ info!
 ``` r
 # Load the raster package for spatial data.
 library(raster)
-```
 
-    ## Loading required package: sp
-
-``` r
 # getData is a function from the raster package that allows us to download some spatial data. 
 bio <- getData("worldclim", var="bio", res=10)
 
@@ -948,11 +943,7 @@ range data as an `.RData` object, as we briefly mentioned in section 3.
 ``` r
 # First load in the spatial packages we'll need.
 library(sf)
-```
 
-    ## Linking to GEOS 3.9.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE
-
-``` r
 # Load the data into our environment.
 load("data/accipitridae_ranges.RData")
 
@@ -1014,22 +1005,7 @@ ranges, which we’ll use to build a map of species richness.
 ``` r
 # Load fasterize package.
 library(fasterize)
-```
 
-    ## Warning: package 'fasterize' was built under R version 4.1.3
-
-    ## 
-    ## Attaching package: 'fasterize'
-
-    ## The following object is masked from 'package:graphics':
-    ## 
-    ##     plot
-
-    ## The following object is masked from 'package:base':
-    ## 
-    ##     plot
-
-``` r
 # Start by creating an empty raster stack to store our data in.
 raster_template <- raster(ncols=2160, nrows = 900, ymn = -60)
 
@@ -1051,16 +1027,6 @@ the map. We can make a much clearer map using `ggplot2`.
 
 ``` r
 library(tidyr)
-```
-
-    ## 
-    ## Attaching package: 'tidyr'
-
-    ## The following object is masked from 'package:raster':
-    ## 
-    ##     extract
-
-``` r
 library(ggplot2)
 
 # Convert the raster into a raster dataframe. This will be coordinates of the 
@@ -1194,20 +1160,8 @@ practical you will need to load the following packages:
 ``` r
 # Load packages.
 library(ape)
-```
-
-    ## 
-    ## Attaching package: 'ape'
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     rotate, zoom
-
-``` r
 library(phytools)
 ```
-
-    ## Loading required package: maps
 
 #### Tree parameters
 
@@ -1330,12 +1284,10 @@ In this practical we are going to use the `elopomorph.tre` newick tree.
 You can open it with a simple text editor to see the newick tree
 structure.
 
-### 7. Basic tree viewing in `R`
+#### Reading in a phylogeny from a file
 
 Now let’s visualise some phylogenies! We’ll use the Elopomorpha (eels
 and similar fishes) tree to start as it is simple.
-
-#### Reading in a phylogeny from a file
 
 To load a tree you need the function `read.tree`. Just like we did with
 text but instead we point to a file location. `read.tree` can read any
@@ -1480,25 +1432,7 @@ plot(fishtree, type = "unrooted", edge.color = "deeppink", tip.color = "springgr
 :width: 600px
 ```
 
-Or try
-
-``` r
-plot(ladderize(fishtree), type = "c", edge.color = "darkviolet", tip.color = "hotpink",  cex = 0.7)
-```
-
-```{image} practical_1_files/figure-gfm/unnamed-chunk-78-1.png
-:align: center
-:width: 600px
-```
-
-The `ladderize` function allows to display the branches from shortest to
-longest.
-
-> Try to modify the graphical options (colors, display, size, ordering
-> of the nodes, etc.) to obtain the most beautiful or ugliest
-> Elopomorpha phylogeny!
-
-### 8. Manipulating phylogenetic trees in `R`
+### 7. Manipulating phylogenetic trees in `R`
 
 There are a range of ways in which we can manipulate trees in R. To
 start lets take a look at the bird family Turdidae.
@@ -1520,7 +1454,7 @@ ran_turdidae_tree <- sample(turdidae_tree, size=1)[[1]]
 plotTree(ran_turdidae_tree, type="fan", fsize=0.4, lwd=0.5,ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-80-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-79-1.png
 :align: center
 :width: 600px
 ```
@@ -1569,7 +1503,7 @@ ran_turdidae_tree_NM <- drop.tip(ran_turdidae_tree, drop_species)
 plotTree(ran_turdidae_tree_NM, type="fan", fsize=0.4, lwd=0.5, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-83-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-82-1.png
 :align: center
 :width: 600px
 ```
@@ -1589,7 +1523,7 @@ pruned_birdtree <- drop.tip(ran_turdidae_tree, species_we_dont_want)
 plotTree(pruned_birdtree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-84-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-83-1.png
 :align: center
 :width: 600px
 ```
@@ -1615,21 +1549,6 @@ want.
 library(stringr)
 library(dplyr)
 ```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     intersect, select, union
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
 
 ``` r
 # Copy a list of all the tips from the tree.
@@ -1697,7 +1616,7 @@ genera_tree <- drop.tip(ran_turdidae_tree, drop_tips)
 plotTree(genera_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-88-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-87-1.png
 :align: center
 :width: 600px
 ```
@@ -1716,12 +1635,12 @@ genera_tree$tip.label <- bird_genera$Genus
 plotTree(genera_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-89-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-88-1.png
 :align: center
 :width: 600px
 ```
 
-### 9. Adding trait data to trees in `R`
+### 8. Adding trait data to trees in `R`
 
 Often basic tree plots in R are all you need for exploring data and your
 analysis. However, for publications and presentations it may be useful
@@ -1823,7 +1742,7 @@ turdi_tree <- drop.tip(ran_turdidae_tree, drop_tips)
 plotTree(turdi_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-95-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-94-1.png
 :align: center
 :width: 600px
 ```
@@ -1839,29 +1758,6 @@ assignments.
 library(ggtree)
 ```
 
-    ## ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
-    ## 
-    ## If you use ggtree in published research, please cite the most appropriate paper(s):
-    ## 
-    ## 1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
-    ## 2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
-    ## 3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
-
-    ## 
-    ## Attaching package: 'ggtree'
-
-    ## The following object is masked from 'package:ape':
-    ## 
-    ##     rotate
-
-    ## The following object is masked from 'package:tidyr':
-    ## 
-    ##     expand
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     flip, rotate
-
 `ggtree` is a bit more complicated than just normal tree plots, but you
 can also do a lot more. We’ll create a basic tree plot structure first
 and then add tip labels and traits after.
@@ -1874,7 +1770,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular")
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-97-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-96-1.png
 :align: center
 :width: 600px
 ```
@@ -1890,7 +1786,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular") + geom_tiplab()
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-98-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-97-1.png
 :align: center
 :width: 600px
 ```
@@ -1907,7 +1803,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular") + geom_tiplab(size = 1.
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-99-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-98-1.png
 :align: center
 :width: 600px
 ```
@@ -1933,7 +1829,7 @@ Now we can make our plot!
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-101-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-100-1.png
 :align: center
 :width: 600px
 ```
@@ -1982,7 +1878,7 @@ We can try using points on the end of tips.
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-103-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-102-1.png
 :align: center
 :width: 600px
 ```
@@ -2001,17 +1897,6 @@ Or we can use bars. Maybe we could add clade labels after?
 ``` r
 # Use the ggtree extra package for adding plots to circular trees.
 library(ggtreeExtra)
-```
-
-    ## ggtreeExtra v1.4.2 For help: https://yulab-smu.top/treedata-book/
-    ## 
-    ## If you use the ggtree package suite in published research, please cite the appropriate paper(s):
-    ## 
-    ## S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L Zhan, T Wu, E Hu, Y Jiang, X Bo, G Yu. ggtreeExtra:
-    ## Compact visualization of richly annotated phylogenetic data. Molecular Biology and Evolution. 2021, 38(9):4039-4042. doi:
-    ## 10.1093/molbev/msab166
-
-``` r
 (turdidae_plot <- ggtree(turdi_tree_data, layout="fan", size = 0.7) +
     
     # Geom fruit allows us to specify the ggplot geom we want.
@@ -2026,7 +1911,7 @@ library(ggtreeExtra)
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-104-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-103-1.png
 :align: center
 :width: 600px
 ```
