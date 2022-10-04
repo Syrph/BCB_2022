@@ -1,12 +1,12 @@
-## Basics in R
+## Basics & Phylogenetics in R
 
 ### 1. Introduction and resources
 
 The aim of this practical is to revise some basic functions in `R`
 relating to data management and plotting. We will then look at handling
-spatial data and phylogenies, two skills essential for macro-ecology.
-One aim of this practical is to make sure everyone’s set up is working
-well and fix any problems!
+spatial data and phylogenies, two skills essential for macroecology. One
+aim of this practical is to make sure everyone’s set up is working well
+and fix any problems!
 
 We will review importing phylogenetic trees as data files, displaying
 phylogenetic trees visually, and some basic evolutionary computations
@@ -14,12 +14,9 @@ that can be conducted with phylogenetic trees. This practical will
 deliver some of the important background for Coursework 1. Below you
 will find some of the relevant resources required for this practical.
 
-Parts (sections 2,3,4) of this practical are written by [Natalie
+Parts (sections 6,7) of this practical are written by [Natalie
 Cooper](http://nhcooper123.github.io/). The original can be found
 [here](https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd).
-Whereas, parts (section 5 & 6) of this practical are written by Adam
-Devenish & Rob Barber (<a.devenish@imperial.ac.uk>)
-(<r.barber19@imperial.ac.uk>).
 
 #### Working directory
 
