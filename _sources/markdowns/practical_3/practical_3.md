@@ -30,13 +30,14 @@ trait_data <- read.csv("data/avonet_data.csv")
 str(trait_data)
 ```
 
-    ## 'data.frame':    9872 obs. of  25 variables:
+    ## 'data.frame':    9872 obs. of  26 variables:
     ##  $ birdlife_name       : chr  "Accipiter albogularis" "Accipiter badius" "Accipiter bicolor" "Accipiter brachyurus" ...
     ##  $ birdlife_common_name: chr  "Pied Goshawk" "Shikra" "Bicolored Hawk" "New Britain Sparrowhawk" ...
     ##  $ jetz_name           : chr  "Accipiter_albogularis" "Accipiter_badius" "Accipiter_bicolor" "Accipiter_brachyurus" ...
     ##  $ jetz_order          : chr  "Accipitriformes" "Accipitriformes" "Accipitriformes" "Accipitriformes" ...
     ##  $ jetz_family         : chr  "Accipitridae" "Accipitridae" "Accipitridae" "Accipitridae" ...
     ##  $ redlist_cat         : chr  "LC" "LC" "LC" "VU" ...
+    ##  $ extinct_prob        : num  0.0606 0.0606 0.0606 0.2425 0.0606 ...
     ##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
     ##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
     ##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
@@ -73,11 +74,12 @@ species we need to remove.
 accip_data %>% filter(redlist_cat == "EX" | redlist_cat == "EW")
 ```
 
-    ##  [1] birdlife_name        birdlife_common_name jetz_name            jetz_order           jetz_family          redlist_cat         
-    ##  [7] beak_length_culmen   beak_length_nares    beak_width           beak_depth           tarsus_length        wing_length         
-    ## [13] kipps_distance       secondary1           hand_wing_index      tail_length          mass                 habitat_density     
-    ## [19] migration            trophic_level        trophic_niche        primary_lifestyle    centroid_latitude    centroid_longitude  
-    ## [25] range_size          
+    ##  [1] birdlife_name        birdlife_common_name jetz_name            jetz_order           jetz_family         
+    ##  [6] redlist_cat          extinct_prob         beak_length_culmen   beak_length_nares    beak_width          
+    ## [11] beak_depth           tarsus_length        wing_length          kipps_distance       secondary1          
+    ## [16] hand_wing_index      tail_length          mass                 habitat_density      migration           
+    ## [21] trophic_level        trophic_niche        primary_lifestyle    centroid_latitude    centroid_longitude  
+    ## [26] range_size          
     ## <0 rows> (or 0-length row.names)
 
 Great, no extinct species in this family! There shouldn’t really be many
@@ -108,7 +110,22 @@ plot(bird_tree, cex=0.01)
 :width: 600px
 ```
 
-There’s a lot of tips so that’s a pretty ugly tree!
+There’s a lot of tips so that’s a pretty ugly tree! We can remove the
+species as we did before. See if you can do it yourself first using
+drop.tips again.
+
+::::{admonition} Show the answer…  
+:class: dropdown
+
+``` r
+# Get the tips we don't want.
+drop_tips <- setdiff(bird_tree$tip.label, accip_data$jetz_name)
+
+# Drop the tips.
+bird_tree <- drop.tip(bird_tree, drop_tips)
+```
+
+::::
 
 ### 3. ED Scores
 
@@ -132,13 +149,13 @@ ED <- ed.calc(bird_matrix)$spp
 head(ED)
 ```
 
-    ##                  species       ED
-    ## 1       Nothura_maculosa 12.22294
-    ## 2          Nothura_minor 12.22294
-    ## 3       Nothura_darwinii 10.19624
-    ## 4      Nothura_boraquira 10.19624
-    ## 5     Nothura_chacoensis 13.05058
-    ## 6 Nothoprocta_perdicaria 15.18505
+    ##                 species       ED
+    ## 1      Elanus_caeruleus 18.33354
+    ## 2      Elanus_axillaris 18.33354
+    ## 3       Elanus_leucurus 21.04545
+    ## 4       Elanus_scriptus 21.04545
+    ## 5 Chelictinia_riocourii 26.70163
+    ## 6  Gampsonyx_swainsonii 26.70163
 
 Now that we’ve got our ED scores for each species, we need to log
 transform and normalise our scores.
@@ -152,13 +169,13 @@ ED$EDn <- (ED$EDlog - min(ED$EDlog)) / (max(ED$EDlog) - min(ED$EDlog))
 head(ED)
 ```
 
-    ##                  species       ED    EDlog       EDn
-    ## 1       Nothura_maculosa 12.22294 2.581953 0.5385864
-    ## 2          Nothura_minor 12.22294 2.581953 0.5385864
-    ## 3       Nothura_darwinii 10.19624 2.415578 0.4955765
-    ## 4      Nothura_boraquira 10.19624 2.415578 0.4955765
-    ## 5     Nothura_chacoensis 13.05058 2.642663 0.5542808
-    ## 6 Nothoprocta_perdicaria 15.18505 2.784088 0.5908408
+    ##                 species       ED    EDlog       EDn
+    ## 1      Elanus_caeruleus 18.33354 2.961842 0.8512172
+    ## 2      Elanus_axillaris 18.33354 2.961842 0.8512172
+    ## 3       Elanus_leucurus 21.04545 3.093106 0.9055199
+    ## 4       Elanus_scriptus 21.04545 3.093106 0.9055199
+    ## 5 Chelictinia_riocourii 26.70163 3.321491 1.0000000
+    ## 6  Gampsonyx_swainsonii 26.70163 3.321491 1.0000000
 
 Now that we have our normalised scores for all birds, we need to subset
 the list for just Accipitridae.
@@ -171,9 +188,9 @@ str(accip_ED)
 
     ## 'data.frame':    237 obs. of  4 variables:
     ##  $ species: chr  "Elanus_caeruleus" "Elanus_axillaris" "Elanus_leucurus" "Elanus_scriptus" ...
-    ##  $ ED     : num  18.5 18.5 21.2 21.2 26.8 ...
-    ##  $ EDlog  : num  2.97 2.97 3.1 3.1 3.33 ...
-    ##  $ EDn    : num  0.638 0.638 0.672 0.672 0.731 ...
+    ##  $ ED     : num  18.3 18.3 21 21 26.7 ...
+    ##  $ EDlog  : num  2.96 2.96 3.09 3.09 3.32 ...
+    ##  $ EDn    : num  0.851 0.851 0.906 0.906 1 ...
 
 We now have the ED scores of 237 species in Accipitridae. With these
 scores we can see how unique our species are in terms of the
@@ -184,9 +201,9 @@ evolutionary pathway.
 accip_ED[accip_ED$EDn == max(accip_ED$EDn),]
 ```
 
-    ##                    species       ED    EDlog       EDn
-    ## 8513 Chelictinia_riocourii 26.82268 3.325852 0.7308933
-    ## 8514  Gampsonyx_swainsonii 26.82268 3.325852 0.7308933
+    ##                 species       ED    EDlog EDn
+    ## 5 Chelictinia_riocourii 26.70163 3.321491   1
+    ## 6  Gampsonyx_swainsonii 26.70163 3.321491   1
 
 The highest ED scores belong to *Chelictinia riocourii*, the
 scissor-tailed kite, and *Gampsonyx swainsonii*, the pearl kite. Both
@@ -203,50 +220,13 @@ This is where EDGE scores come in. By combining ED scores with IUCN
 categories we can select the species that need conservation action, and
 represent unique evolutionary variation.
 
-First we need to convert the IUCN status in GE (Globally Endangered)
-scores. This is relatively simple as we’re just assigning numeric
-rankings, but we’ll use a `for loop` to practice our skills! We’ll also
-use an `if` statement as well because we have two categories with the
-same GE score (near threatened and deficient).
+Each IUCN category has an extinction probability used to calculate EDGE
+scores. This is based on a recent paper that’s refined the methodology.
+These extinction probabilities are also referred to as GE (Globally
+Endangered) scores, which is why it’s called EDGE.
 
-``` r
-# Create an empty column to store our GE scores.
-accip_data$GE <- NA
-
-# Create a vector to increase with each new ranking, starting at 0 for least concern.
-i <- 0
-
-# Create a list to loop through in the order of GE scores.
-redlist_cats <- c("LC", "NT", "DD", "VU", "EN", "CR")
-
-# Loop through each different category in the redlist categories.
-for (category in redlist_cats){
-
-  # Add the GE score for that category.
-  accip_data[accip_data$redlist_cat == category, "GE"] <- i
-  
-  # Because DD comes after NT, and both are scored as 1, don't want to change i if the category is NT.
-  # We can use an if statement to do this. != means not equal to.
-  if (category != "NT"){
-    i = i + 1
-  }
-}
-```
-
-``` r
-# We can check our loop worked using distinct.
-accip_data %>% distinct(redlist_cat, GE)
-```
-
-    ##   redlist_cat GE
-    ## 1          LC  0
-    ## 2          VU  2
-    ## 3          NT  1
-    ## 4          EN  3
-    ## 5          CR  4
-    ## 6          DD  1
-
-Now we’ll merge our GE scores with our ED scores in one dataframe.
+We’ll add the ED scores to the main dataset first, and then we can
+easily calculate EDGE.
 
 ``` r
 # Join the last two columns of UK_Jetz to ED scores. 
@@ -257,13 +237,13 @@ accip_EDGE <- left_join(accip_data, accip_ED,  by = c("jetz_name" = "species"))
 head(accip_EDGE)[,c(2:3, 26:29)]
 ```
 
-    ##      birdlife_common_name             jetz_name GE        ED    EDlog       EDn
-    ## 1            Pied Goshawk Accipiter_albogularis  0  8.271480 2.226943 0.4468120
-    ## 2                  Shikra      Accipiter_badius  0  5.204116 1.825213 0.3429598
-    ## 3          Bicolored Hawk     Accipiter_bicolor  0  7.899108 2.185951 0.4362150
-    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus  2 10.931999 2.479224 0.5120296
-    ## 5      Levant Sparrowhawk    Accipiter_brevipes  0  5.595169 1.886337 0.3587612
-    ## 6     Nicobar Sparrowhawk     Accipiter_butleri  2 11.335471 2.512479 0.5206265
+    ##      birdlife_common_name             jetz_name  range_size        ED    EDlog       EDn
+    ## 1            Pied Goshawk Accipiter_albogularis    37461.21  8.156562 2.214471 0.5420387
+    ## 2                  Shikra      Accipiter_badius 22374973.00  5.481852 1.869006 0.3991241
+    ## 3          Bicolored Hawk     Accipiter_bicolor 14309701.27  8.097777 2.208030 0.5393742
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus    35580.71 10.813851 2.469273 0.6474472
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes  2936751.80  5.643636 1.893659 0.4093228
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri      327.84 11.220553 2.503119 0.6614491
 
 We can now calculate our EDGE scores using some simple maths:
 
@@ -276,17 +256,17 @@ scores by the natural log of 2, and combine them.
 
 ``` r
 # The log function uses natural logarithms by default.
-accip_EDGE$EDGE <- accip_EDGE$EDlog + accip_EDGE$GE * log(2)
+accip_EDGE$EDGE <- accip_EDGE$EDlog + accip_EDGE$extinct_prob * log(2)
 head(accip_EDGE)[,c(2:3, 26:30)]
 ```
 
-    ##      birdlife_common_name             jetz_name GE        ED    EDlog       EDn     EDGE
-    ## 1            Pied Goshawk Accipiter_albogularis  0  8.271480 2.226943 0.4468120 2.226943
-    ## 2                  Shikra      Accipiter_badius  0  5.204116 1.825213 0.3429598 1.825213
-    ## 3          Bicolored Hawk     Accipiter_bicolor  0  7.899108 2.185951 0.4362150 2.185951
-    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus  2 10.931999 2.479224 0.5120296 3.865518
-    ## 5      Levant Sparrowhawk    Accipiter_brevipes  0  5.595169 1.886337 0.3587612 1.886337
-    ## 6     Nicobar Sparrowhawk     Accipiter_butleri  2 11.335471 2.512479 0.5206265 3.898773
+    ##      birdlife_common_name             jetz_name  range_size        ED    EDlog       EDn     EDGE
+    ## 1            Pied Goshawk Accipiter_albogularis    37461.21  8.156562 2.214471 0.5420387 2.256493
+    ## 2                  Shikra      Accipiter_badius 22374973.00  5.481852 1.869006 0.3991241 1.911028
+    ## 3          Bicolored Hawk     Accipiter_bicolor 14309701.27  8.097777 2.208030 0.5393742 2.250052
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus    35580.71 10.813851 2.469273 0.6474472 2.637361
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes  2936751.80  5.643636 1.893659 0.4093228 1.935681
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri      327.84 11.220553 2.503119 0.6614491 2.671207
 
 Now we have our EDGE scores, we can see if our conservation priority has
 changed in light of IUCN categories.
@@ -296,17 +276,17 @@ changed in light of IUCN categories.
 accip_EDGE[accip_EDGE$EDGE == max(accip_EDGE$EDGE), c(2:3, 26:30)]
 ```
 
-    ##     birdlife_common_name             jetz_name GE       ED    EDlog       EDn   EDGE
-    ## 217     Philippine Eagle Pithecophaga_jefferyi  4 22.25013 3.146311 0.6844798 5.9189
+    ##     birdlife_common_name             jetz_name range_size       ED    EDlog       EDn    EDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi   142256.5 22.13085 3.141167 0.9254021 3.81352
 
 ``` r
 # Find the EDGE score for our previous highest species.
 accip_EDGE[accip_EDGE$EDn == max(accip_EDGE$EDn), c(2:3, 26:30)]
 ```
 
-    ##     birdlife_common_name             jetz_name GE       ED    EDlog       EDn     EDGE
-    ## 103  Scissor-tailed Kite Chelictinia_riocourii  0 26.82268 3.325852 0.7308933 3.325852
-    ## 135           Pearl Kite  Gampsonyx_swainsonii  0 26.82268 3.325852 0.7308933 3.325852
+    ##     birdlife_common_name             jetz_name range_size       ED    EDlog EDn     EDGE
+    ## 103  Scissor-tailed Kite Chelictinia_riocourii    5425286 26.70163 3.321491   1 3.363513
+    ## 135           Pearl Kite  Gampsonyx_swainsonii   10266135 26.70163 3.321491   1 3.363513
 
 So now we can see that the top conservation priority is the Philippine
 Eagle, *Pithecophaga jefferyi*. Whilst our previous kites are still
@@ -324,7 +304,7 @@ you’ll decide what constitutes a high EDGE score.
 hist(accip_EDGE$EDGE, breaks = 20)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-15-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-14-1.png
 :align: center
 :width: 600px
 ```
@@ -335,14 +315,8 @@ hist(accip_EDGE$EDGE, breaks = 20)
 accip_EDGE %>% filter(EDGE > 5) %>% dplyr::select(birdlife_common_name, jetz_name, redlist_cat, EDGE)
 ```
 
-    ##       birdlife_common_name               jetz_name redlist_cat     EDGE
-    ## 1               Cuban Kite  Chondrohierax_wilsonii          CR 5.237042
-    ## 2 Madagascar Serpent-eagle       Eutriorchis_astur          EN 5.357568
-    ## 3           Hooded Vulture    Necrosyrtes_monachus          CR 5.396246
-    ## 4         Egyptian Vulture   Neophron_percnopterus          EN 5.273640
-    ## 5         Philippine Eagle   Pithecophaga_jefferyi          CR 5.918900
-    ## 6       Red-headed Vulture        Sarcogyps_calvus          CR 5.393195
-    ## 7     White-headed Vulture Trigonoceps_occipitalis          CR 5.157038
+    ## [1] birdlife_common_name jetz_name            redlist_cat          EDGE                
+    ## <0 rows> (or 0-length row.names)
 
 ```{tip}
 In the above code we used the pipe operator `%>%` twice! This is why it's called a pipe. 
@@ -383,20 +357,20 @@ accip_traits <- scale(accip_traits, scale=TRUE)
 head(accip_traits)
 ```
 
-    ##                       beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1
-    ## Accipiter_albogularis         -0.7433418        -0.5866492 -0.5282422 -0.5329013    -0.4380073  -0.9721188     -0.7745186 -0.9281820
-    ## Accipiter_badius              -1.1979544        -1.1153733 -0.9611877 -0.9706012    -1.2618782  -1.3351297     -1.0777692 -1.3265690
-    ## Accipiter_bicolor             -0.9162227        -0.9669595 -1.0092927 -0.8152883    -0.6071177  -1.0140334     -1.1704728 -0.7382966
-    ## Accipiter_brachyurus          -1.0762975        -0.9391319 -0.9371351 -0.9282431    -0.4726966  -1.2191159     -1.0526293 -1.1937733
-    ## Accipiter_brevipes            -1.1659395        -1.1153733 -0.9852402 -1.0411979    -1.1144487  -1.1038506     -0.6802438 -1.2955420
-    ## Accipiter_butleri             -1.2363724        -1.1339250 -1.4903432 -0.9141238    -1.0147170  -1.4900642     -1.3857336 -1.3799355
-    ##                       hand_wing_index tail_length       mass
-    ## Accipiter_albogularis      -0.1263950  -0.7249344 -0.6082705
-    ## Accipiter_badius           -0.2537573  -1.1555232 -0.6780068
-    ## Accipiter_bicolor          -1.3108642  -0.4626392 -0.5853216
-    ## Accipiter_brachyurus       -0.4065920  -1.1524909 -0.6716024
-    ## Accipiter_brevipes          0.6759874  -0.9599389 -0.6452141
-    ## Accipiter_butleri          -1.1580294  -1.3617206 -0.6834623
+    ##                       extinct_prob beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length
+    ## Accipiter_albogularis   -0.4668431         -0.7433418        -0.5866492 -0.5282422 -0.5329013    -0.4380073
+    ## Accipiter_badius        -0.4668431         -1.1979544        -1.1153733 -0.9611877 -0.9706012    -1.2618782
+    ## Accipiter_bicolor       -0.4668431         -0.9162227        -0.9669595 -1.0092927 -0.8152883    -0.6071177
+    ## Accipiter_brachyurus     0.3427311         -1.0762975        -0.9391319 -0.9371351 -0.9282431    -0.4726966
+    ## Accipiter_brevipes      -0.4668431         -1.1659395        -1.1153733 -0.9852402 -1.0411979    -1.1144487
+    ## Accipiter_butleri        0.3427311         -1.2363724        -1.1339250 -1.4903432 -0.9141238    -1.0147170
+    ##                       wing_length kipps_distance secondary1 hand_wing_index tail_length
+    ## Accipiter_albogularis  -0.9721188     -0.7745186 -0.9281820      -0.1263950  -0.7249344
+    ## Accipiter_badius       -1.3351297     -1.0777692 -1.3265690      -0.2537573  -1.1555232
+    ## Accipiter_bicolor      -1.0140334     -1.1704728 -0.7382966      -1.3108642  -0.4626392
+    ## Accipiter_brachyurus   -1.2191159     -1.0526293 -1.1937733      -0.4065920  -1.1524909
+    ## Accipiter_brevipes     -1.1038506     -0.6802438 -1.2955420       0.6759874  -0.9599389
+    ## Accipiter_butleri      -1.4900642     -1.3857336 -1.3799355      -1.1580294  -1.3617206
 
 To calculate functional diversity we’ll create a distance matrix of our
 traits. Species with similar traits will have smaller ‘distances’.
@@ -425,7 +399,7 @@ trait_tree <- nj(distance_matrix)
 plot(trait_tree, cex=0.4)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-20-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-19-1.png
 :align: center
 :width: 600px
 ```
@@ -452,12 +426,12 @@ head(FD)
 ```
 
     ##                 species        FD
-    ## 1 Accipiter_albogularis 0.1515376
-    ## 2      Accipiter_badius 0.3797113
-    ## 3     Accipiter_bicolor 0.3908214
-    ## 4  Accipiter_brachyurus 0.3674620
-    ## 5    Accipiter_brevipes 0.3574219
-    ## 6     Accipiter_butleri 0.4128270
+    ## 1 Accipiter_albogularis 0.1824124
+    ## 2      Accipiter_badius 0.3873134
+    ## 3     Accipiter_bicolor 0.4794938
+    ## 4  Accipiter_brachyurus 0.3404455
+    ## 5    Accipiter_brevipes 0.3576029
+    ## 6     Accipiter_butleri 0.6376099
 
 Log and normalise the data as we did before with ED so we could compare
 FD scores from different groups.
@@ -471,8 +445,8 @@ FD$FDn <- (FD$FDlog - min(FD$FDlog)) / (max(FD$FDlog) - min(FD$FDlog))
 FD[FD$FDn == max(FD$FDn),]
 ```
 
-    ##               species      FD    FDlog FDn
-    ## 138 Gypaetus_barbatus 2.93894 1.370912   1
+    ##                   species      FD    FDlog FDn
+    ## 217 Pithecophaga_jefferyi 3.71044 1.549781   1
 
 So the species with the largest FD score is *Gypaetus barbatus*, the
 Bearded Vulture. This means G. barbatus is the most ecologically diverse
@@ -496,17 +470,17 @@ ecoDGE=ln⁡(1+FD)+GE×ln⁡(2)
 accip_ecoDGE <- left_join(accip_data, FD, by = c("jetz_name" = "species"))
 
 # Calculate ecoDGE scores.
-accip_ecoDGE$ecoDGE <- accip_ecoDGE$FDlog + accip_ecoDGE$GE * log(2)
+accip_ecoDGE$ecoDGE <- accip_ecoDGE$FDlog + accip_ecoDGE$extinct_prob * log(2)
 head(accip_ecoDGE)[,c(2:3, 26:30)]
 ```
 
-    ##      birdlife_common_name             jetz_name GE        FD     FDlog       FDn    ecoDGE
-    ## 1            Pied Goshawk Accipiter_albogularis  0 0.1515376 0.1410981 0.0000000 0.1410981
-    ## 2                  Shikra      Accipiter_badius  0 0.3797113 0.3218743 0.1469948 0.3218743
-    ## 3          Bicolored Hawk     Accipiter_bicolor  0 0.3908214 0.3298945 0.1535163 0.3298945
-    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus  2 0.3674620 0.3129565 0.1397435 1.6992508
-    ## 5      Levant Sparrowhawk    Accipiter_brevipes  0 0.3574219 0.3055872 0.1337513 0.3055872
-    ## 6     Nicobar Sparrowhawk     Accipiter_butleri  2 0.4128270 0.3455926 0.1662809 1.7318870
+    ##      birdlife_common_name             jetz_name  range_size        FD     FDlog        FDn    ecoDGE
+    ## 1            Pied Goshawk Accipiter_albogularis    37461.21 0.1824124 0.1675568 0.00000000 0.2095788
+    ## 2                  Shikra      Accipiter_badius 22374973.00 0.3873134 0.3273691 0.11561964 0.3693911
+    ## 3          Bicolored Hawk     Accipiter_bicolor 14309701.27 0.4794938 0.3917000 0.16216123 0.4337221
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus    35580.71 0.3404455 0.2930020 0.09075602 0.4610902
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes  2936751.80 0.3576029 0.3057206 0.09995754 0.3477426
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri      327.84 0.6376099 0.4932378 0.23562089 0.6613260
 
 And does including IUCN categories change our conservation priorities?
 
@@ -515,16 +489,16 @@ And does including IUCN categories change our conservation priorities?
 accip_ecoDGE[accip_ecoDGE$ecoDGE == max(accip_ecoDGE$ecoDGE), c(2:3, 26:30)]
 ```
 
-    ##     birdlife_common_name             jetz_name GE      FD    FDlog       FDn  ecoDGE
-    ## 217     Philippine Eagle Pithecophaga_jefferyi  4 2.83493 1.344151 0.9782403 4.11674
+    ##     birdlife_common_name             jetz_name range_size      FD    FDlog FDn   ecoDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi   142256.5 3.71044 1.549781   1 2.222134
 
 ``` r
 # Find the ecoDGE score for Gypaetus barbatus.
 accip_ecoDGE[accip_ecoDGE$jetz_name == "Gypaetus_barbatus", c(2:3, 26:30)]
 ```
 
-    ##     birdlife_common_name         jetz_name GE      FD    FDlog FDn   ecoDGE
-    ## 138      Bearded Vulture Gypaetus_barbatus  1 2.93894 1.370912   1 2.064059
+    ##     birdlife_common_name         jetz_name range_size       FD    FDlog       FDn   ecoDGE
+    ## 138      Bearded Vulture Gypaetus_barbatus    8369572 2.821342 1.340602 0.8486644 1.424646
 
 Yes! Funnily enough the Philippine Eagle is again the species we need to
 check. This may be because the GE component of ecoDGE scores is weighted
@@ -535,38 +509,38 @@ much higher than the FD component.
 accip_ecoDGE[accip_ecoDGE$FD > quantile(accip_ecoDGE$FD, 0.95), c(2:3, 26:30)]
 ```
 
-    ##     birdlife_common_name               jetz_name GE       FD     FDlog       FDn    ecoDGE
-    ## 47     Cinereous Vulture       Aegypius_monachus  1 2.130645 1.1412390 0.8132459 1.8343861
-    ## 54        Gurney's Eagle          Aquila_gurneyi  1 1.500756 0.9165931 0.6305793 1.6097403
-    ## 127  Swallow-tailed Kite    Elanoides_forficatus  0 1.430271 0.8880028 0.6073317 0.8880028
-    ## 138      Bearded Vulture       Gypaetus_barbatus  1 2.938940 1.3709116 1.0000000 2.0640588
-    ## 139     Palm-nut Vulture   Gypohierax_angolensis  0 1.525275 0.9263500 0.6385130 0.9263500
-    ## 144    Himalayan Griffon       Gyps_himalayensis  1 1.707854 0.9961565 0.6952748 1.6893036
-    ## 152  Steller's Sea-eagle    Haliaeetus_pelagicus  2 1.960934 1.0855046 0.7679266 2.4717990
-    ## 164         Papuan Eagle Harpyopsis_novaeguineae  2 2.346738 1.2079860 0.8675201 2.5942804
-    ## 217     Philippine Eagle   Pithecophaga_jefferyi  4 2.834930 1.3441512 0.9782403 4.1167400
-    ## 233        Crowned Eagle Stephanoaetus_coronatus  1 1.413409 0.8810401 0.6016701 1.5741873
-    ## 234             Bateleur   Terathopius_ecaudatus  1 1.752398 1.0124726 0.7085420 1.7056198
-    ## 235 Lappet-faced Vulture     Torgos_tracheliotos  3 2.032191 1.1092855 0.7872635 3.1887270
+    ##     birdlife_common_name               jetz_name  range_size       FD     FDlog       FDn    ecoDGE
+    ## 47     Cinereous Vulture       Aegypius_monachus  7718571.19 1.858799 1.0504017 0.6387130 1.1344458
+    ## 92        Ridgway's Hawk          Buteo_ridgwayi      210.23 1.956812 1.0841117 0.6631013 1.7564645
+    ## 105           Cuban Kite  Chondrohierax_wilsonii     3890.11 2.398837 1.2234334 0.7638966 1.8957861
+    ## 138      Bearded Vulture       Gypaetus_barbatus  8369572.33 2.821342 1.3406016 0.8486644 1.4246457
+    ## 152  Steller's Sea-eagle    Haliaeetus_pelagicus  1293649.63 1.778069 1.0217560 0.6179888 1.1898442
+    ## 164         Papuan Eagle Harpyopsis_novaeguineae   730591.98 2.196441 1.1620379 0.7194787 1.3301261
+    ## 204     Egyptian Vulture   Neophron_percnopterus 14111672.38 1.852511 1.0481995 0.6371199 1.3843759
+    ## 208    Flores Hawk-eagle         Nisaetus_floris    34986.16 1.522688 0.9253252 0.5482238 1.5976779
+    ## 217     Philippine Eagle   Pithecophaga_jefferyi   142256.55 3.710440 1.5497814 1.0000000 2.2221341
+    ## 234             Bateleur   Terathopius_ecaudatus 14023477.79 1.961504 1.0856971 0.6642483 1.1697412
+    ## 235 Lappet-faced Vulture     Torgos_tracheliotos  8489832.71 2.454785 1.2397603 0.7757086 1.5759367
+    ## 237     Long-tailed Hawk  Urotriorchis_macrourus  3073602.25 1.540543 0.9323778 0.5533262 0.9743999
 
 ``` r
 # Get the top 5% of ecoDGE scores.
 accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 26:30)]
 ```
 
-    ##       birdlife_common_name               jetz_name GE        FD     FDlog       FDn   ecoDGE
-    ## 105             Cuban Kite  Chondrohierax_wilsonii  4 1.0566988 0.7211022 0.4716195 3.493691
-    ## 140   White-backed Vulture          Gyps_africanus  4 0.5639157 0.4471927 0.2488952 3.219781
-    ## 141   White-rumped Vulture        Gyps_bengalensis  4 0.6793770 0.5184229 0.3068147 3.291012
-    ## 145         Indian Vulture            Gyps_indicus  4 0.6518839 0.5019164 0.2933927 3.274505
-    ## 146      Rüppell's Vulture         Gyps_rueppellii  4 0.7110013 0.5370787 0.3219843 3.309667
-    ## 147 Slender-billed Vulture       Gyps_tenuirostris  4 0.9128431 0.6485906 0.4126581 3.421179
-    ## 155  Madagascar Fish-eagle Haliaeetus_vociferoides  4 0.8499630 0.6151656 0.3854792 3.387754
-    ## 203         Hooded Vulture    Necrosyrtes_monachus  4 1.0619417 0.7236481 0.4736897 3.496237
-    ## 208      Flores Hawk-eagle         Nisaetus_floris  4 0.5802147 0.4575607 0.2573257 3.230149
-    ## 217       Philippine Eagle   Pithecophaga_jefferyi  4 2.8349303 1.3441512 0.9782403 4.116740
-    ## 222     Red-headed Vulture        Sarcogyps_calvus  4 1.0009571 0.6936256 0.4492775 3.466214
-    ## 236   White-headed Vulture Trigonoceps_occipitalis  4 1.2212488 0.7980696 0.5342041 3.570658
+    ##     birdlife_common_name               jetz_name  range_size       FD     FDlog       FDn   ecoDGE
+    ## 92        Ridgway's Hawk          Buteo_ridgwayi      210.23 1.956812 1.0841117 0.6631013 1.756464
+    ## 105           Cuban Kite  Chondrohierax_wilsonii     3890.11 2.398837 1.2234334 0.7638966 1.895786
+    ## 138      Bearded Vulture       Gypaetus_barbatus  8369572.33 2.821342 1.3406016 0.8486644 1.424646
+    ## 141 White-rumped Vulture        Gyps_bengalensis  3047965.15 1.025159 0.7056482 0.3892938 1.378001
+    ## 146    Rüppell's Vulture         Gyps_rueppellii  6445230.81 1.428763 0.8873820 0.5207730 1.559735
+    ## 203       Hooded Vulture    Necrosyrtes_monachus 10764077.19 1.288388 0.8278477 0.4777016 1.500200
+    ## 204     Egyptian Vulture   Neophron_percnopterus 14111672.38 1.852511 1.0481995 0.6371199 1.384376
+    ## 208    Flores Hawk-eagle         Nisaetus_floris    34986.16 1.522688 0.9253252 0.5482238 1.597678
+    ## 217     Philippine Eagle   Pithecophaga_jefferyi   142256.55 3.710440 1.5497814 1.0000000 2.222134
+    ## 222   Red-headed Vulture        Sarcogyps_calvus  2166730.60 1.008953 0.6976139 0.3834812 1.369967
+    ## 235 Lappet-faced Vulture     Torgos_tracheliotos  8489832.71 2.454785 1.2397603 0.7757086 1.575937
+    ## 236 White-headed Vulture Trigonoceps_occipitalis  6011586.35 1.367185 0.8617014 0.5021938 1.534054
 
 As we can see, all of the highest ecoDGE scores are critically
 endangered. This has been a criticism of ecoDGE scores, that functional
@@ -598,30 +572,31 @@ don’t need to log them now.
 accip_EcoEDGE <- left_join(accip_EDGE, accip_ecoDGE)
 ```
 
-    ## Joining, by = c("birdlife_name", "birdlife_common_name", "jetz_name", "jetz_order", "jetz_family", "redlist_cat", "beak_length_culmen",
-    ## "beak_length_nares", "beak_width", "beak_depth", "tarsus_length", "wing_length", "kipps_distance", "secondary1", "hand_wing_index",
-    ## "tail_length", "mass", "habitat_density", "migration", "trophic_level", "trophic_niche", "primary_lifestyle", "centroid_latitude",
-    ## "centroid_longitude", "range_size", "GE")
+    ## Joining, by = c("birdlife_name", "birdlife_common_name", "jetz_name", "jetz_order", "jetz_family", "redlist_cat",
+    ## "extinct_prob", "beak_length_culmen", "beak_length_nares", "beak_width", "beak_depth", "tarsus_length",
+    ## "wing_length", "kipps_distance", "secondary1", "hand_wing_index", "tail_length", "mass", "habitat_density",
+    ## "migration", "trophic_level", "trophic_niche", "primary_lifestyle", "centroid_latitude", "centroid_longitude",
+    ## "range_size")
 
 ``` r
 # Calculate EcoEDGE scores.
-accip_EcoEDGE$EcoEDGE <- (0.5*accip_EcoEDGE$EDn + 0.5*accip_EcoEDGE$FDn) + accip_EcoEDGE$GE*log(2)
+accip_EcoEDGE$EcoEDGE <- (0.5*accip_EcoEDGE$EDn + 0.5*accip_EcoEDGE$FDn) + accip_EcoEDGE$extinct_prob*log(2)
 
 # Select just the relevant columns.
 accip_EcoEDGE <- accip_EcoEDGE %>% dplyr::select(birdlife_common_name, jetz_name, 
-                                                 redlist_cat, GE, EDGE, ecoDGE, EcoEDGE)
+                                                 redlist_cat, extinct_prob, EDGE, ecoDGE, EcoEDGE)
 
 # Check it's worked.
 head(accip_EcoEDGE)
 ```
 
-    ##      birdlife_common_name             jetz_name redlist_cat GE     EDGE    ecoDGE   EcoEDGE
-    ## 1            Pied Goshawk Accipiter_albogularis          LC  0 2.226943 0.1410981 0.2234060
-    ## 2                  Shikra      Accipiter_badius          LC  0 1.825213 0.3218743 0.2449773
-    ## 3          Bicolored Hawk     Accipiter_bicolor          LC  0 2.185951 0.3298945 0.2948657
-    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus          VU  2 3.865518 1.6992508 1.7121809
-    ## 5      Levant Sparrowhawk    Accipiter_brevipes          LC  0 1.886337 0.3055872 0.2462563
-    ## 6     Nicobar Sparrowhawk     Accipiter_butleri          VU  2 3.898773 1.7318870 1.7297481
+    ##      birdlife_common_name             jetz_name redlist_cat extinct_prob     EDGE    ecoDGE   EcoEDGE
+    ## 1            Pied Goshawk Accipiter_albogularis          LC     0.060625 2.256493 0.2095788 0.3130414
+    ## 2                  Shikra      Accipiter_badius          LC     0.060625 1.911028 0.3693911 0.2993939
+    ## 3          Bicolored Hawk     Accipiter_bicolor          LC     0.060625 2.250052 0.4337221 0.3927898
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus          VU     0.242500 2.637361 0.4610902 0.5371898
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes          LC     0.060625 1.935681 0.3477426 0.2966622
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri          VU     0.242500 2.671207 0.6613260 0.6166232
 
 We can again look at the spread and see which are the highest species.
 
@@ -630,46 +605,46 @@ We can again look at the spread and see which are the highest species.
 accip_EcoEDGE[accip_EcoEDGE$EcoEDGE == max(accip_EcoEDGE$EcoEDGE),]
 ```
 
-    ##     birdlife_common_name             jetz_name redlist_cat GE   EDGE  ecoDGE  EcoEDGE
-    ## 217     Philippine Eagle Pithecophaga_jefferyi          CR  4 5.9189 4.11674 3.603949
+    ##     birdlife_common_name             jetz_name redlist_cat extinct_prob    EDGE   ecoDGE  EcoEDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi          CR         0.97 3.81352 2.222134 1.635054
 
 ``` r
 # Get the top 10% of EcoEDGE scores.
 accip_EcoEDGE[accip_EcoEDGE$EcoEDGE > quantile(accip_EcoEDGE$EcoEDGE, 0.9),]
 ```
 
-    ##         birdlife_common_name                jetz_name redlist_cat GE     EDGE   ecoDGE  EcoEDGE
-    ## 18           Gundlach's Hawk      Accipiter_gundlachi          EN  3 3.965779 2.603643 2.414579
-    ## 92            Ridgway's Hawk           Buteo_ridgwayi          CR  4 4.336146 3.052206 2.966565
-    ## 105               Cuban Kite   Chondrohierax_wilsonii          CR  4 5.237042 3.493691 3.262504
-    ## 120    Reunion Marsh-harrier         Circus_maillardi          EN  3 4.270122 2.497123 2.410610
-    ## 121            Black Harrier            Circus_maurus          EN  3 4.107043 2.425928 2.360585
-    ## 134 Madagascar Serpent-eagle        Eutriorchis_astur          EN  3 5.357568 2.440742 2.528246
-    ## 140     White-backed Vulture           Gyps_africanus          CR  4 4.726423 3.219781 3.085141
-    ## 141     White-rumped Vulture         Gyps_bengalensis          CR  4 4.583339 3.291012 3.095607
-    ## 142             Cape Vulture         Gyps_coprotheres          EN  3 3.681765 2.838908 2.473519
-    ## 145           Indian Vulture             Gyps_indicus          CR  4 4.374936 3.274505 3.061958
-    ## 146        Rüppell's Vulture          Gyps_rueppellii          CR  4 4.393093 3.309667 3.078601
-    ## 147   Slender-billed Vulture        Gyps_tenuirostris          CR  4 4.374913 3.421179 3.121588
-    ## 151      Pallas's Fish-eagle   Haliaeetus_leucoryphus          EN  3 4.356964 2.474009 2.412437
-    ## 155    Madagascar Fish-eagle  Haliaeetus_vociferoides          CR  4 4.866478 3.387754 3.171536
-    ## 162   Crowned Solitary Eagle Harpyhaliaetus_coronatus          EN  3 3.644918 2.682003 2.404964
-    ## 180      White-collared Kite         Leptodon_forbesi          EN  3 4.554955 2.446426 2.426814
-    ## 203           Hooded Vulture     Necrosyrtes_monachus          CR  4 5.396246 3.496237 3.284117
-    ## 204         Egyptian Vulture    Neophron_percnopterus          EN  3 5.273640 2.902952 2.705317
-    ## 208        Flores Hawk-eagle          Nisaetus_floris          CR  4 4.638980 3.230149 3.078054
-    ## 217         Philippine Eagle    Pithecophaga_jefferyi          CR  4 5.918900 4.116740 3.603949
-    ## 222       Red-headed Vulture         Sarcogyps_calvus          CR  4 5.393195 3.466214 3.271517
-    ## 229 Black-and-chestnut Eagle        Spizaetus_isidori          EN  3 4.417788 2.684303 2.505797
-    ## 235     Lappet-faced Vulture      Torgos_tracheliotos          EN  3 4.344917 3.188727 2.701460
-    ## 236     White-headed Vulture  Trigonoceps_occipitalis          CR  4 5.157038 3.570658 3.283455
+    ##         birdlife_common_name               jetz_name redlist_cat extinct_prob     EDGE    ecoDGE   EcoEDGE
+    ## 92            Ridgway's Hawk          Buteo_ridgwayi          CR     0.970000 2.212389 1.7564645 1.1354199
+    ## 105               Cuban Kite  Chondrohierax_wilsonii          CR     0.970000 3.126552 1.8957861 1.3749069
+    ## 127      Swallow-tailed Kite    Elanoides_forficatus          LC     0.060625 3.337099 0.9280096 0.7964405
+    ## 134 Madagascar Serpent-eagle       Eutriorchis_astur          EN     0.485000 3.609771 0.8557502 0.9536064
+    ## 138          Bearded Vulture       Gypaetus_barbatus          NT     0.121250 3.273313 1.4246457 0.9810268
+    ## 140     White-backed Vulture          Gyps_africanus          CR     0.970000 2.609136 1.2535639 1.0355677
+    ## 141     White-rumped Vulture        Gyps_bengalensis          CR     0.970000 2.463403 1.3780010 1.0504370
+    ## 145           Indian Vulture            Gyps_indicus          CR     0.970000 2.250380 1.2629707 0.9647638
+    ## 146        Rüppell's Vulture         Gyps_rueppellii          CR     0.970000 2.268981 1.5597348 1.0759614
+    ## 147   Slender-billed Vulture       Gyps_tenuirostris          CR     0.970000 2.250356 1.3535684 0.9975314
+    ## 151      Pallas's Fish-eagle  Haliaeetus_leucoryphus          EN     0.485000 2.601584 0.9727049 0.7873756
+    ## 155    Madagascar Fish-eagle Haliaeetus_vociferoides          CR     0.970000 2.751669 1.2992752 1.0815851
+    ## 164             Papuan Eagle Harpyopsis_novaeguineae          VU     0.242500 3.400970 1.3301261 1.0094991
+    ## 180      White-collared Kite        Leptodon_forbesi          EN     0.485000 2.801549 0.9152403 0.8079501
+    ## 202            Crested Eagle     Morphnus_guianensis          NT     0.121250 3.208049 0.9785285 0.8061509
+    ## 203           Hooded Vulture    Necrosyrtes_monachus          CR     0.970000 3.287320 1.5002005 1.2650633
+    ## 204         Egyptian Vulture   Neophron_percnopterus          EN     0.485000 3.525445 1.3843759 1.1273868
+    ## 208        Flores Hawk-eagle         Nisaetus_floris          CR     0.970000 2.520177 1.5976779 1.1416453
+    ## 217         Philippine Eagle   Pithecophaga_jefferyi          CR     0.970000 3.813520 2.2221341 1.6350538
+    ## 222       Red-headed Vulture        Sarcogyps_calvus          CR     0.970000 3.284243 1.3699666 1.2173165
+    ## 229 Black-and-chestnut Eagle       Spizaetus_isidori          EN     0.485000 2.662982 1.0084516 0.8130062
+    ## 234                 Bateleur   Terathopius_ecaudatus          NT     0.121250 3.177064 1.1697412 0.8689102
+    ## 235     Lappet-faced Vulture     Torgos_tracheliotos          EN     0.485000 2.589196 1.5759367 1.0030236
+    ## 236     White-headed Vulture Trigonoceps_occipitalis          CR     0.970000 3.045750 1.5340542 1.2273420
 
 ``` r
 # See the spread.
 hist(accip_EcoEDGE$EcoEDGE, breaks = 20)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-31-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-30-1.png
 :align: center
 :width: 600px
 ```
@@ -743,13 +718,13 @@ accip_ranges <- st_sf(accip_ranges)
 
 # Use the fasterize function with the raster template. 
 # We want to use the GE field, and the function max takes the highest value when they overlap.
-GE_raster <- fasterize(accip_ranges, raster_template, field = "GE", fun = "max")
+GE_raster <- fasterize(accip_ranges, raster_template, field = "extinct_prob", fun = "max")
 
 # Plot the new map.
 plot(GE_raster)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-33-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-32-1.png
 :align: center
 :width: 600px
 ```
@@ -818,7 +793,7 @@ options(repr.plot.width=15, repr.plot.height=10)
 GE_plot
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-34-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-33-1.png
 :align: center
 :width: 600px
 ```
