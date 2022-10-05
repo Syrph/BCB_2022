@@ -733,11 +733,6 @@ Now we’ve created our stack of range maps, and each are coded for their
 IUCN category. In this case we’ll take the maximum GE score as the one
 that’s shown. So if two ranges overlap, we take the highest score.
 
-> Extra task: Do you think this is a good way to show the data? What
-> would you do differently? Could you use another metric from today’s
-> practical? And is taking the highest score when cells overlap the best
-> option? Try and make another map to show the data.
-
 So now you can see the spread of GE scores throughout the globe. For
 your own species you may wish to focus on a specific area of Earth using
 the `crop()` function. Again we’ll use ggplot2 to make them a little
@@ -766,7 +761,7 @@ myColors <- c("grey80", "grey80", "#FCF7B7", "#FFD384", "#FFA9A9")
 names(myColors) <- unique(sort(raster_data$index))
 
 # Create the colour scale.
-colScale <- scale_fill_manual(name = "IUCN Status", values = myColors)
+colScale <- scale_fill_manual(name = "Extinction\nProbability", values = myColors)
 
 # Create a plot with ggplot (the plus signs at the end of a line carry over to the next line).
 GE_plot <- ggplot() +
@@ -801,3 +796,48 @@ GE_plot
 There’s our finished map! Think how you’d change it yourself if you want
 to include one in your report. It’s up to you and what you think is the
 best way to visualise your data!
+
+> Extra task: Do you think this is a good way to show the data? What
+> would you do differently? Could you use another metric from today’s
+> practical like EDGE? And is taking the highest score when cells
+> overlap the best option? Instead try and create an average extinction
+> probability raster.
+
+```{tip}
+Fasterize doesn't have a mean function option, but we can get around this by dividing one raster by another. 
+We first need to sum all the extinction probabilities, and then divide by species richness. Look back at 
+[Practical 1](https://syrph.github.io/BCB_2022/markdowns/practical_1/practical_1.html#plotting-maps) for a reminder of how to create a species richness raster. Then it's as easy as:
+  
+  `average_raster <- sum_raster / richness_raster`
+  
+```
+
+We can create an average raster by dividing our `GE_raster` with a
+species richness raster we created in practical 1. Given that the code
+to do this: `average_raster <- GE_raster / range_raster`, could you
+create an average extinction probability raster? (Look at how we created
+the range_raster in practical 1).
+
+::::{admonition} Show the answer…  
+:class: dropdown
+
+``` r
+# Sum all the extinction probabilities.
+sum_raster <- fasterize(accip_ranges, raster_template, field = "extinct_prob", fun = "sum")
+
+# Use the sum function with no field for richness. (Assumes each range = 1).
+richness_raster <- fasterize(accip_ranges, raster_template, fun = "sum")
+
+# Divide the total by number of species to get average.
+average_raster <- sum_raster / richness_raster
+
+# Plot the new map.
+plot(average_raster)
+```
+
+```{image} practical_3_files/figure-gfm/unnamed-chunk-35-1.png
+:align: center
+:width: 600px
+```
+
+::::

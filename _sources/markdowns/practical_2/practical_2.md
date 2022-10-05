@@ -359,24 +359,7 @@ ducks.
 # Load phylogenetic packages.
 library(ape)
 library(caper)
-```
 
-    ## Loading required package: MASS
-
-    ## 
-    ## Attaching package: 'MASS'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     select
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     area, select
-
-    ## Loading required package: mvtnorm
-
-``` r
 # Read in the tree.
 duck_tree <- read.tree("data/duck_tree.tre")
 plot(duck_tree, cex=0.3)
@@ -506,18 +489,7 @@ visualise this by plotting trees with different lambda values.
 ``` r
 # Load the package geiger that has the rescale function. You'll have to install it if you're in Rstudio on your own laptops.
 library(geiger)
-```
 
-    ## Warning: package 'geiger' was built under R version 4.1.3
-
-    ## 
-    ## Attaching package: 'geiger'
-
-    ## The following object is masked from 'package:raster':
-    ## 
-    ##     hdr
-
-``` r
 # We'll create six trees with different lambda values .
 lambda_1_tree <- rescale(duck_tree, "lambda", 1)
 lambda_0.8_tree <- rescale(duck_tree, "lambda", 0.8)

@@ -921,12 +921,6 @@ values based on GE rating rather than range size.</p>
 <p>Now we’ve created our stack of range maps, and each are coded for their
 IUCN category. In this case we’ll take the maximum GE score as the one
 that’s shown. So if two ranges overlap, we take the highest score.</p>
-<blockquote>
-<div><p>Extra task: Do you think this is a good way to show the data? What
-would you do differently? Could you use another metric from today’s
-practical? And is taking the highest score when cells overlap the best
-option? Try and make another map to show the data.</p>
-</div></blockquote>
 <p>So now you can see the spread of GE scores throughout the globe. For
 your own species you may wish to focus on a specific area of Earth using
 the <code class="docutils literal notranslate"><span class="pre">crop()</span></code> function. Again we’ll use ggplot2 to make them a little
@@ -953,7 +947,7 @@ nicer to look at.</p>
 <span class="nf">names</span><span class="p">(</span><span class="n">myColors</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">unique</span><span class="p">(</span><span class="nf">sort</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">))</span>
 
 <span class="c1"># Create the colour scale.</span>
-<span class="n">colScale</span> <span class="o">&lt;-</span> <span class="nf">scale_fill_manual</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;IUCN Status&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">myColors</span><span class="p">)</span>
+<span class="n">colScale</span> <span class="o">&lt;-</span> <span class="nf">scale_fill_manual</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Extinction\nProbability&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">myColors</span><span class="p">)</span>
 
 <span class="c1"># Create a plot with ggplot (the plus signs at the end of a line carry over to the next line).</span>
 <span class="n">GE_plot</span> <span class="o">&lt;-</span> <span class="nf">ggplot</span><span class="p">()</span> <span class="o">+</span>
@@ -984,6 +978,42 @@ nicer to look at.</p>
 <p>There’s our finished map! Think how you’d change it yourself if you want
 to include one in your report. It’s up to you and what you think is the
 best way to visualise your data!</p>
+<blockquote>
+<div><p>Extra task: Do you think this is a good way to show the data? What
+would you do differently? Could you use another metric from today’s
+practical like EDGE? And is taking the highest score when cells
+overlap the best option? Instead try and create an average extinction
+probability raster.</p>
+</div></blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Fasterize doesn’t have a mean function option, but we can get around this by dividing one raster by another.
+We first need to sum all the extinction probabilities, and then divide by species richness. Look back at
+<a class="reference external" href="https://syrph.github.io/BCB_2022/markdowns/practical_1/practical_1.html#plotting-maps">Practical 1</a> for a reminder of how to create a species richness raster. Then it’s as easy as:</p>
+<p><code class="docutils literal notranslate"><span class="pre">average_raster</span> <span class="pre">&lt;-</span> <span class="pre">sum_raster</span> <span class="pre">/</span> <span class="pre">richness_raster</span></code></p>
+</div>
+<p>We can create an average raster by dividing our <code class="docutils literal notranslate"><span class="pre">GE_raster</span></code> with a
+species richness raster we created in practical 1. Given that the code
+to do this: <code class="docutils literal notranslate"><span class="pre">average_raster</span> <span class="pre">&lt;-</span> <span class="pre">GE_raster</span> <span class="pre">/</span> <span class="pre">range_raster</span></code>, could you
+create an average extinction probability raster? (Look at how we created
+the range_raster in practical 1).</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Show the answer…  </p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum all the extinction probabilities.</span>
+<span class="n">sum_raster</span> <span class="o">&lt;-</span> <span class="nf">fasterize</span><span class="p">(</span><span class="n">accip_ranges</span><span class="p">,</span> <span class="n">raster_template</span><span class="p">,</span> <span class="n">field</span> <span class="o">=</span> <span class="s">&quot;extinct_prob&quot;</span><span class="p">,</span> <span class="n">fun</span> <span class="o">=</span> <span class="s">&quot;sum&quot;</span><span class="p">)</span>
+
+<span class="c1"># Use the sum function with no field for richness. (Assumes each range = 1).</span>
+<span class="n">richness_raster</span> <span class="o">&lt;-</span> <span class="nf">fasterize</span><span class="p">(</span><span class="n">accip_ranges</span><span class="p">,</span> <span class="n">raster_template</span><span class="p">,</span> <span class="n">fun</span> <span class="o">=</span> <span class="s">&quot;sum&quot;</span><span class="p">)</span>
+
+<span class="c1"># Divide the total by number of species to get average.</span>
+<span class="n">average_raster</span> <span class="o">&lt;-</span> <span class="n">sum_raster</span> <span class="o">/</span> <span class="n">richness_raster</span>
+
+<span class="c1"># Plot the new map.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">average_raster</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-35-1.png"><img alt="../../_images/unnamed-chunk-35-1.png" class="align-center" src="../../_images/unnamed-chunk-35-1.png" style="width: 600px;" /></a>
+</div>
 </section>
 </section>
 

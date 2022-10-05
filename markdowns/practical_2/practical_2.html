@@ -573,25 +573,8 @@ ducks.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load phylogenetic packages.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ape</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">caper</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: MASS
 
-## 
-## Attaching package: &#39;MASS&#39;
-
-## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     select
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     area, select
-
-## Loading required package: mvtnorm
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the tree.</span>
+<span class="c1"># Read in the tree.</span>
 <span class="n">duck_tree</span> <span class="o">&lt;-</span> <span class="nf">read.tree</span><span class="p">(</span><span class="s">&quot;data/duck_tree.tre&quot;</span><span class="p">)</span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="n">cex</span><span class="o">=</span><span class="m">0.3</span><span class="p">)</span>
 </pre></div>
@@ -697,19 +680,8 @@ on the tree, to reflect how body mass is related between species. We can
 visualise this by plotting trees with different lambda values.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the package geiger that has the rescale function. You&#39;ll have to install it if you&#39;re in Rstudio on your own laptops.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">geiger</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Warning: package &#39;geiger&#39; was built under R version 4.1.3
 
-## 
-## Attaching package: &#39;geiger&#39;
-
-## The following object is masked from &#39;package:raster&#39;:
-## 
-##     hdr
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll create six trees with different lambda values .</span>
+<span class="c1"># We&#39;ll create six trees with different lambda values .</span>
 <span class="n">lambda_1_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
 <span class="n">lambda_0.8_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">0.8</span><span class="p">)</span>
 <span class="n">lambda_0.6_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">0.6</span><span class="p">)</span>

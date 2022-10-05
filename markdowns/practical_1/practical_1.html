@@ -1078,12 +1078,8 @@ often used to describe species’ environmental niches. Google for more
 info!</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raster package for spatial data.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: sp
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
+
+<span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
 <span class="n">bio</span> <span class="o">&lt;-</span> <span class="nf">getData</span><span class="p">(</span><span class="s">&quot;worldclim&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;bio&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
 
 <span class="c1"># Get the class for our rasters.</span>
@@ -1203,12 +1199,8 @@ Accipitridae, which are birds of prey. For convenience we’ve saved the
 range data as an <code class="docutils literal notranslate"><span class="pre">.RData</span></code> object, as we briefly mentioned in section 3.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load in the spatial packages we&#39;ll need.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Linking to GEOS 3.9.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data into our environment.</span>
+
+<span class="c1"># Load the data into our environment.</span>
 <span class="nf">load</span><span class="p">(</span><span class="s">&quot;data/accipitridae_ranges.RData&quot;</span><span class="p">)</span>
 
 <span class="c1"># Inspect the maps.</span>
@@ -1261,23 +1253,8 @@ resolution. We can also tell <code class="docutils literal notranslate"><span cl
 ranges, which we’ll use to build a map of species richness.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load fasterize package.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">fasterize</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Warning: package &#39;fasterize&#39; was built under R version 4.1.3
 
-## 
-## Attaching package: &#39;fasterize&#39;
-
-## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     plot
-
-## The following object is masked from &#39;package:base&#39;:
-## 
-##     plot
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start by creating an empty raster stack to store our data in.</span>
+<span class="c1"># Start by creating an empty raster stack to store our data in.</span>
 <span class="n">raster_template</span> <span class="o">&lt;-</span> <span class="nf">raster</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="m">2160</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="m">900</span><span class="p">,</span> <span class="n">ymn</span> <span class="o">=</span> <span class="m">-60</span><span class="p">)</span>
 
 <span class="c1"># Create a map of species richness by summing overlapping ranges.</span>
@@ -1292,17 +1269,7 @@ ranges, which we’ll use to build a map of species richness.</p>
 doesn’t look very pretty and countries without any ranges are left off
 the map. We can make a much clearer map using <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;tidyr&#39;
-
-## The following object is masked from &#39;package:raster&#39;:
-## 
-##     extract
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
 
 <span class="c1"># Convert the raster into a raster dataframe. This will be coordinates of the </span>
 <span class="c1"># raster pixels (cols x and y) and the value of the raster pixels. </span>
@@ -1415,20 +1382,7 @@ practical you will need to load the following packages:</p>
 <p>• phytools</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load packages.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ape</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;ape&#39;
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     rotate, zoom
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">phytools</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: maps
+<span class="nf">library</span><span class="p">(</span><span class="n">phytools</span><span class="p">)</span>
 </pre></div>
 </div>
 <section id="tree-parameters">
@@ -1737,22 +1691,6 @@ want.</p>
 <span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;dplyr&#39;
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     intersect, select, union
-
-## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag
-
-## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union
-</pre></div>
-</div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy a list of all the tips from the tree.</span>
 <span class="n">bird_tips</span> <span class="o">&lt;-</span> <span class="n">ran_turdidae_tree</span><span class="o">$</span><span class="n">tip.label</span>
 
@@ -1931,30 +1869,6 @@ assignments.</p>
 <span class="nf">library</span><span class="p">(</span><span class="n">ggtree</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
-## 
-## If you use ggtree in published research, please cite the most appropriate paper(s):
-## 
-## 1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
-## 2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
-## 3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
-
-## 
-## Attaching package: &#39;ggtree&#39;
-
-## The following object is masked from &#39;package:ape&#39;:
-## 
-##     rotate
-
-## The following object is masked from &#39;package:tidyr&#39;:
-## 
-##     expand
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     flip, rotate
-</pre></div>
-</div>
 <p><code class="docutils literal notranslate"><span class="pre">ggtree</span></code> is a bit more complicated than just normal tree plots, but you
 can also do a lot more. We’ll create a basic tree plot structure first
 and then add tip labels and traits after.</p>
@@ -2058,18 +1972,7 @@ plot to make it look nicer!</p>
 <p>Or we can use bars. Maybe we could add clade labels after?</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the ggtree extra package for adding plots to circular trees.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ggtreeExtra</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## ggtreeExtra v1.4.2 For help: https://yulab-smu.top/treedata-book/
-## 
-## If you use the ggtree package suite in published research, please cite the appropriate paper(s):
-## 
-## S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L Zhan, T Wu, E Hu, Y Jiang, X Bo, G
-## Yu. ggtreeExtra: Compact visualization of richly annotated phylogenetic data. Molecular Biology and
-## Evolution. 2021, 38(9):4039-4042. doi: 10.1093/molbev/msab166
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">turdidae_plot</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">turdi_tree_data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span> <span class="o">+</span>
+<span class="p">(</span><span class="n">turdidae_plot</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">turdi_tree_data</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span> <span class="o">+</span>
     
     <span class="c1"># Geom fruit allows us to specify the ggplot geom we want.</span>
     <span class="nf">geom_fruit</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="n">geom_bar</span><span class="p">,</span>

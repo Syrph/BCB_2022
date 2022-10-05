@@ -813,11 +813,7 @@ info!
 ``` r
 # Load the raster package for spatial data.
 library(raster)
-```
 
-    ## Loading required package: sp
-
-``` r
 # getData is a function from the raster package that allows us to download some spatial data. 
 bio <- getData("worldclim", var="bio", res=10)
 
@@ -954,11 +950,7 @@ range data as an `.RData` object, as we briefly mentioned in section 3.
 ``` r
 # First load in the spatial packages we'll need.
 library(sf)
-```
 
-    ## Linking to GEOS 3.9.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE
-
-``` r
 # Load the data into our environment.
 load("data/accipitridae_ranges.RData")
 
@@ -1020,22 +1012,7 @@ ranges, which we’ll use to build a map of species richness.
 ``` r
 # Load fasterize package.
 library(fasterize)
-```
 
-    ## Warning: package 'fasterize' was built under R version 4.1.3
-
-    ## 
-    ## Attaching package: 'fasterize'
-
-    ## The following object is masked from 'package:graphics':
-    ## 
-    ##     plot
-
-    ## The following object is masked from 'package:base':
-    ## 
-    ##     plot
-
-``` r
 # Start by creating an empty raster stack to store our data in.
 raster_template <- raster(ncols=2160, nrows = 900, ymn = -60)
 
@@ -1057,16 +1034,6 @@ the map. We can make a much clearer map using `ggplot2`.
 
 ``` r
 library(tidyr)
-```
-
-    ## 
-    ## Attaching package: 'tidyr'
-
-    ## The following object is masked from 'package:raster':
-    ## 
-    ##     extract
-
-``` r
 library(ggplot2)
 
 # Convert the raster into a raster dataframe. This will be coordinates of the 
@@ -1200,20 +1167,8 @@ practical you will need to load the following packages:
 ``` r
 # Load packages.
 library(ape)
-```
-
-    ## 
-    ## Attaching package: 'ape'
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     rotate, zoom
-
-``` r
 library(phytools)
 ```
-
-    ## Loading required package: maps
 
 #### Tree parameters
 
@@ -1603,21 +1558,6 @@ library(stringr)
 library(dplyr)
 ```
 
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     intersect, select, union
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
 ``` r
 # Copy a list of all the tips from the tree.
 bird_tips <- ran_turdidae_tree$tip.label
@@ -1828,29 +1768,6 @@ assignments.
 library(ggtree)
 ```
 
-    ## ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
-    ## 
-    ## If you use ggtree in published research, please cite the most appropriate paper(s):
-    ## 
-    ## 1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
-    ## 2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
-    ## 3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
-
-    ## 
-    ## Attaching package: 'ggtree'
-
-    ## The following object is masked from 'package:ape':
-    ## 
-    ##     rotate
-
-    ## The following object is masked from 'package:tidyr':
-    ## 
-    ##     expand
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     flip, rotate
-
 `ggtree` is a bit more complicated than just normal tree plots, but you
 can also do a lot more. We’ll create a basic tree plot structure first
 and then add tip labels and traits after.
@@ -1990,17 +1907,6 @@ Or we can use bars. Maybe we could add clade labels after?
 ``` r
 # Use the ggtree extra package for adding plots to circular trees.
 library(ggtreeExtra)
-```
-
-    ## ggtreeExtra v1.4.2 For help: https://yulab-smu.top/treedata-book/
-    ## 
-    ## If you use the ggtree package suite in published research, please cite the appropriate paper(s):
-    ## 
-    ## S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L Zhan, T Wu, E Hu, Y Jiang, X Bo, G
-    ## Yu. ggtreeExtra: Compact visualization of richly annotated phylogenetic data. Molecular Biology and
-    ## Evolution. 2021, 38(9):4039-4042. doi: 10.1093/molbev/msab166
-
-``` r
 (turdidae_plot <- ggtree(turdi_tree_data, layout="fan", size = 0.7) +
     
     # Geom fruit allows us to specify the ggplot geom we want.
