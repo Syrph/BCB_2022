@@ -724,8 +724,8 @@ manually set the number of breaks.
 dev.off()
 ```
 
-    ## null device 
-    ##           1
+    ## RStudioGD 
+    ##         2
 
 So it’s true that there are many small species and few large. We can
 take the natural log of body mass to better see if a pattern exists
@@ -772,8 +772,8 @@ plot(passerines$log_mass, passerines$tarsus_length, pch=16, col="blue",
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 ### 5. Handling spatial data
 
@@ -1112,8 +1112,8 @@ range_plot
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 Of course, you can play around with plot settings to create some
 impressive maps!

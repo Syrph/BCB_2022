@@ -983,8 +983,8 @@ range_plot
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 ### 5. Latitudinal diversity gradient
 

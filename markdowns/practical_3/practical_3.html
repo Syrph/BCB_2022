@@ -863,7 +863,7 @@ out this paper which first proposed the use of EcoEDGE scores:</p>
 <section id="plotting-a-map-of-iucn-categories">
 <h2>7. Plotting a map of IUCN categories<a class="headerlink" href="#plotting-a-map-of-iucn-categories" title="Permalink to this headline">¶</a></h2>
 <p>You may wish to plot maps of your IUCN redlist categories, especially if
-you’re intersted in what areas of the world are most threatened by
+you’re interested in what areas of the world are most threatened by
 extinction. We can do this easily using similar code from practical 3.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load in the spatial packages we&#39;ll need.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span>
@@ -913,11 +913,17 @@ values based on GE rating rather than range size.</p>
 <span class="c1"># We want to use the GE field, and the function max takes the highest value when they overlap.</span>
 <span class="n">GE_raster</span> <span class="o">&lt;-</span> <span class="nf">fasterize</span><span class="p">(</span><span class="n">accip_ranges</span><span class="p">,</span> <span class="n">raster_template</span><span class="p">,</span> <span class="n">field</span> <span class="o">=</span> <span class="s">&quot;extinct_prob&quot;</span><span class="p">,</span> <span class="n">fun</span> <span class="o">=</span> <span class="s">&quot;max&quot;</span><span class="p">)</span>
 
-<span class="c1"># Plot the new map.</span>
-<span class="nf">plot</span><span class="p">(</span><span class="n">GE_raster</span><span class="p">)</span>
+<span class="c1"># Plot the new map. Colour ramp palette is another way to make a palette.</span>
+<span class="c1"># The second brackets (50) is the number of colours to create from the function.</span>
+<span class="n">green_to_red</span> <span class="o">&lt;-</span> <span class="nf">colorRampPalette</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;forestgreen&quot;</span><span class="p">,</span> <span class="s">&quot;khaki&quot;</span><span class="p">,</span> <span class="s">&quot;firebrick&quot;</span><span class="p">))(</span><span class="m">20</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">GE_raster</span><span class="p">),</span> <span class="n">col</span><span class="o">=</span><span class="n">green_to_red</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/unnamed-chunk-32-11.png"><img alt="../../_images/unnamed-chunk-32-11.png" class="align-center" src="../../_images/unnamed-chunk-32-11.png" style="width: 600px;" /></a>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">colors()</span></code> to see the list of all the named colours to play with.</p>
+</div>
 <p>Now we’ve created our stack of range maps, and each are coded for their
 IUCN category. In this case we’ll take the maximum GE score as the one
 that’s shown. So if two ranges overlap, we take the highest score.</p>
@@ -974,7 +980,7 @@ nicer to look at.</p>
 <span class="n">GE_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-33-1.png"><img alt="../../_images/unnamed-chunk-33-1.png" class="align-center" src="../../_images/unnamed-chunk-33-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-34-11.png"><img alt="../../_images/unnamed-chunk-34-11.png" class="align-center" src="../../_images/unnamed-chunk-34-11.png" style="width: 600px;" /></a>
 <p>There’s our finished map! Think how you’d change it yourself if you want
 to include one in your report. It’s up to you and what you think is the
 best way to visualise your data!</p>
@@ -992,11 +998,6 @@ We first need to sum all the extinction probabilities, and then divide by specie
 <a class="reference external" href="https://syrph.github.io/BCB_2022/markdowns/practical_1/practical_1.html#plotting-maps">Practical 1</a> for a reminder of how to create a species richness raster. Then it’s as easy as:</p>
 <p><code class="docutils literal notranslate"><span class="pre">average_raster</span> <span class="pre">&lt;-</span> <span class="pre">sum_raster</span> <span class="pre">/</span> <span class="pre">richness_raster</span></code></p>
 </div>
-<p>We can create an average raster by dividing our <code class="docutils literal notranslate"><span class="pre">GE_raster</span></code> with a
-species richness raster we created in practical 1. Given that the code
-to do this: <code class="docutils literal notranslate"><span class="pre">average_raster</span> <span class="pre">&lt;-</span> <span class="pre">GE_raster</span> <span class="pre">/</span> <span class="pre">range_raster</span></code>, could you
-create an average extinction probability raster? (Look at how we created
-the range_raster in practical 1).</p>
 <div class="dropdown admonition">
 <p class="admonition-title">Show the answer…  </p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum all the extinction probabilities.</span>
@@ -1012,7 +1013,49 @@ the range_raster in practical 1).</p>
 <span class="nf">plot</span><span class="p">(</span><span class="n">average_raster</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-35-1.png"><img alt="../../_images/unnamed-chunk-35-1.png" class="align-center" src="../../_images/unnamed-chunk-35-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-36-1.png"><img alt="../../_images/unnamed-chunk-36-1.png" class="align-center" src="../../_images/unnamed-chunk-36-1.png" style="width: 600px;" /></a>
+<p>In this case we can see that the two maps are actually quite similar. If
+we look close enough we can see there are some cells that have a higher
+extinction risk (like in southern Spain), but there are so few we’d
+probably call them outliers. This stretches out our colour scale, and
+makes it hard to determine relative patterns for the rest of the world.
+We can instead take logs, which reduces the effect of outliers.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the map after logging cell values.</span>
+<span class="nf">plot</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">average_raster</span><span class="p">),</span> <span class="n">col</span> <span class="o">=</span> <span class="n">green_to_red</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-37-1.png"><img alt="../../_images/unnamed-chunk-37-1.png" class="align-center" src="../../_images/unnamed-chunk-37-1.png" style="width: 600px;" /></a>
+<p>Now we can see the pattern clearer. For your coursework, experiment with
+different metrics and methods to produce the best looking and most
+informative maps.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># With GGplot. </span>
+<span class="n">raster_data</span> <span class="o">&lt;-</span> <span class="nf">as.data.frame</span><span class="p">(</span><span class="n">average_raster</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">drop_na</span><span class="p">()</span>
+<span class="nf">colnames</span><span class="p">(</span><span class="n">raster_data</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;long&quot;</span><span class="p">,</span> <span class="s">&quot;lat&quot;</span><span class="p">,</span> <span class="s">&quot;index&quot;</span><span class="p">)</span>
+
+<span class="c1"># We&#39;ll log the values, and then rescale from 0 to 1 so it&#39;s relative probabilities.</span>
+<span class="n">raster_data</span><span class="o">$</span><span class="n">index</span> <span class="o">&lt;-</span> <span class="nf">log</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">)</span>
+<span class="n">raster_data</span><span class="o">$</span><span class="n">index</span> <span class="o">&lt;-</span> <span class="n">scales</span><span class="o">::</span><span class="nf">rescale</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">,</span>  <span class="n">to</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span>
+
+<span class="nf">ggplot</span><span class="p">()</span> <span class="o">+</span>
+  
+  <span class="c1"># Add the borders again.</span>
+  <span class="nf">borders</span><span class="p">(</span><span class="n">ylim</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">-60</span><span class="p">,</span><span class="m">90</span><span class="p">),</span> <span class="n">fill</span> <span class="o">=</span> <span class="s">&quot;grey90&quot;</span><span class="p">,</span> <span class="n">colour</span> <span class="o">=</span> <span class="s">&quot;grey90&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">xlim</span><span class="p">(</span><span class="m">-180</span><span class="p">,</span> <span class="m">180</span><span class="p">)</span> <span class="o">+</span>
+
+  <span class="c1"># Add the GE information on top.</span>
+  <span class="nf">geom_tile</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">long</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">lat</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">index</span><span class="p">),</span> <span class="n">data</span> <span class="o">=</span> <span class="n">raster_data</span><span class="p">)</span> <span class="o">+</span>
+  
+  <span class="c1"># Add the formatting again!</span>
+  <span class="c1"># Add a continuous colour scheme in ggplot.</span>
+  <span class="nf">scale_fill_gradientn</span><span class="p">(</span><span class="n">colours</span> <span class="o">=</span> <span class="n">green_to_red</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Relative\nExtinction\nRisk&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Accipitridae Threat Map&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">theme_classic</span><span class="p">()</span> <span class="o">+</span>
+  <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Latitude&quot;</span><span class="p">)</span> <span class="o">+</span>
+  <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Longitude&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  <span class="nf">coord_fixed</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-38-1.png"><img alt="../../_images/unnamed-chunk-38-1.png" class="align-center" src="../../_images/unnamed-chunk-38-1.png" style="width: 600px;" /></a>
 </div>
 </section>
 </section>

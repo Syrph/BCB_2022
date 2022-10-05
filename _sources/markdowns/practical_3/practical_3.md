@@ -667,7 +667,7 @@ out this paper which first proposed the use of EcoEDGE scores:
 ### 7. Plotting a map of IUCN categories
 
 You may wish to plot maps of your IUCN redlist categories, especially if
-you’re intersted in what areas of the world are most threatened by
+you’re interested in what areas of the world are most threatened by
 extinction. We can do this easily using similar code from practical 3.
 
 ``` r
@@ -720,13 +720,19 @@ accip_ranges <- st_sf(accip_ranges)
 # We want to use the GE field, and the function max takes the highest value when they overlap.
 GE_raster <- fasterize(accip_ranges, raster_template, field = "extinct_prob", fun = "max")
 
-# Plot the new map.
-plot(GE_raster)
+# Plot the new map. Colour ramp palette is another way to make a palette.
+# The second brackets (50) is the number of colours to create from the function.
+green_to_red <- colorRampPalette(c("forestgreen", "khaki", "firebrick"))(20)
+plot(as.factor(GE_raster), col=green_to_red)
 ```
 
 ```{image} practical_3_files/figure-gfm/unnamed-chunk-32-1.png
 :align: center
 :width: 600px
+```
+
+```{tip}
+You can use `colors()` to see the list of all the named colours to play with.
 ```
 
 Now we’ve created our stack of range maps, and each are coded for their
@@ -788,7 +794,7 @@ options(repr.plot.width=15, repr.plot.height=10)
 GE_plot
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-33-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-34-1.png
 :align: center
 :width: 600px
 ```
@@ -812,12 +818,6 @@ We first need to sum all the extinction probabilities, and then divide by specie
   
 ```
 
-We can create an average raster by dividing our `GE_raster` with a
-species richness raster we created in practical 1. Given that the code
-to do this: `average_raster <- GE_raster / range_raster`, could you
-create an average extinction probability raster? (Look at how we created
-the range_raster in practical 1).
-
 ::::{admonition} Show the answer…  
 :class: dropdown
 
@@ -835,7 +835,61 @@ average_raster <- sum_raster / richness_raster
 plot(average_raster)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-35-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-36-1.png
+:align: center
+:width: 600px
+```
+
+In this case we can see that the two maps are actually quite similar. If
+we look close enough we can see there are some cells that have a higher
+extinction risk (like in southern Spain), but there are so few we’d
+probably call them outliers. This stretches out our colour scale, and
+makes it hard to determine relative patterns for the rest of the world.
+We can instead take logs, which reduces the effect of outliers.
+
+``` r
+# Plot the map after logging cell values.
+plot(log(average_raster), col = green_to_red)
+```
+
+```{image} practical_3_files/figure-gfm/unnamed-chunk-37-1.png
+:align: center
+:width: 600px
+```
+
+Now we can see the pattern clearer. For your coursework, experiment with
+different metrics and methods to produce the best looking and most
+informative maps.
+
+``` r
+# With GGplot. 
+raster_data <- as.data.frame(average_raster, xy=TRUE) %>% drop_na()
+colnames(raster_data) <- c("long", "lat", "index")
+
+# We'll log the values, and then rescale from 0 to 1 so it's relative probabilities.
+raster_data$index <- log(raster_data$index)
+raster_data$index <- scales::rescale(raster_data$index,  to = c(0,1))
+
+ggplot() +
+  
+  # Add the borders again.
+  borders(ylim = c(-60,90), fill = "grey90", colour = "grey90") +
+  xlim(-180, 180) +
+
+  # Add the GE information on top.
+  geom_tile(aes(x = long, y = lat, fill = index), data = raster_data) +
+  
+  # Add the formatting again!
+  # Add a continuous colour scheme in ggplot.
+  scale_fill_gradientn(colours = green_to_red, name = "Relative\nExtinction\nRisk") +
+  ggtitle("Accipitridae Threat Map") +
+  theme_classic() +
+  ylab("Latitude") +
+  xlab("Longitude") + 
+  coord_fixed()
+```
+
+```{image} practical_3_files/figure-gfm/unnamed-chunk-38-1.png
 :align: center
 :width: 600px
 ```
