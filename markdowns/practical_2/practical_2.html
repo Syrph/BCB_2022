@@ -573,8 +573,25 @@ ducks.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load phylogenetic packages.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ape</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">caper</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: MASS
 
-<span class="c1"># Read in the tree.</span>
+## 
+## Attaching package: &#39;MASS&#39;
+
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select
+
+## The following objects are masked from &#39;package:raster&#39;:
+## 
+##     area, select
+
+## Loading required package: mvtnorm
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the tree.</span>
 <span class="n">duck_tree</span> <span class="o">&lt;-</span> <span class="nf">read.tree</span><span class="p">(</span><span class="s">&quot;data/duck_tree.tre&quot;</span><span class="p">)</span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="n">cex</span><span class="o">=</span><span class="m">0.3</span><span class="p">)</span>
 </pre></div>
@@ -611,13 +628,6 @@ do this by creating a comparative data object from the <code class="docutils lit
 <p>So we can see that our comparative object has worked as it should. Now
 we can run a pgls to see if information on the phylogeny makes any
 difference.</p>
-<p><strong>Warning</strong> If you’re using R studio Cloud, you’ll need an extra
-argument: <code class="docutils literal notranslate"><span class="pre">bounds</span> <span class="pre">=</span> <span class="pre">list(lambda</span> <span class="pre">=</span> <span class="pre">c(0.05,</span> <span class="pre">1))</span></code>. So it looks like this:</p>
-<p><code class="docutils literal notranslate"><span class="pre">duck_pgls</span> <span class="pre">&lt;-</span> <span class="pre">pgls(log_BM</span> <span class="pre">~</span> <span class="pre">abs_latitude,</span> <span class="pre">data</span> <span class="pre">=</span> <span class="pre">duck_comp,</span> <span class="pre">lambda</span> <span class="pre">=</span> <span class="pre">&quot;ML&quot;,</span> <span class="pre">bounds</span> <span class="pre">=</span> <span class="pre">list(lambda</span> <span class="pre">=</span> <span class="pre">c(0.05,</span> <span class="pre">1)))</span></code></p>
-<p>This limits where the model searches for the lambda value, but won’t
-change your result. It’s just a weird way cloud is set up, and doesn’t
-happen for every pgls. For your coursework, try models without this
-argument first.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run a PGLS model.</span>
 <span class="n">duck_pgls</span> <span class="o">&lt;-</span> <span class="nf">pgls</span><span class="p">(</span><span class="n">log_BM</span> <span class="o">~</span> <span class="n">abs_latitude</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">duck_comp</span><span class="p">,</span> <span class="n">lambda</span> <span class="o">=</span> <span class="s">&quot;ML&quot;</span><span class="p">)</span>
 </pre></div>
@@ -687,8 +697,19 @@ on the tree, to reflect how body mass is related between species. We can
 visualise this by plotting trees with different lambda values.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the package geiger that has the rescale function. You&#39;ll have to install it if you&#39;re in Rstudio on your own laptops.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">geiger</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Warning: package &#39;geiger&#39; was built under R version 4.1.3
 
-<span class="c1"># We&#39;ll create six trees with different lambda values .</span>
+## 
+## Attaching package: &#39;geiger&#39;
+
+## The following object is masked from &#39;package:raster&#39;:
+## 
+##     hdr
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll create six trees with different lambda values .</span>
 <span class="n">lambda_1_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
 <span class="n">lambda_0.8_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">0.8</span><span class="p">)</span>
 <span class="n">lambda_0.6_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">0.6</span><span class="p">)</span>
@@ -730,7 +751,7 @@ came to this number.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="n">lambda_likelihood</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-20-11.png"><img alt="../../_images/unnamed-chunk-20-11.png" class="align-center" src="../../_images/unnamed-chunk-20-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-20-1.png"><img alt="../../_images/unnamed-chunk-20-1.png" class="align-center" src="../../_images/unnamed-chunk-20-1.png" style="width: 600px;" /></a>
 <p>On the horizontal axis we can see potential lambda values, and on the
 vertical is how likely they are. Red lines show the 95% confidence
 intervals. This shows that we are fairly confident in our lambda value.
@@ -770,13 +791,14 @@ geographical data for all birds. Ecology Letters (in press).</p>
 <span class="nf">str</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    9872 obs. of  25 variables:
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    9872 obs. of  26 variables:
 ##  $ birdlife_name       : chr  &quot;Accipiter albogularis&quot; &quot;Accipiter badius&quot; &quot;Accipiter bicolor&quot; &quot;Accipiter brachyurus&quot; ...
 ##  $ birdlife_common_name: chr  &quot;Pied Goshawk&quot; &quot;Shikra&quot; &quot;Bicolored Hawk&quot; &quot;New Britain Sparrowhawk&quot; ...
 ##  $ jetz_name           : chr  &quot;Accipiter_albogularis&quot; &quot;Accipiter_badius&quot; &quot;Accipiter_bicolor&quot; &quot;Accipiter_brachyurus&quot; ...
 ##  $ jetz_order          : chr  &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; ...
 ##  $ jetz_family         : chr  &quot;Accipitridae&quot; &quot;Accipitridae&quot; &quot;Accipitridae&quot; &quot;Accipitridae&quot; ...
 ##  $ redlist_cat         : chr  &quot;LC&quot; &quot;LC&quot; &quot;LC&quot; &quot;VU&quot; ...
+##  $ extinct_prob        : num  0.0606 0.0606 0.0606 0.2425 0.0606 ...
 ##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
 ##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
 ##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
@@ -801,27 +823,34 @@ geographical data for all birds. Ecology Letters (in press).</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">head</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat beak_length_culmen
-## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC               27.7
-## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC               20.6
-## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC               25.0
-## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU               22.5
-## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC               21.1
-## 6     Accipiter butleri     Nicobar Sparrowhawk     Accipiter_butleri Accipitriformes Accipitridae          VU               20.0
-##   beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1 hand_wing_index tail_length  mass
-## 1              17.8       10.6       14.7          62.0       235.2           81.8      159.5            33.9       169.0 248.8
-## 2              12.1        8.8       11.6          43.0       186.7           62.5      127.4            32.9       140.6 131.2
-## 3              13.7        8.6       12.7          58.1       229.6           56.6      174.8            24.6       186.3 287.5
-## 4              14.0        8.9       11.9          61.2       202.2           64.1      138.1            31.7       140.8 142.0
-## 5              12.1        8.7       11.1          46.4       217.6           87.8      129.9            40.2       153.5 186.5
-## 6              11.9        6.6       12.0          48.7       166.0           42.9      123.1            25.8       127.0 122.0
-##   habitat_density migration trophic_level trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
-## 1               1         2     Carnivore     Vertivore       Insessorial             -8.15             158.49    37461.21
-## 2               2         3     Carnivore     Vertivore       Insessorial              8.23              44.98 22374973.00
-## 3               2         2     Carnivore     Vertivore        Generalist            -10.10             -59.96 14309701.27
-## 4               1         2     Carnivore     Vertivore       Insessorial             -5.45             150.68    35580.71
-## 5               1         3     Carnivore     Vertivore        Generalist             45.24              45.33  2936751.80
-## 6               1         1     Carnivore     Vertivore       Insessorial              8.42              93.17      327.84
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat
+## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC
+## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC
+## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC
+## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU
+## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC
+## 6     Accipiter butleri     Nicobar Sparrowhawk     Accipiter_butleri Accipitriformes Accipitridae          VU
+##   extinct_prob beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance
+## 1     0.060625               27.7              17.8       10.6       14.7          62.0       235.2           81.8
+## 2     0.060625               20.6              12.1        8.8       11.6          43.0       186.7           62.5
+## 3     0.060625               25.0              13.7        8.6       12.7          58.1       229.6           56.6
+## 4     0.242500               22.5              14.0        8.9       11.9          61.2       202.2           64.1
+## 5     0.060625               21.1              12.1        8.7       11.1          46.4       217.6           87.8
+## 6     0.242500               20.0              11.9        6.6       12.0          48.7       166.0           42.9
+##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche
+## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore
+## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore
+## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore
+## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore
+## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore
+## 6      123.1            25.8       127.0 122.0               1         1     Carnivore     Vertivore
+##   primary_lifestyle centroid_latitude centroid_longitude  range_size
+## 1       Insessorial             -8.15             158.49    37461.21
+## 2       Insessorial              8.23              44.98 22374973.00
+## 3        Generalist            -10.10             -59.96 14309701.27
+## 4       Insessorial             -5.45             150.68    35580.71
+## 5        Generalist             45.24              45.33  2936751.80
+## 6       Insessorial              8.42              93.17      327.84
 </pre></div>
 </div>
 <p>So we can see the data is a near complete species list for the world’s
@@ -1144,7 +1173,7 @@ degree latitudes and see if some bins are bigger closer to the equator.</p>
 <span class="nf">hist</span><span class="p">(</span><span class="n">accip_data</span><span class="o">$</span><span class="n">lat.bins</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">7</span><span class="p">)</span> 
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-34-11.png"><img alt="../../_images/unnamed-chunk-34-11.png" class="align-center" src="../../_images/unnamed-chunk-34-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-34-1.png"><img alt="../../_images/unnamed-chunk-34-1.png" class="align-center" src="../../_images/unnamed-chunk-34-1.png" style="width: 600px;" /></a>
 <p>It definitely looks like a pattern is going on there! We can investigate
 this using a model.</p>
 <section id="generalised-linear-models">

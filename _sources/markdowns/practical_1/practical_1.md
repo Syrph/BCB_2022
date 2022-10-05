@@ -557,13 +557,14 @@ It’s always good practice to check the data after it’s been read in.
 str(avonet_data)
 ```
 
-    ## 'data.frame':    9872 obs. of  25 variables:
+    ## 'data.frame':    9872 obs. of  26 variables:
     ##  $ birdlife_name       : chr  "Accipiter albogularis" "Accipiter badius" "Accipiter bicolor" "Accipiter brachyurus" ...
     ##  $ birdlife_common_name: chr  "Pied Goshawk" "Shikra" "Bicolored Hawk" "New Britain Sparrowhawk" ...
     ##  $ jetz_name           : chr  "Accipiter_albogularis" "Accipiter_badius" "Accipiter_bicolor" "Accipiter_brachyurus" ...
     ##  $ jetz_order          : chr  "Accipitriformes" "Accipitriformes" "Accipitriformes" "Accipitriformes" ...
     ##  $ jetz_family         : chr  "Accipitridae" "Accipitridae" "Accipitridae" "Accipitridae" ...
     ##  $ redlist_cat         : chr  "LC" "LC" "LC" "VU" ...
+    ##  $ extinct_prob        : num  0.0606 0.0606 0.0606 0.2425 0.0606 ...
     ##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
     ##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
     ##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
@@ -597,24 +598,30 @@ The `head` function is also useful to check the data is correct.
 head(avonet_data, 5)
 ```
 
-    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat beak_length_culmen
-    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC               27.7
-    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC               20.6
-    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC               25.0
-    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU               22.5
-    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC               21.1
-    ##   beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1 hand_wing_index tail_length  mass
-    ## 1              17.8       10.6       14.7          62.0       235.2           81.8      159.5            33.9       169.0 248.8
-    ## 2              12.1        8.8       11.6          43.0       186.7           62.5      127.4            32.9       140.6 131.2
-    ## 3              13.7        8.6       12.7          58.1       229.6           56.6      174.8            24.6       186.3 287.5
-    ## 4              14.0        8.9       11.9          61.2       202.2           64.1      138.1            31.7       140.8 142.0
-    ## 5              12.1        8.7       11.1          46.4       217.6           87.8      129.9            40.2       153.5 186.5
-    ##   habitat_density migration trophic_level trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
-    ## 1               1         2     Carnivore     Vertivore       Insessorial             -8.15             158.49    37461.21
-    ## 2               2         3     Carnivore     Vertivore       Insessorial              8.23              44.98 22374973.00
-    ## 3               2         2     Carnivore     Vertivore        Generalist            -10.10             -59.96 14309701.27
-    ## 4               1         2     Carnivore     Vertivore       Insessorial             -5.45             150.68    35580.71
-    ## 5               1         3     Carnivore     Vertivore        Generalist             45.24              45.33  2936751.80
+    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat
+    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC
+    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC
+    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC
+    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU
+    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC
+    ##   extinct_prob beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance
+    ## 1     0.060625               27.7              17.8       10.6       14.7          62.0       235.2           81.8
+    ## 2     0.060625               20.6              12.1        8.8       11.6          43.0       186.7           62.5
+    ## 3     0.060625               25.0              13.7        8.6       12.7          58.1       229.6           56.6
+    ## 4     0.242500               22.5              14.0        8.9       11.9          61.2       202.2           64.1
+    ## 5     0.060625               21.1              12.1        8.7       11.1          46.4       217.6           87.8
+    ##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche
+    ## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore
+    ## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore
+    ## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore
+    ## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore
+    ## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore
+    ##   primary_lifestyle centroid_latitude centroid_longitude  range_size
+    ## 1       Insessorial             -8.15             158.49    37461.21
+    ## 2       Insessorial              8.23              44.98 22374973.00
+    ## 3        Generalist            -10.10             -59.96 14309701.27
+    ## 4       Insessorial             -5.45             150.68    35580.71
+    ## 5        Generalist             45.24              45.33  2936751.80
 
 Briefly, you can export data (especially dataframes) using a few simple
 functions:
@@ -806,7 +813,11 @@ info!
 ``` r
 # Load the raster package for spatial data.
 library(raster)
+```
 
+    ## Loading required package: sp
+
+``` r
 # getData is a function from the raster package that allows us to download some spatial data. 
 bio <- getData("worldclim", var="bio", res=10)
 
@@ -943,7 +954,11 @@ range data as an `.RData` object, as we briefly mentioned in section 3.
 ``` r
 # First load in the spatial packages we'll need.
 library(sf)
+```
 
+    ## Linking to GEOS 3.9.1, GDAL 3.2.1, PROJ 7.2.1; sf_use_s2() is TRUE
+
+``` r
 # Load the data into our environment.
 load("data/accipitridae_ranges.RData")
 
@@ -1005,7 +1020,22 @@ ranges, which we’ll use to build a map of species richness.
 ``` r
 # Load fasterize package.
 library(fasterize)
+```
 
+    ## Warning: package 'fasterize' was built under R version 4.1.3
+
+    ## 
+    ## Attaching package: 'fasterize'
+
+    ## The following object is masked from 'package:graphics':
+    ## 
+    ##     plot
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     plot
+
+``` r
 # Start by creating an empty raster stack to store our data in.
 raster_template <- raster(ncols=2160, nrows = 900, ymn = -60)
 
@@ -1027,6 +1057,16 @@ the map. We can make a much clearer map using `ggplot2`.
 
 ``` r
 library(tidyr)
+```
+
+    ## 
+    ## Attaching package: 'tidyr'
+
+    ## The following object is masked from 'package:raster':
+    ## 
+    ##     extract
+
+``` r
 library(ggplot2)
 
 # Convert the raster into a raster dataframe. This will be coordinates of the 
@@ -1160,8 +1200,20 @@ practical you will need to load the following packages:
 ``` r
 # Load packages.
 library(ape)
+```
+
+    ## 
+    ## Attaching package: 'ape'
+
+    ## The following objects are masked from 'package:raster':
+    ## 
+    ##     rotate, zoom
+
+``` r
 library(phytools)
 ```
+
+    ## Loading required package: maps
 
 #### Tree parameters
 
@@ -1466,8 +1518,9 @@ First, lets see what species are in the tree.
 head(ran_turdidae_tree$tip.label, 10)
 ```
 
-    ##  [1] "Zoothera_everetti"        "Zoothera_naevia"          "Zoothera_pinicola"        "Hylocichla_mustelina"     "Catharus_aurantiirostris"
-    ##  [6] "Catharus_mexicanus"       "Catharus_dryas"           "Catharus_fuscater"        "Catharus_ustulatus"       "Catharus_bicknelli"
+    ##  [1] "Zoothera_everetti"        "Zoothera_naevia"          "Zoothera_pinicola"        "Hylocichla_mustelina"    
+    ##  [5] "Catharus_aurantiirostris" "Catharus_mexicanus"       "Catharus_dryas"           "Catharus_fuscater"       
+    ##  [9] "Catharus_ustulatus"       "Catharus_bicknelli"
 
 We can remove species from the tree that we don’t want to include. This
 is useful when we are missing data for a species, or we have a larger
@@ -1489,9 +1542,9 @@ drop_species <- ran_turdidae_tree$tip.label[tip_numbers]
 drop_species
 ```
 
-    ##  [1] "Myadestes_genibarbis"   "Myadestes_ralloides"    "Myadestes_melanops"     "Myadestes_coloratus"    "Myadestes_palmeri"     
-    ##  [6] "Myadestes_elisabeth"    "Myadestes_townsendi"    "Myadestes_obscurus"     "Myadestes_occidentalis" "Myadestes_unicolor"    
-    ## [11] "Myadestes_lanaiensis"
+    ##  [1] "Myadestes_genibarbis"   "Myadestes_ralloides"    "Myadestes_melanops"     "Myadestes_coloratus"   
+    ##  [5] "Myadestes_palmeri"      "Myadestes_elisabeth"    "Myadestes_townsendi"    "Myadestes_obscurus"    
+    ##  [9] "Myadestes_occidentalis" "Myadestes_unicolor"     "Myadestes_lanaiensis"
 
 Now, we create a new tree, with the Myadestes tips dropped from it.
 
@@ -1549,6 +1602,21 @@ want.
 library(stringr)
 library(dplyr)
 ```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:raster':
+    ## 
+    ##     intersect, select, union
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
 
 ``` r
 # Copy a list of all the tips from the tree.
@@ -1690,14 +1758,16 @@ are in the tip labels
 turdidae_data$jetz_name %in% ran_turdidae_tree$tip.label
 ```
 
-    ##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [23] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [45]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [67]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [155]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [19]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [37]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [55]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [73]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [91]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [127]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [163]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 
 We can save the results, and use this to select the rows we need from
 turdidae_data. We’ll use the `!` operator, which means NOT. So in this
@@ -1757,6 +1827,29 @@ assignments.
 # Load ggtree for plotting phylogenies.
 library(ggtree)
 ```
+
+    ## ggtree v3.2.1  For help: https://yulab-smu.top/treedata-book/
+    ## 
+    ## If you use ggtree in published research, please cite the most appropriate paper(s):
+    ## 
+    ## 1. Guangchuang Yu. Using ggtree to visualize data on tree-like structures. Current Protocols in Bioinformatics. 2020, 69:e96. doi:10.1002/cpbi.96
+    ## 2. Guangchuang Yu, Tommy Tsan-Yuk Lam, Huachen Zhu, Yi Guan. Two methods for mapping and visualizing associated data on phylogeny using ggtree. Molecular Biology and Evolution. 2018, 35(12):3041-3043. doi:10.1093/molbev/msy194
+    ## 3. Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution. 2017, 8(1):28-36. doi:10.1111/2041-210X.12628
+
+    ## 
+    ## Attaching package: 'ggtree'
+
+    ## The following object is masked from 'package:ape':
+    ## 
+    ##     rotate
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     expand
+
+    ## The following objects are masked from 'package:raster':
+    ## 
+    ##     flip, rotate
 
 `ggtree` is a bit more complicated than just normal tree plots, but you
 can also do a lot more. We’ll create a basic tree plot structure first
@@ -1897,6 +1990,17 @@ Or we can use bars. Maybe we could add clade labels after?
 ``` r
 # Use the ggtree extra package for adding plots to circular trees.
 library(ggtreeExtra)
+```
+
+    ## ggtreeExtra v1.4.2 For help: https://yulab-smu.top/treedata-book/
+    ## 
+    ## If you use the ggtree package suite in published research, please cite the appropriate paper(s):
+    ## 
+    ## S Xu, Z Dai, P Guo, X Fu, S Liu, L Zhou, W Tang, T Feng, M Chen, L Zhan, T Wu, E Hu, Y Jiang, X Bo, G
+    ## Yu. ggtreeExtra: Compact visualization of richly annotated phylogenetic data. Molecular Biology and
+    ## Evolution. 2021, 38(9):4039-4042. doi: 10.1093/molbev/msab166
+
+``` r
 (turdidae_plot <- ggtree(turdi_tree_data, layout="fan", size = 0.7) +
     
     # Geom fruit allows us to specify the ggplot geom we want.
