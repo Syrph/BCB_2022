@@ -673,7 +673,7 @@ library(dplyr)
 accip_data <- avonet_data %>% filter(jetz_family == "Accipitridae")
 ```
 
-> Extra task: Can you use skills from Practical 2 and 3 to run a PGLS to
+> Extra task: Can you use skills from Practical 1 and 2 to run a PGLS to
 > detirmine if Rapoport’s rule is true in Accipitridae? You’ll need to
 > read in the ‘all_birds.tre’ and drop the tips for all the other
 > species.
