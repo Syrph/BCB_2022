@@ -382,7 +382,7 @@ pairs(body_traits)
 
 ``` r
 # Include body mass.
-pairs(cbind(beak_traits, accip_data$mass))
+pairs(cbind(beak_traits, log(accip_data$mass)))
 ```
 
 ```{image} practical_3_files/figure-gfm/unnamed-chunk-17-3.png
@@ -391,29 +391,10 @@ pairs(cbind(beak_traits, accip_data$mass))
 ```
 
 ``` r
-pairs(cbind(body_traits, accip_data$mass))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-4.png
-:align: center
-:width: 600px
-```
-
-``` r
-# We can see a non-linear relationship with mass, so we'll log it.
-pairs(cbind(beak_traits, log(accip_data$mass)))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-5.png
-:align: center
-:width: 600px
-```
-
-``` r
 pairs(cbind(body_traits, log(accip_data$mass)))
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-6.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-17-4.png
 :align: center
 :width: 600px
 ```
@@ -511,19 +492,12 @@ by plotting them together.
 
 ``` r
 # Plot PC1 against mass.
+par(mfrow = c(1,2))
 plot(beak_pca$scores[,1] ~ log(accip_data$mass))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-20-1.png
-:align: center
-:width: 600px
-```
-
-``` r
 plot(body_pca$scores[,1] ~ log(accip_data$mass))
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-20-2.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-20-1.png
 :align: center
 :width: 600px
 ```
@@ -544,7 +518,7 @@ To calculate functional diversity we’ll create a distance matrix of our
 traits. Species with similar traits will have smaller ‘distances’.
 
 ``` r
-# Create a matrix.
+# Create a matrix. Add in the rownames for the species.
 traits_matrix <- cbind(beak_pca$scores[,2], body_pca$scores[,2], scale(log(accip_data$mass)))
 rownames(traits_matrix) <- accip_data$jetz_name
 
@@ -618,12 +592,12 @@ FD[FD$FDn == max(FD$FDn),]
     ## 138 Gypaetus_barbatus 1.002616 0.6944545   1
 
 So the species with the largest FD score is *Gypaetus barbatus*, the
-Bearded Vulture. This means G. barbatus is the most ecologically diverse
-species in our clade, based on the morphological values we’ve supplied.
-You might be interested to know that G. barbatus is a very unique
-vulture, with long narrow wings, and wedge shaped tail that makes it
-unmistakable in flight! Moreover, they live on a diet of up to 90% bone
-marrow, which makes them the only living bird that specialises on
+Bearded Vulture. This means *G. barbatus* is the most ecologically
+diverse species in our clade, based on the morphological values we’ve
+supplied. You might be interested to know that *G. barbatus* is a very
+unique vulture, with long narrow wings, and wedge shaped tail that makes
+it unmistakable in flight! Moreover, they live on a diet of up to 90%
+bone marrow, which makes them the only living bird that specialises on
 marrow! This will be reflected in the beak morphological traits we used
 to calculate FD. Pretty cool right!
 
@@ -640,34 +614,34 @@ accip_ecoDGE <- left_join(accip_data, FD, by = c("jetz_name" = "species"))
 
 # Calculate ecoDGE scores.
 accip_ecoDGE$ecoDGE <- accip_ecoDGE$FDlog + accip_ecoDGE$extinct_prob * log(2)
-head(accip_ecoDGE)[,c(2:3, 26:30)]
+head(accip_ecoDGE)[,c(2:3, 6, 27:30)]
 ```
 
-    ##      birdlife_common_name             jetz_name  range_size         FD      FDlog        FDn     ecoDGE
-    ## 1            Pied Goshawk Accipiter_albogularis    37461.21 0.05800192 0.05638214 0.02365179 0.09840419
-    ## 2                  Shikra      Accipiter_badius 22374973.00 0.37108714 0.31560396 0.42030075 0.35762600
-    ## 3          Bicolored Hawk     Accipiter_bicolor 14309701.27 0.14229400 0.13303852 0.14094775 0.17506057
-    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus    35580.71 0.20783017 0.18882550 0.22631036 0.35691370
-    ## 5      Levant Sparrowhawk    Accipiter_brevipes  2936751.80 0.11507628 0.10892281 0.10404704 0.15094486
-    ## 6     Nicobar Sparrowhawk     Accipiter_butleri      327.84 0.11277599 0.10685779 0.10088723 0.27494598
+    ##      birdlife_common_name             jetz_name redlist_cat         FD      FDlog        FDn     ecoDGE
+    ## 1            Pied Goshawk Accipiter_albogularis          LC 0.05800192 0.05638214 0.02365179 0.09840419
+    ## 2                  Shikra      Accipiter_badius          LC 0.37108714 0.31560396 0.42030075 0.35762600
+    ## 3          Bicolored Hawk     Accipiter_bicolor          LC 0.14229400 0.13303852 0.14094775 0.17506057
+    ## 4 New Britain Sparrowhawk  Accipiter_brachyurus          VU 0.20783017 0.18882550 0.22631036 0.35691370
+    ## 5      Levant Sparrowhawk    Accipiter_brevipes          LC 0.11507628 0.10892281 0.10404704 0.15094486
+    ## 6     Nicobar Sparrowhawk     Accipiter_butleri          VU 0.11277599 0.10685779 0.10088723 0.27494598
 
 And does including IUCN categories change our conservation priorities?
 
 ``` r
 # Find the highest ecoDGE score.
-accip_ecoDGE[accip_ecoDGE$ecoDGE == max(accip_ecoDGE$ecoDGE), c(2:3, 26:30)]
+accip_ecoDGE[accip_ecoDGE$ecoDGE == max(accip_ecoDGE$ecoDGE), c(2:3, 6, 27:30)]
 ```
 
-    ##     birdlife_common_name            jetz_name range_size        FD     FDlog       FDn   ecoDGE
-    ## 203       Hooded Vulture Necrosyrtes_monachus   10764077 0.4933096 0.4009949 0.5509619 1.073348
+    ##     birdlife_common_name            jetz_name redlist_cat        FD     FDlog       FDn   ecoDGE
+    ## 203       Hooded Vulture Necrosyrtes_monachus          CR 0.4933096 0.4009949 0.5509619 1.073348
 
 ``` r
 # Find the ecoDGE score for Gypaetus barbatus.
-accip_ecoDGE[accip_ecoDGE$jetz_name == "Gypaetus_barbatus", c(2:3, 26:30)]
+accip_ecoDGE[accip_ecoDGE$jetz_name == "Gypaetus_barbatus", c(2:3, 6, 27:30)]
 ```
 
-    ##     birdlife_common_name         jetz_name range_size       FD     FDlog FDn    ecoDGE
-    ## 138      Bearded Vulture Gypaetus_barbatus    8369572 1.002616 0.6944545   1 0.7784986
+    ##     birdlife_common_name         jetz_name redlist_cat       FD     FDlog FDn    ecoDGE
+    ## 138      Bearded Vulture Gypaetus_barbatus          NT 1.002616 0.6944545   1 0.7784986
 
 Yes! Funnily enough the Philippine Eagle is again the species we need to
 check. This may be because the GE component of ecoDGE scores is weighted
@@ -675,41 +649,41 @@ much higher than the FD component.
 
 ``` r
 # Get the top 5% of FD scores.
-accip_ecoDGE[accip_ecoDGE$FD > quantile(accip_ecoDGE$FD, 0.95), c(2:3, 26:30)]
+accip_ecoDGE[accip_ecoDGE$FD > quantile(accip_ecoDGE$FD, 0.95), c(2:3, 6, 26:30)]
 ```
 
-    ##       birdlife_common_name             jetz_name range_size        FD     FDlog       FDn    ecoDGE
-    ## 63           Jerdon's Baza       Aviceda_jerdoni    1592907 0.4762142 0.3894808 0.5333437 0.4315029
-    ## 103    Scissor-tailed Kite Chelictinia_riocourii    5425286 0.8747121 0.6284551 0.8990108 0.6704771
-    ## 127    Swallow-tailed Kite  Elanoides_forficatus   13295665 0.5672809 0.4493422 0.6249407 0.4913643
-    ## 138        Bearded Vulture     Gypaetus_barbatus    8369572 1.0026164 0.6944545 1.0000000 0.7784986
-    ## 144      Himalayan Griffon     Gyps_himalayensis    3859146 0.5021673 0.4069089 0.5600113 0.4909530
-    ## 152    Steller's Sea-eagle  Haliaeetus_pelagicus    1293650 0.6861835 0.5224677 0.7368338 0.6905559
-    ## 161            Harpy Eagle        Harpia_harpyja   11064295 0.5683062 0.4499962 0.6259414 0.5340403
-    ## 201               Red Kite         Milvus_milvus    1698402 0.5158533 0.4159785 0.5738892 0.5000226
-    ## 203         Hooded Vulture  Necrosyrtes_monachus   10764077 0.4933096 0.4009949 0.5509619 1.0733477
-    ## 204       Egyptian Vulture Neophron_percnopterus   14111672 0.6344264 0.4912919 0.6891302 0.8274683
-    ## 216 Oriental Honey-buzzard   Pernis_ptilorhyncus   11263290 0.6033874 0.4721185 0.6597920 0.5141406
-    ## 235   Lappet-faced Vulture   Torgos_tracheliotos    8489833 0.5292324 0.4247659 0.5873352 0.7609423
+    ##       birdlife_common_name             jetz_name redlist_cat range_size        FD     FDlog       FDn    ecoDGE
+    ## 63           Jerdon's Baza       Aviceda_jerdoni          LC    1592907 0.4762142 0.3894808 0.5333437 0.4315029
+    ## 103    Scissor-tailed Kite Chelictinia_riocourii          LC    5425286 0.8747121 0.6284551 0.8990108 0.6704771
+    ## 127    Swallow-tailed Kite  Elanoides_forficatus          LC   13295665 0.5672809 0.4493422 0.6249407 0.4913643
+    ## 138        Bearded Vulture     Gypaetus_barbatus          NT    8369572 1.0026164 0.6944545 1.0000000 0.7784986
+    ## 144      Himalayan Griffon     Gyps_himalayensis          NT    3859146 0.5021673 0.4069089 0.5600113 0.4909530
+    ## 152    Steller's Sea-eagle  Haliaeetus_pelagicus          VU    1293650 0.6861835 0.5224677 0.7368338 0.6905559
+    ## 161            Harpy Eagle        Harpia_harpyja          NT   11064295 0.5683062 0.4499962 0.6259414 0.5340403
+    ## 201               Red Kite         Milvus_milvus          NT    1698402 0.5158533 0.4159785 0.5738892 0.5000226
+    ## 203         Hooded Vulture  Necrosyrtes_monachus          CR   10764077 0.4933096 0.4009949 0.5509619 1.0733477
+    ## 204       Egyptian Vulture Neophron_percnopterus          EN   14111672 0.6344264 0.4912919 0.6891302 0.8274683
+    ## 216 Oriental Honey-buzzard   Pernis_ptilorhyncus          LC   11263290 0.6033874 0.4721185 0.6597920 0.5141406
+    ## 235   Lappet-faced Vulture   Torgos_tracheliotos          EN    8489833 0.5292324 0.4247659 0.5873352 0.7609423
 
 ``` r
 # Get the top 5% of ecoDGE scores.
-accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 26:30)]
+accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 6, 27:30)]
 ```
 
-    ##       birdlife_common_name               jetz_name  range_size        FD     FDlog       FDn    ecoDGE
-    ## 105             Cuban Kite  Chondrohierax_wilsonii     3890.11 0.3470922 0.2979483 0.3932849 0.9703011
-    ## 140   White-backed Vulture          Gyps_africanus 10465544.70 0.2229335 0.2012525 0.2453255 0.8736052
-    ## 141   White-rumped Vulture        Gyps_bengalensis  3047965.15 0.1944576 0.1776922 0.2092747 0.8500450
-    ## 145         Indian Vulture            Gyps_indicus  1117987.16 0.1992261 0.1816764 0.2153712 0.8540292
-    ## 146      Rüppell's Vulture         Gyps_rueppellii  6445230.81 0.4414195 0.3656284 0.4968458 1.0379812
-    ## 147 Slender-billed Vulture       Gyps_tenuirostris   705181.48 0.3275007 0.2832980 0.3708677 0.9556508
-    ## 155  Madagascar Fish-eagle Haliaeetus_vociferoides    52761.99 0.2056280 0.1870006 0.2235180 0.8593534
-    ## 203         Hooded Vulture    Necrosyrtes_monachus 10764077.19 0.4933096 0.4009949 0.5509619 1.0733477
-    ## 204       Egyptian Vulture   Neophron_percnopterus 14111672.38 0.6344264 0.4912919 0.6891302 0.8274683
-    ## 208      Flores Hawk-eagle         Nisaetus_floris    34986.16 0.4213525 0.3516089 0.4753938 1.0239617
-    ## 217       Philippine Eagle   Pithecophaga_jefferyi   142256.55 0.3451327 0.2964927 0.3910576 0.9688454
-    ## 222     Red-headed Vulture        Sarcogyps_calvus  2166730.60 0.3733088 0.3172230 0.4227782 0.9895758
+    ##       birdlife_common_name               jetz_name redlist_cat        FD     FDlog       FDn    ecoDGE
+    ## 105             Cuban Kite  Chondrohierax_wilsonii          CR 0.3470922 0.2979483 0.3932849 0.9703011
+    ## 140   White-backed Vulture          Gyps_africanus          CR 0.2229335 0.2012525 0.2453255 0.8736052
+    ## 141   White-rumped Vulture        Gyps_bengalensis          CR 0.1944576 0.1776922 0.2092747 0.8500450
+    ## 145         Indian Vulture            Gyps_indicus          CR 0.1992261 0.1816764 0.2153712 0.8540292
+    ## 146      Rüppell's Vulture         Gyps_rueppellii          CR 0.4414195 0.3656284 0.4968458 1.0379812
+    ## 147 Slender-billed Vulture       Gyps_tenuirostris          CR 0.3275007 0.2832980 0.3708677 0.9556508
+    ## 155  Madagascar Fish-eagle Haliaeetus_vociferoides          CR 0.2056280 0.1870006 0.2235180 0.8593534
+    ## 203         Hooded Vulture    Necrosyrtes_monachus          CR 0.4933096 0.4009949 0.5509619 1.0733477
+    ## 204       Egyptian Vulture   Neophron_percnopterus          EN 0.6344264 0.4912919 0.6891302 0.8274683
+    ## 208      Flores Hawk-eagle         Nisaetus_floris          CR 0.4213525 0.3516089 0.4753938 1.0239617
+    ## 217       Philippine Eagle   Pithecophaga_jefferyi          CR 0.3451327 0.2964927 0.3910576 0.9688454
+    ## 222     Red-headed Vulture        Sarcogyps_calvus          CR 0.3733088 0.3172230 0.4227782 0.9895758
 
 As we can see, all of the highest ecoDGE scores are critically
 endangered. This has been a criticism of ecoDGE scores, that functional
