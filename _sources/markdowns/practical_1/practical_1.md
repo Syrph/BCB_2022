@@ -1160,10 +1160,6 @@ To plot phylogenies (or use any specialized analysis) in R, you need one
 or more additional packages from the basic R installation. For this
 practical you will need to load the following packages:
 
-• ape
-
-• phytools
-
 ``` r
 # Load packages.
 library(ape)
@@ -1852,9 +1848,9 @@ as an object, and prints the plot at the same time.
 And now we have a plot where we can see the spread of habitat types in
 Thrushes. Try experimenting with different colours and sizes to create
 some beautiful trees that put this one to shame! There’s also lots of
-other ways you can label trees. For more info this guide is a great
-place to start:
-<https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package>
+other ways you can label trees. For more info [this
+guide](https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package)
+is a great place to start.
 
 > Extra task: Can you make another plot for continuous body mass data?
 > Think about how you’d show this with colour. Can you change the key to

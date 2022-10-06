@@ -580,11 +580,9 @@ prey.
 #### Phylogenetic analysis
 
 First we’ll load in our data. This is the same data from practical 1
-from the AVONET database. The citation for this data is:
-
-Tobias, J.A., Sheard, C., Pigot, A.L., Devenish, A.J.M., Yang, J.,
-Sayol, F. et al. (2021) AVONET: morphological, ecological and
-geographical data for all birds. Ecology Letters (in press).
+from the AVONET database. You can find the paper
+[here](https://doi.org/10.1111/ele.13898), and should cite it in
+reports.
 
 ``` r
 # Read in the avonet data.
@@ -764,18 +762,17 @@ with `lambda = 0.15` to check if it changes our result.
 #### Plotting range size
 
 Now we need to load in our range data. For convenience we’ve saved the
-range data as an `.Rdata` object, which `R` can load back into the
-working environment. `.Rdata` objects can be extremely useful,
+range data as an `.RData` object, which `R` can load back into the
+working environment. `.RData` objects can be extremely useful,
 especially when you’ve ran a model that’s taken a long time, and wish to
 save the result without converting it to a specific file format. The
-maps for each family are available as a separate `R.data` file on
+maps for each family are available as a separate `.RData` file on
 blackboard.
 
 ``` r
 # First load in the spatial packages we'll need.
 library(raster)
 library(sf)
-
 
 # Load the data into our environment.
 load("data/accipitridae_ranges.RData")
@@ -1198,11 +1195,12 @@ richness_plot <- ggplot() +
   geom_tile(aes(x=long, y=lat, fill= richness), data=raster_data) +
   
   # Here we add a name to the legend, and set manual colours for either end of a gradient.
-  scale_fill_gradientn(name = "Species Richness", colors = c("skyblue", "red")) +
+  # \n adds a new line.
+  scale_fill_gradientn(name = "Species\nRichness", colors = c("skyblue", "red")) +  
   
   # You should be getting used to this code!
-  ggtitle("Accipitridae Species Richness Heat Map") + 
-  theme_classic() +
+  theme_classic() + # Most of preset theme.
+  theme(text = element_text(face = "bold")) +  # Extra theme just for the bold.
   ylab("Latitude") + 
   xlab("Longitude") + 
   coord_fixed()

@@ -754,10 +754,9 @@ prey.</p>
 <section id="phylogenetic-analysis">
 <h3>Phylogenetic analysis<a class="headerlink" href="#phylogenetic-analysis" title="Permalink to this headline">¶</a></h3>
 <p>First we’ll load in our data. This is the same data from practical 1
-from the AVONET database. The citation for this data is:</p>
-<p>Tobias, J.A., Sheard, C., Pigot, A.L., Devenish, A.J.M., Yang, J.,
-Sayol, F. et al. (2021) AVONET: morphological, ecological and
-geographical data for all birds. Ecology Letters (in press).</p>
+from the AVONET database. You can find the paper
+<a class="reference external" href="https://doi.org/10.1111/ele.13898">here</a>, and should cite it in
+reports.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the avonet data.</span>
 <span class="n">avonet_data</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="s">&quot;data/avonet_data.csv&quot;</span><span class="p">)</span>
 <span class="nf">str</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">)</span>
@@ -924,16 +923,15 @@ with <code class="docutils literal notranslate"><span class="pre">lambda</span> 
 <section id="plotting-range-size">
 <h3>Plotting range size<a class="headerlink" href="#plotting-range-size" title="Permalink to this headline">¶</a></h3>
 <p>Now we need to load in our range data. For convenience we’ve saved the
-range data as an <code class="docutils literal notranslate"><span class="pre">.Rdata</span></code> object, which <code class="docutils literal notranslate"><span class="pre">R</span></code> can load back into the
-working environment. <code class="docutils literal notranslate"><span class="pre">.Rdata</span></code> objects can be extremely useful,
+range data as an <code class="docutils literal notranslate"><span class="pre">.RData</span></code> object, which <code class="docutils literal notranslate"><span class="pre">R</span></code> can load back into the
+working environment. <code class="docutils literal notranslate"><span class="pre">.RData</span></code> objects can be extremely useful,
 especially when you’ve ran a model that’s taken a long time, and wish to
 save the result without converting it to a specific file format. The
-maps for each family are available as a separate <code class="docutils literal notranslate"><span class="pre">R.data</span></code> file on
+maps for each family are available as a separate <code class="docutils literal notranslate"><span class="pre">.RData</span></code> file on
 blackboard.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load in the spatial packages we&#39;ll need.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
-
 
 <span class="c1"># Load the data into our environment.</span>
 <span class="nf">load</span><span class="p">(</span><span class="s">&quot;data/accipitridae_ranges.RData&quot;</span><span class="p">)</span>
@@ -1301,11 +1299,12 @@ richness.</p>
   <span class="nf">geom_tile</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">long</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span> <span class="n">richness</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">raster_data</span><span class="p">)</span> <span class="o">+</span>
   
   <span class="c1"># Here we add a name to the legend, and set manual colours for either end of a gradient.</span>
-  <span class="nf">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Species Richness&quot;</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;skyblue&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">))</span> <span class="o">+</span>
+  <span class="c1"># \n adds a new line.</span>
+  <span class="nf">scale_fill_gradientn</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Species\nRichness&quot;</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;skyblue&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">))</span> <span class="o">+</span>  
   
   <span class="c1"># You should be getting used to this code!</span>
-  <span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;Accipitridae Species Richness Heat Map&quot;</span><span class="p">)</span> <span class="o">+</span> 
-  <span class="nf">theme_classic</span><span class="p">()</span> <span class="o">+</span>
+  <span class="nf">theme_classic</span><span class="p">()</span> <span class="o">+</span> <span class="c1"># Most of preset theme.</span>
+  <span class="nf">theme</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">face</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">))</span> <span class="o">+</span>  <span class="c1"># Extra theme just for the bold.</span>
   <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Latitude&quot;</span><span class="p">)</span> <span class="o">+</span> 
   <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Longitude&quot;</span><span class="p">)</span> <span class="o">+</span> 
   <span class="nf">coord_fixed</span><span class="p">()</span>
