@@ -312,11 +312,33 @@ hist(accip_EDGE$EDGE, breaks = 20)
 ``` r
 # WE can use the select function to pull out only the columns we want to view.
 # Because there's another function called select, we specify it's from dplyr.
-accip_EDGE %>% filter(EDGE > 5) %>% dplyr::select(birdlife_common_name, jetz_name, redlist_cat, EDGE)
+accip_EDGE %>% filter(EDGE > 3) %>% dplyr::select(birdlife_common_name, jetz_name, redlist_cat, EDGE)
 ```
 
-    ## [1] birdlife_common_name jetz_name            redlist_cat          EDGE                
-    ## <0 rows> (or 0-length row.names)
+    ##        birdlife_common_name               jetz_name redlist_cat     EDGE
+    ## 1       Scissor-tailed Kite   Chelictinia_riocourii          LC 3.363513
+    ## 2                Cuban Kite  Chondrohierax_wilsonii          CR 3.126552
+    ## 3       Swallow-tailed Kite    Elanoides_forficatus          LC 3.337099
+    ## 4     Black-shouldered Kite        Elanus_axillaris          LC 3.003864
+    ## 5         Black-winged Kite        Elanus_caeruleus          LC 3.003864
+    ## 6         White-tailed Kite         Elanus_leucurus          LC 3.135128
+    ## 7        Letter-winged Kite         Elanus_scriptus          NT 3.177150
+    ## 8  Madagascar Serpent-eagle       Eutriorchis_astur          EN 3.609771
+    ## 9                Pearl Kite    Gampsonyx_swainsonii          LC 3.363513
+    ## 10          Bearded Vulture       Gypaetus_barbatus          NT 3.273313
+    ## 11         Palm-nut Vulture   Gypohierax_angolensis          LC 3.338387
+    ## 12              Harpy Eagle          Harpia_harpyja          NT 3.208049
+    ## 13             Papuan Eagle Harpyopsis_novaeguineae          VU 3.400970
+    ## 14                 Bat Hawk   Macheiramphus_alcinus          LC 3.297136
+    ## 15            Gabar Goshawk          Melierax_gabar          LC 3.010849
+    ## 16            Crested Eagle     Morphnus_guianensis          NT 3.208049
+    ## 17           Hooded Vulture    Necrosyrtes_monachus          CR 3.287320
+    ## 18         Egyptian Vulture   Neophron_percnopterus          EN 3.525445
+    ## 19         Philippine Eagle   Pithecophaga_jefferyi          CR 3.813520
+    ## 20       Red-headed Vulture        Sarcogyps_calvus          CR 3.284243
+    ## 21                 Bateleur   Terathopius_ecaudatus          NT 3.177064
+    ## 22     White-headed Vulture Trigonoceps_occipitalis          CR 3.045750
+    ## 23         Long-tailed Hawk  Urotriorchis_macrourus          LC 3.017105
 
 ```{tip}
 In the above code we used the pipe operator `%>%` twice! This is why it's called a pipe. 
@@ -351,19 +373,14 @@ We’ll use just a few key traits, separated into beak shape (primarily
 trophic), and body shape (primarily locomotion). We can also include
 body mass.
 
-We need to change row names to species names and remove all the columns
-except traits.
-
-Then normalise our trait data so that body_mass and beak have the same
-scale (the same variance).
-
 ``` r
 # Split the traits into beak shape traits, body shape traits, and body mass.
 beak_traits <- accip_data %>% dplyr::select(beak_length_culmen, beak_width, beak_depth)
 body_traits <- accip_data %>% dplyr::select(tarsus_length, wing_length, tail_length)
+body_mass <- log(accip_data$mass)
 
-# Look at the correlations between traits.
-pairs(beak_traits)
+# Look at the correlations between traits, including body mass.
+pairs(cbind(beak_traits, body_mass))
 ```
 
 ```{image} practical_3_files/figure-gfm/unnamed-chunk-17-1.png
@@ -372,29 +389,10 @@ pairs(beak_traits)
 ```
 
 ``` r
-pairs(body_traits)
+pairs(cbind(body_traits, body_mass))
 ```
 
 ```{image} practical_3_files/figure-gfm/unnamed-chunk-17-2.png
-:align: center
-:width: 600px
-```
-
-``` r
-# Include body mass.
-pairs(cbind(beak_traits, log(accip_data$mass)))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-3.png
-:align: center
-:width: 600px
-```
-
-``` r
-pairs(cbind(body_traits, log(accip_data$mass)))
-```
-
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-4.png
 :align: center
 :width: 600px
 ```
@@ -601,7 +599,31 @@ bone marrow, which makes them the only living bird that specialises on
 marrow! This will be reflected in the beak morphological traits we used
 to calculate FD. Pretty cool right!
 
-We can also combine GE scores to see how IUCN categories change our
+We can also look at the top 5% of functionally diverse species.
+
+``` r
+# Get the top 5% of FD scores.
+FD[FD$FD > quantile(FD$FD, 0.95),]
+```
+
+    ##                   species        FD     FDlog       FDn
+    ## 63        Aviceda_jerdoni 0.4762142 0.3894808 0.5333437
+    ## 103 Chelictinia_riocourii 0.8747121 0.6284551 0.8990108
+    ## 127  Elanoides_forficatus 0.5672809 0.4493422 0.6249407
+    ## 138     Gypaetus_barbatus 1.0026164 0.6944545 1.0000000
+    ## 144     Gyps_himalayensis 0.5021673 0.4069089 0.5600113
+    ## 152  Haliaeetus_pelagicus 0.6861835 0.5224677 0.7368338
+    ## 161        Harpia_harpyja 0.5683062 0.4499962 0.6259414
+    ## 201         Milvus_milvus 0.5158533 0.4159785 0.5738892
+    ## 203  Necrosyrtes_monachus 0.4933096 0.4009949 0.5509619
+    ## 204 Neophron_percnopterus 0.6344264 0.4912919 0.6891302
+    ## 216   Pernis_ptilorhyncus 0.6033874 0.4721185 0.6597920
+    ## 235   Torgos_tracheliotos 0.5292324 0.4247659 0.5873352
+
+So these are the most functionally diverse species in our dataset, each
+providing an ecosystem role that is not easily replaceable. However,
+most of these species don’t currently face high extinction risk. We
+should therefore combine GE scores to see how IUCN categories change our
 priorities. We use the same formula as before:
 
 ```{math}
@@ -643,28 +665,9 @@ accip_ecoDGE[accip_ecoDGE$jetz_name == "Gypaetus_barbatus", c(2:3, 6, 27:30)]
     ##     birdlife_common_name         jetz_name redlist_cat       FD     FDlog FDn    ecoDGE
     ## 138      Bearded Vulture Gypaetus_barbatus          NT 1.002616 0.6944545   1 0.7784986
 
-Yes! Funnily enough the Philippine Eagle is again the species we need to
-check. This may be because the GE component of ecoDGE scores is weighted
-much higher than the FD component.
-
-``` r
-# Get the top 5% of FD scores.
-accip_ecoDGE[accip_ecoDGE$FD > quantile(accip_ecoDGE$FD, 0.95), c(2:3, 6, 26:30)]
-```
-
-    ##       birdlife_common_name             jetz_name redlist_cat range_size        FD     FDlog       FDn    ecoDGE
-    ## 63           Jerdon's Baza       Aviceda_jerdoni          LC    1592907 0.4762142 0.3894808 0.5333437 0.4315029
-    ## 103    Scissor-tailed Kite Chelictinia_riocourii          LC    5425286 0.8747121 0.6284551 0.8990108 0.6704771
-    ## 127    Swallow-tailed Kite  Elanoides_forficatus          LC   13295665 0.5672809 0.4493422 0.6249407 0.4913643
-    ## 138        Bearded Vulture     Gypaetus_barbatus          NT    8369572 1.0026164 0.6944545 1.0000000 0.7784986
-    ## 144      Himalayan Griffon     Gyps_himalayensis          NT    3859146 0.5021673 0.4069089 0.5600113 0.4909530
-    ## 152    Steller's Sea-eagle  Haliaeetus_pelagicus          VU    1293650 0.6861835 0.5224677 0.7368338 0.6905559
-    ## 161            Harpy Eagle        Harpia_harpyja          NT   11064295 0.5683062 0.4499962 0.6259414 0.5340403
-    ## 201               Red Kite         Milvus_milvus          NT    1698402 0.5158533 0.4159785 0.5738892 0.5000226
-    ## 203         Hooded Vulture  Necrosyrtes_monachus          CR   10764077 0.4933096 0.4009949 0.5509619 1.0733477
-    ## 204       Egyptian Vulture Neophron_percnopterus          EN   14111672 0.6344264 0.4912919 0.6891302 0.8274683
-    ## 216 Oriental Honey-buzzard   Pernis_ptilorhyncus          LC   11263290 0.6033874 0.4721185 0.6597920 0.5141406
-    ## 235   Lappet-faced Vulture   Torgos_tracheliotos          EN    8489833 0.5292324 0.4247659 0.5873352 0.7609423
+Yes! The Hooded Vulture is now our top conservation priority if we use
+ecoDGE scores to inform our decisions. We can also look at the top
+species.
 
 ``` r
 # Get the top 5% of ecoDGE scores.
@@ -685,13 +688,13 @@ accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 6
     ## 217       Philippine Eagle   Pithecophaga_jefferyi          CR 0.3451327 0.2964927 0.3910576 0.9688454
     ## 222     Red-headed Vulture        Sarcogyps_calvus          CR 0.3733088 0.3172230 0.4227782 0.9895758
 
-As we can see, all of the highest ecoDGE scores are critically
-endangered. This has been a criticism of ecoDGE scores, that functional
-diversity isn’t weighted highly enough. Of course for our taxa these are
-probably the species we want to protect, and maybe GE should be the more
-pressing issue. However if your taxa has very few CR species, it’s worth
-checking FD scores as well, as you may want to adjust your GE scores to
-give more weighting to FD.
+As we can see, nearly all of the highest ecoDGE scores are critically
+endangered, which means we could soon lose their unique ecosystem
+functions. The removal of enough of these species may even cause a
+collapse in the current ecosystem, as species are unable to fill vital
+niches. But is it right to focus on these species instead of our top
+EDGE species? Could you argue a case for EDGE or ecoDGE as the top
+priority of conservation?
 
 ### 6. EcoEDGE Scores
 
@@ -792,14 +795,16 @@ hist(accip_EcoEDGE$EcoEDGE, breaks = 20)
 :width: 600px
 ```
 
-Unsuprisingly, the Philippine Eagle is again the highest species.
-However, most birds in Accipitridae are not currently threatened by
-extinction according to IUCN criteria. For your own taxa, this may be a
-very different story, and ED and FD scores may matter a lot more. It’s
-also up to you if you want to down weight GE scores, or you agree that
-conservation priority goes to those species most threatened with
-extinction. How you chose to interpret and present your results is up to
-you, and will depend on the group that you’ve chosen.
+So when combining EDGE and ecoDGE, the Philippine Eagle is the highest
+species. In general, we might expect ED and FD to correlate, as species
+with many close relatives are likely to share morphological traits that
+determine function. For your own taxa, you might find that these scores
+match up, or perhaps there are different conservation priorities for
+each metric. Because we don’t tend to focus on conserving a single
+species, there should be differences between each metric that make
+deciding conservation priorities a complicated task. How you chose to
+interpret and present your results is up to you, and will depend on the
+group that you’ve chosen.
 
 For the practicals and coursework we’ve chosen to use a simplified
 version of EcoEDGE scores. If you’re interested in learning more, check
