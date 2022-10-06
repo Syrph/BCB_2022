@@ -177,28 +177,13 @@ head(ED)
     ## 5 Chelictinia_riocourii 26.70163 3.321491 1.0000000
     ## 6  Gampsonyx_swainsonii 26.70163 3.321491 1.0000000
 
-Now that we have our normalised scores for all birds, we need to subset
-the list for just Accipitridae.
-
-``` r
-# Pull out the ED row numbers for our species list.
-accip_ED <- ED %>% filter(species %in% accip_data$jetz_name)
-str(accip_ED)
-```
-
-    ## 'data.frame':    237 obs. of  4 variables:
-    ##  $ species: chr  "Elanus_caeruleus" "Elanus_axillaris" "Elanus_leucurus" "Elanus_scriptus" ...
-    ##  $ ED     : num  18.3 18.3 21 21 26.7 ...
-    ##  $ EDlog  : num  2.96 2.96 3.09 3.09 3.32 ...
-    ##  $ EDn    : num  0.851 0.851 0.906 0.906 1 ...
-
 We now have the ED scores of 237 species in Accipitridae. With these
 scores we can see how unique our species are in terms of the
 evolutionary pathway.
 
 ``` r
 # Find the highest ED score.
-accip_ED[accip_ED$EDn == max(accip_ED$EDn),]
+ED[ED$EDn == max(ED$EDn),]
 ```
 
     ##                 species       ED    EDlog EDn
@@ -221,17 +206,21 @@ categories we can select the species that need conservation action, and
 represent unique evolutionary variation.
 
 Each IUCN category has an extinction probability used to calculate EDGE
-scores. This is based on a recent paper that’s refined the methodology.
-These extinction probabilities are also referred to as GE (Globally
-Endangered) scores, which is why it’s called EDGE.
+scores. For these practicals we’ll use the extinction probabilities
+suggested by Mooers *et al.* (2008), looking at a 50 year time frame.
+Here’s the link to the publication, which you should cite in your
+reports.
 
-We’ll add the ED scores to the main dataset first, and then we can
-easily calculate EDGE.
+<https://doi.org/10.1371/journal.pone.0003700.t001>
+
+These extinction probabilities are also referred to as GE (Globally
+Endangered) scores, which is why it’s called EDGE. We’ll add the ED
+scores to the main dataset first, and then we can easily calculate EDGE.
 
 ``` r
 # Join the last two columns of UK_Jetz to ED scores. 
 # This time we'll use the 'by' argument rather than change the column names.
-accip_EDGE <- left_join(accip_data, accip_ED,  by = c("jetz_name" = "species"))
+accip_EDGE <- left_join(accip_data, ED,  by = c("jetz_name" = "species"))
 
 # Head but we'll view just the first and last few columns.
 head(accip_EDGE)[,c(2:3, 26:29)]
@@ -304,7 +293,7 @@ you’ll decide what constitutes a high EDGE score.
 hist(accip_EDGE$EDGE, breaks = 20)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-14-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-13-1.png
 :align: center
 :width: 600px
 ```
@@ -350,10 +339,10 @@ down a pipe!
 
 Instead of evolutionary distinctiveness, we might instead be interested
 in what functions each species provides the ecosystem. Species with low
-functional diversity may be ‘functionally redundant’ in the ecosystem,
-whereas those with high functional diversity may provide key ecosystem
-services that aren’t easily replaceable. We call these scores EcoDGE
-scores, with “eco” short for ecologically diverse.
+functional distinctiveness may be ‘functionally redundant’ in the
+ecosystem, whereas those with high functional distinctiveness may
+provide key ecosystem services that aren’t easily replaceable. We call
+these scores EcoDGE scores, with “eco” short for ecologically diverse.
 
 Like ED, we will calculate functional distinctiveness (FD and FDn) in
 relation to all other accipitridae species. The reason for this is that
@@ -362,11 +351,12 @@ radiation of species (i.e. all birds found within a national park, or
 all species of lemur).
 
 To calculate the function of species, we’ll use their morphological
-traits. Recent research has shown that a few simple traits can predict
-the niche a species occupies, which in turn tells us about function. For
-instance, frugivores provide vital seed dispersal, and insectivores
-influence invertebrate population dynamics.
+traits. Recent research (Pigot *et al.* 2020) has shown that a few
+simple traits can predict the niche a species occupies, which in turn
+tells us about function. For instance, frugivores provide vital seed
+dispersal, and insectivores influence invertebrate population dynamics.
 
+You can read the full article here:
 <https://www.nature.com/articles/s41559-019-1070-4>
 
 We’ll use just a few key traits, separated into beak shape (primarily
@@ -383,7 +373,7 @@ body_mass <- log(accip_data$mass)
 pairs(cbind(beak_traits, body_mass))
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-16-1.png
 :align: center
 :width: 600px
 ```
@@ -392,7 +382,7 @@ pairs(cbind(beak_traits, body_mass))
 pairs(cbind(body_traits, body_mass))
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-17-2.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-16-2.png
 :align: center
 :width: 600px
 ```
@@ -410,6 +400,11 @@ random results.
 We can get around this by using a Principal Components Analysis (PCA).
 We can condense our traits down into fewer uncorrelated variables, and
 potentially remove body mass from beak and body shape measurements.
+
+```{tip}
+We won't go into much detail on how a PCA works, as we want to focus on understanding the role of functional distinctivness in conservation. If you'd like to know in more detail, StatQuest has a great 5 minute video:
+<https://www.youtube.com/watch?v=HMOI_lkzW08&ab_channel=StatQuestwithJoshStarmer>
+```
 
 ``` r
 # First standardize the traits so they're all on a similar scale.
@@ -440,11 +435,11 @@ summary(body_pca)
     ## Proportion of Variance 0.8246346 0.1069114 0.06845402
     ## Cumulative Proportion  0.8246346 0.9315460 1.00000000
 
-Running `princomp` has created a PCA object, with three now uncorrelated
-axes. They are arranged in order of the variation that they explain,
-with the 1st component (or axis) explaining the most. We can see this is
-95% of the variation for beak traits, and 83% of the variation for body
-shape traits.
+Running `princomp` has created a PCA object, with three uncorrelated
+axes. They are arranged in order of the variation they explain, with the
+1st component (PC1) explaining the most. We can see this is 95% of the
+variation for beak traits, and 83% of the variation for body shape
+traits.
 
 We can look at the loadings of each PCA object to see how the original
 variables contributed to each new PCA axis.
@@ -483,16 +478,16 @@ loadings(body_pca)
     ## Cumulative Var  0.333  0.667  1.000
 
 We can see that for the first component, all three traits are positively
-correlated at roughly equal amount. So species with a longer, wider and
-deeper beak have a higher comp 1 value. The same is true for body shape.
-So our first component most likely maps onto body size. We can test this
-by plotting them together.
+correlated at roughly equal amount (+0.58). So species with longer,
+wider and deeper beaks have a higher PC1 value. The same is true for
+body shape. So PC1 most likely maps onto body size. We can test this by
+plotting them together.
 
 ``` r
 # Plot PC1 against mass.
 par(mfrow = c(1,2))
-plot(beak_pca$scores[,1] ~ log(accip_data$mass))
-plot(body_pca$scores[,1] ~ log(accip_data$mass))
+plot(beak_pca$scores[,1] ~ body_mass)
+plot(body_pca$scores[,1] ~ body_mass)
 ```
 
 ```{image} practical_3_files/figure-gfm/unnamed-chunk-20-1.png
@@ -505,8 +500,8 @@ describes different shapes. In beak we can see a strong positive
 correlation with beak length, and negative correlations with width and
 depth. So species with a high PC2 tend to have long narrow beaks, rather
 than short fat ones. For body shape, PC2 describes the ratio of tail to
-tarsus length. So species with a low PC2 will have shorter legs and are
-more agile hunters.
+tarsus length. So species with a low PC2 will have shorter legs compared
+to tails, and are more agile hunters.
 
 Both PC2 axes describe aspects of morphology that tell us about the
 species function better than just total size. We can now use this
@@ -599,7 +594,7 @@ bone marrow, which makes them the only living bird that specialises on
 marrow! This will be reflected in the beak morphological traits we used
 to calculate FD. Pretty cool right!
 
-We can also look at the top 5% of functionally diverse species.
+We can also look at the top 5% of functionally distinct species.
 
 ``` r
 # Get the top 5% of FD scores.
@@ -620,7 +615,7 @@ FD[FD$FD > quantile(FD$FD, 0.95),]
     ## 216   Pernis_ptilorhyncus 0.6033874 0.4721185 0.6597920
     ## 235   Torgos_tracheliotos 0.5292324 0.4247659 0.5873352
 
-So these are the most functionally diverse species in our dataset, each
+So these are the most functionally distinct species in our dataset, each
 providing an ecosystem role that is not easily replaceable. However,
 most of these species don’t currently face high extinction risk. We
 should therefore combine GE scores to see how IUCN categories change our
@@ -699,12 +694,13 @@ priority of conservation?
 ### 6. EcoEDGE Scores
 
 So we’ve used EDGE scores to combine extinction risk with evolutionary
-diversity, and ecoDGE scores to do the same with functional diversity.
-However, both are important, and we might want to combine all three into
-one metric. This is exactly what EcoEDGE scores do (confusingly, their
-creators decided to use very very similar names). And we’ve pretty much
-done all the hard work already. The equation is similar to the ones
-we’ve used, but we give ED and FD scores equal weighting:
+distinctiveness, and ecoDGE scores to do the same with functional
+distinctiveness, However, both are important, and we might want to
+combine all three into one metric. This is exactly what EcoEDGE scores
+do (confusingly, their creators decided to use very very similar names).
+And we’ve pretty much done all the hard work already. The equation is
+similar to the ones we’ve used, but we give ED and FD scores equal
+weighting:
 
 ```{math}
 EcoEDGE= (0.5×EDn + 0.5×FDn) + GE×ln⁡(2)
@@ -812,11 +808,17 @@ out this paper which first proposed the use of EcoEDGE scores:
 
 <https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320>
 
+```{tip}
+For your coursework, you should cite both the original [EDGE reference](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000296), as well as the [EcoEDGE reference](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320).
+
+In general, most of the papers linked in this practical will be useful citations you should think about including.
+```
+
 ### 7. Plotting a map of IUCN categories
 
 You may wish to plot maps of your IUCN redlist categories, especially if
 you’re interested in what areas of the world are most threatened by
-extinction. We can do this easily using similar code from practical 3.
+extinction. We can do this easily using similar code from practical 2.
 
 ``` r
 # First load in the spatial packages we'll need.
@@ -874,7 +876,7 @@ green_to_red <- colorRampPalette(c("forestgreen", "khaki", "firebrick"))(20)
 plot(as.factor(GE_raster), col=green_to_red)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-35-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-36-1.png
 :align: center
 :width: 600px
 ```
@@ -942,7 +944,7 @@ options(repr.plot.width=15, repr.plot.height=10)
 GE_plot
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-37-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-38-1.png
 :align: center
 :width: 600px
 ```
@@ -983,7 +985,7 @@ average_raster <- sum_raster / richness_raster
 plot(average_raster)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-39-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-40-1.png
 :align: center
 :width: 600px
 ```
@@ -1000,7 +1002,7 @@ We can instead take logs, which reduces the effect of outliers.
 plot(log(average_raster), col = green_to_red)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-40-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-41-1.png
 :align: center
 :width: 600px
 ```
@@ -1017,7 +1019,7 @@ colnames(raster_data) <- c("long", "lat", "index")
 
 # We'll log the values, and then rescale from 0 to 1 so it's relative probabilities.
 raster_data$index <- log(raster_data$index)
-raster_data$index <- scales::rescale(raster_data$index,  to = c(0,1))
+raster_data$index <- (raster_data$index - min(raster_data$index)) / (max(raster_data$index) - min(raster_data$index))
 
 ggplot() +
   
@@ -1038,7 +1040,7 @@ ggplot() +
   coord_fixed()
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-41-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-42-1.png
 :align: center
 :width: 600px
 ```

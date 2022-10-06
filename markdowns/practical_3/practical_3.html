@@ -421,25 +421,11 @@ transform and normalise our scores.</p>
 ## 6  Gampsonyx_swainsonii 26.70163 3.321491 1.0000000
 </pre></div>
 </div>
-<p>Now that we have our normalised scores for all birds, we need to subset
-the list for just Accipitridae.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull out the ED row numbers for our species list.</span>
-<span class="n">accip_ED</span> <span class="o">&lt;-</span> <span class="n">ED</span> <span class="o">%&gt;%</span> <span class="nf">filter</span><span class="p">(</span><span class="n">species</span> <span class="o">%in%</span> <span class="n">accip_data</span><span class="o">$</span><span class="n">jetz_name</span><span class="p">)</span>
-<span class="nf">str</span><span class="p">(</span><span class="n">accip_ED</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    237 obs. of  4 variables:
-##  $ species: chr  &quot;Elanus_caeruleus&quot; &quot;Elanus_axillaris&quot; &quot;Elanus_leucurus&quot; &quot;Elanus_scriptus&quot; ...
-##  $ ED     : num  18.3 18.3 21 21 26.7 ...
-##  $ EDlog  : num  2.96 2.96 3.09 3.09 3.32 ...
-##  $ EDn    : num  0.851 0.851 0.906 0.906 1 ...
-</pre></div>
-</div>
 <p>We now have the ED scores of 237 species in Accipitridae. With these
 scores we can see how unique our species are in terms of the
 evolutionary pathway.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the highest ED score.</span>
-<span class="n">accip_ED</span><span class="p">[</span><span class="n">accip_ED</span><span class="o">$</span><span class="n">EDn</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_ED</span><span class="o">$</span><span class="n">EDn</span><span class="p">),]</span>
+<span class="n">ED</span><span class="p">[</span><span class="n">ED</span><span class="o">$</span><span class="n">EDn</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">ED</span><span class="o">$</span><span class="n">EDn</span><span class="p">),]</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##                 species       ED    EDlog EDn
@@ -462,14 +448,17 @@ species needs conserving…</p>
 categories we can select the species that need conservation action, and
 represent unique evolutionary variation.</p>
 <p>Each IUCN category has an extinction probability used to calculate EDGE
-scores. This is based on a recent paper that’s refined the methodology.
-These extinction probabilities are also referred to as GE (Globally
-Endangered) scores, which is why it’s called EDGE.</p>
-<p>We’ll add the ED scores to the main dataset first, and then we can
-easily calculate EDGE.</p>
+scores. For these practicals we’ll use the extinction probabilities
+suggested by Mooers <em>et al.</em> (2008), looking at a 50 year time frame.
+Here’s the link to the publication, which you should cite in your
+reports.</p>
+<p><a class="reference external" href="https://doi.org/10.1371/journal.pone.0003700.t001">https://doi.org/10.1371/journal.pone.0003700.t001</a></p>
+<p>These extinction probabilities are also referred to as GE (Globally
+Endangered) scores, which is why it’s called EDGE. We’ll add the ED
+scores to the main dataset first, and then we can easily calculate EDGE.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Join the last two columns of UK_Jetz to ED scores. </span>
 <span class="c1"># This time we&#39;ll use the &#39;by&#39; argument rather than change the column names.</span>
-<span class="n">accip_EDGE</span> <span class="o">&lt;-</span> <span class="nf">left_join</span><span class="p">(</span><span class="n">accip_data</span><span class="p">,</span> <span class="n">accip_ED</span><span class="p">,</span>  <span class="n">by</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;jetz_name&quot;</span> <span class="o">=</span> <span class="s">&quot;species&quot;</span><span class="p">))</span>
+<span class="n">accip_EDGE</span> <span class="o">&lt;-</span> <span class="nf">left_join</span><span class="p">(</span><span class="n">accip_data</span><span class="p">,</span> <span class="n">ED</span><span class="p">,</span>  <span class="n">by</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;jetz_name&quot;</span> <span class="o">=</span> <span class="s">&quot;species&quot;</span><span class="p">))</span>
 
 <span class="c1"># Head but we&#39;ll view just the first and last few columns.</span>
 <span class="nf">head</span><span class="p">(</span><span class="n">accip_EDGE</span><span class="p">)[,</span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">26</span><span class="o">:</span><span class="m">29</span><span class="p">)]</span>
@@ -535,7 +524,7 @@ you’ll decide what constitutes a high EDGE score.</p>
 <span class="nf">hist</span><span class="p">(</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDGE</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-14-1.png"><img alt="../../_images/unnamed-chunk-14-1.png" class="align-center" src="../../_images/unnamed-chunk-14-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-13-11.png"><img alt="../../_images/unnamed-chunk-13-11.png" class="align-center" src="../../_images/unnamed-chunk-13-11.png" style="width: 600px;" /></a>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># WE can use the select function to pull out only the columns we want to view.</span>
 <span class="c1"># Because there&#39;s another function called select, we specify it&#39;s from dplyr.</span>
 <span class="n">accip_EDGE</span> <span class="o">%&gt;%</span> <span class="nf">filter</span><span class="p">(</span><span class="n">EDGE</span> <span class="o">&gt;</span> <span class="m">3</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">birdlife_common_name</span><span class="p">,</span> <span class="n">jetz_name</span><span class="p">,</span> <span class="n">redlist_cat</span><span class="p">,</span> <span class="n">EDGE</span><span class="p">)</span>
@@ -578,21 +567,22 @@ down a pipe!</p>
 <h2>5. EcoDGE Scores<a class="headerlink" href="#ecodge-scores" title="Permalink to this headline">¶</a></h2>
 <p>Instead of evolutionary distinctiveness, we might instead be interested
 in what functions each species provides the ecosystem. Species with low
-functional diversity may be ‘functionally redundant’ in the ecosystem,
-whereas those with high functional diversity may provide key ecosystem
-services that aren’t easily replaceable. We call these scores EcoDGE
-scores, with “eco” short for ecologically diverse.</p>
+functional distinctiveness may be ‘functionally redundant’ in the
+ecosystem, whereas those with high functional distinctiveness may
+provide key ecosystem services that aren’t easily replaceable. We call
+these scores EcoDGE scores, with “eco” short for ecologically diverse.</p>
 <p>Like ED, we will calculate functional distinctiveness (FD and FDn) in
 relation to all other accipitridae species. The reason for this is that
 FD is traditionally used in the context of a specific community or
 radiation of species (i.e. all birds found within a national park, or
 all species of lemur).</p>
 <p>To calculate the function of species, we’ll use their morphological
-traits. Recent research has shown that a few simple traits can predict
-the niche a species occupies, which in turn tells us about function. For
-instance, frugivores provide vital seed dispersal, and insectivores
-influence invertebrate population dynamics.</p>
-<p><a class="reference external" href="https://www.nature.com/articles/s41559-019-1070-4">https://www.nature.com/articles/s41559-019-1070-4</a></p>
+traits. Recent research (Pigot <em>et al.</em> 2020) has shown that a few
+simple traits can predict the niche a species occupies, which in turn
+tells us about function. For instance, frugivores provide vital seed
+dispersal, and insectivores influence invertebrate population dynamics.</p>
+<p>You can read the full article here:
+<a class="reference external" href="https://www.nature.com/articles/s41559-019-1070-4">https://www.nature.com/articles/s41559-019-1070-4</a></p>
 <p>We’ll use just a few key traits, separated into beak shape (primarily
 trophic), and body shape (primarily locomotion). We can also include
 body mass.</p>
@@ -605,11 +595,11 @@ body mass.</p>
 <span class="nf">pairs</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">beak_traits</span><span class="p">,</span> <span class="n">body_mass</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-17-1.png"><img alt="../../_images/unnamed-chunk-17-1.png" class="align-center" src="../../_images/unnamed-chunk-17-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-16-11.png"><img alt="../../_images/unnamed-chunk-16-11.png" class="align-center" src="../../_images/unnamed-chunk-16-11.png" style="width: 600px;" /></a>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">pairs</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">body_traits</span><span class="p">,</span> <span class="n">body_mass</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-17-2.png"><img alt="../../_images/unnamed-chunk-17-2.png" class="align-center" src="../../_images/unnamed-chunk-17-2.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-16-2.png"><img alt="../../_images/unnamed-chunk-16-2.png" class="align-center" src="../../_images/unnamed-chunk-16-2.png" style="width: 600px;" /></a>
 <p>So we can see some pretty strong correlations between beak shape, body
 shape and body mass. This is because bigger species tend to have
 proportionally bigger traits. If we were to calculate functional
@@ -622,6 +612,11 @@ random results.</p>
 <p>We can get around this by using a Principal Components Analysis (PCA).
 We can condense our traits down into fewer uncorrelated variables, and
 potentially remove body mass from beak and body shape measurements.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>We won’t go into much detail on how a PCA works, as we want to focus on understanding the role of functional distinctivness in conservation. If you’d like to know in more detail, StatQuest has a great 5 minute video:
+<a class="reference external" href="https://www.youtube.com/watch?v=HMOI_lkzW08&amp;amp;ab_channel=StatQuestwithJoshStarmer">https://www.youtube.com/watch?v=HMOI_lkzW08&amp;amp;ab_channel=StatQuestwithJoshStarmer</a></p>
+</div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First standardize the traits so they&#39;re all on a similar scale.</span>
 <span class="n">beak_traits</span> <span class="o">&lt;-</span> <span class="nf">scale</span><span class="p">(</span><span class="n">beak_traits</span><span class="p">)</span>
 <span class="n">body_traits</span> <span class="o">&lt;-</span> <span class="nf">scale</span><span class="p">(</span><span class="n">body_traits</span><span class="p">)</span>
@@ -651,11 +646,11 @@ potentially remove body mass from beak and body shape measurements.</p>
 ## Cumulative Proportion  0.8246346 0.9315460 1.00000000
 </pre></div>
 </div>
-<p>Running <code class="docutils literal notranslate"><span class="pre">princomp</span></code> has created a PCA object, with three now uncorrelated
-axes. They are arranged in order of the variation that they explain,
-with the 1st component (or axis) explaining the most. We can see this is
-95% of the variation for beak traits, and 83% of the variation for body
-shape traits.</p>
+<p>Running <code class="docutils literal notranslate"><span class="pre">princomp</span></code> has created a PCA object, with three uncorrelated
+axes. They are arranged in order of the variation they explain, with the
+1st component (PC1) explaining the most. We can see this is 95% of the
+variation for beak traits, and 83% of the variation for body shape
+traits.</p>
 <p>We can look at the loadings of each PCA object to see how the original
 variables contributed to each new PCA axis.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return the loadings.</span>
@@ -692,14 +687,14 @@ variables contributed to each new PCA axis.</p>
 </pre></div>
 </div>
 <p>We can see that for the first component, all three traits are positively
-correlated at roughly equal amount. So species with a longer, wider and
-deeper beak have a higher comp 1 value. The same is true for body shape.
-So our first component most likely maps onto body size. We can test this
-by plotting them together.</p>
+correlated at roughly equal amount (+0.58). So species with longer,
+wider and deeper beaks have a higher PC1 value. The same is true for
+body shape. So PC1 most likely maps onto body size. We can test this by
+plotting them together.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot PC1 against mass.</span>
 <span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
-<span class="nf">plot</span><span class="p">(</span><span class="n">beak_pca</span><span class="o">$</span><span class="n">scores</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span> <span class="o">~</span> <span class="nf">log</span><span class="p">(</span><span class="n">accip_data</span><span class="o">$</span><span class="n">mass</span><span class="p">))</span>
-<span class="nf">plot</span><span class="p">(</span><span class="n">body_pca</span><span class="o">$</span><span class="n">scores</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span> <span class="o">~</span> <span class="nf">log</span><span class="p">(</span><span class="n">accip_data</span><span class="o">$</span><span class="n">mass</span><span class="p">))</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">beak_pca</span><span class="o">$</span><span class="n">scores</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span> <span class="o">~</span> <span class="n">body_mass</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">body_pca</span><span class="o">$</span><span class="n">scores</span><span class="p">[,</span><span class="m">1</span><span class="p">]</span> <span class="o">~</span> <span class="n">body_mass</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/unnamed-chunk-20-11.png"><img alt="../../_images/unnamed-chunk-20-11.png" class="align-center" src="../../_images/unnamed-chunk-20-11.png" style="width: 600px;" /></a>
@@ -708,8 +703,8 @@ describes different shapes. In beak we can see a strong positive
 correlation with beak length, and negative correlations with width and
 depth. So species with a high PC2 tend to have long narrow beaks, rather
 than short fat ones. For body shape, PC2 describes the ratio of tail to
-tarsus length. So species with a low PC2 will have shorter legs and are
-more agile hunters.</p>
+tarsus length. So species with a low PC2 will have shorter legs compared
+to tails, and are more agile hunters.</p>
 <p>Both PC2 axes describe aspects of morphology that tell us about the
 species function better than just total size. We can now use this
 information to determine the functional diversity of accipitridae.</p>
@@ -788,7 +783,7 @@ it unmistakable in flight! Moreover, they live on a diet of up to 90%
 bone marrow, which makes them the only living bird that specialises on
 marrow! This will be reflected in the beak morphological traits we used
 to calculate FD. Pretty cool right!</p>
-<p>We can also look at the top 5% of functionally diverse species.</p>
+<p>We can also look at the top 5% of functionally distinct species.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the top 5% of FD scores.</span>
 <span class="n">FD</span><span class="p">[</span><span class="n">FD</span><span class="o">$</span><span class="n">FD</span> <span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">FD</span><span class="o">$</span><span class="n">FD</span><span class="p">,</span> <span class="m">0.95</span><span class="p">),]</span>
 </pre></div>
@@ -808,7 +803,7 @@ to calculate FD. Pretty cool right!</p>
 ## 235   Torgos_tracheliotos 0.5292324 0.4247659 0.5873352
 </pre></div>
 </div>
-<p>So these are the most functionally diverse species in our dataset, each
+<p>So these are the most functionally distinct species in our dataset, each
 providing an ecosystem role that is not easily replaceable. However,
 most of these species don’t currently face high extinction risk. We
 should therefore combine GE scores to see how IUCN categories change our
@@ -882,12 +877,13 @@ priority of conservation?</p>
 <section id="ecoedge-scores">
 <h2>6. EcoEDGE Scores<a class="headerlink" href="#ecoedge-scores" title="Permalink to this headline">¶</a></h2>
 <p>So we’ve used EDGE scores to combine extinction risk with evolutionary
-diversity, and ecoDGE scores to do the same with functional diversity.
-However, both are important, and we might want to combine all three into
-one metric. This is exactly what EcoEDGE scores do (confusingly, their
-creators decided to use very very similar names). And we’ve pretty much
-done all the hard work already. The equation is similar to the ones
-we’ve used, but we give ED and FD scores equal weighting:</p>
+distinctiveness, and ecoDGE scores to do the same with functional
+distinctiveness, However, both are important, and we might want to
+combine all three into one metric. This is exactly what EcoEDGE scores
+do (confusingly, their creators decided to use very very similar names).
+And we’ve pretty much done all the hard work already. The equation is
+similar to the ones we’ve used, but we give ED and FD scores equal
+weighting:</p>
 <div class="math notranslate nohighlight">
 \[EcoEDGE= (0.5×EDn + 0.5×FDn) + GE×ln⁡(2)\]</div>
 <p>And remember our EDn and FDn scores have already been logged, so we
@@ -982,12 +978,17 @@ group that you’ve chosen.</p>
 version of EcoEDGE scores. If you’re interested in learning more, check
 out this paper which first proposed the use of EcoEDGE scores:</p>
 <p><a class="reference external" href="https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320">https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320</a></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For your coursework, you should cite both the original <a class="reference external" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000296">EDGE reference</a>, as well as the <a class="reference external" href="https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320">EcoEDGE reference</a>.</p>
+<p>In general, most of the papers linked in this practical will be useful citations you should think about including.</p>
+</div>
 </section>
 <section id="plotting-a-map-of-iucn-categories">
 <h2>7. Plotting a map of IUCN categories<a class="headerlink" href="#plotting-a-map-of-iucn-categories" title="Permalink to this headline">¶</a></h2>
 <p>You may wish to plot maps of your IUCN redlist categories, especially if
 you’re interested in what areas of the world are most threatened by
-extinction. We can do this easily using similar code from practical 3.</p>
+extinction. We can do this easily using similar code from practical 2.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># First load in the spatial packages we&#39;ll need.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">raster</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
@@ -1042,7 +1043,7 @@ values based on GE rating rather than range size.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">GE_raster</span><span class="p">),</span> <span class="n">col</span><span class="o">=</span><span class="n">green_to_red</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-35-1.png"><img alt="../../_images/unnamed-chunk-35-1.png" class="align-center" src="../../_images/unnamed-chunk-35-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-36-1.png"><img alt="../../_images/unnamed-chunk-36-1.png" class="align-center" src="../../_images/unnamed-chunk-36-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">colors()</span></code> to see the list of all the named colours to play with.</p>
@@ -1103,7 +1104,7 @@ nicer to look at.</p>
 <span class="n">GE_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-37-1.png"><img alt="../../_images/unnamed-chunk-37-1.png" class="align-center" src="../../_images/unnamed-chunk-37-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-38-1.png"><img alt="../../_images/unnamed-chunk-38-1.png" class="align-center" src="../../_images/unnamed-chunk-38-1.png" style="width: 600px;" /></a>
 <p>There’s our finished map! Think how you’d change it yourself if you want
 to include one in your report. It’s up to you and what you think is the
 best way to visualise your data!</p>
@@ -1136,7 +1137,7 @@ We first need to sum all the extinction probabilities, and then divide by specie
 <span class="nf">plot</span><span class="p">(</span><span class="n">average_raster</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-39-11.png"><img alt="../../_images/unnamed-chunk-39-11.png" class="align-center" src="../../_images/unnamed-chunk-39-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-40-11.png"><img alt="../../_images/unnamed-chunk-40-11.png" class="align-center" src="../../_images/unnamed-chunk-40-11.png" style="width: 600px;" /></a>
 <p>In this case we can see that the two maps are actually quite similar. If
 we look close enough we can see there are some cells that have a higher
 extinction risk (like in southern Spain), but there are so few we’d
@@ -1147,7 +1148,7 @@ We can instead take logs, which reduces the effect of outliers.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">average_raster</span><span class="p">),</span> <span class="n">col</span> <span class="o">=</span> <span class="n">green_to_red</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-40-11.png"><img alt="../../_images/unnamed-chunk-40-11.png" class="align-center" src="../../_images/unnamed-chunk-40-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-41-11.png"><img alt="../../_images/unnamed-chunk-41-11.png" class="align-center" src="../../_images/unnamed-chunk-41-11.png" style="width: 600px;" /></a>
 <p>Now we can see the pattern clearer. For your coursework, experiment with
 different metrics and methods to produce the best looking and most
 informative maps. Lastly we can redo the maps with ggplot, and rescale
@@ -1158,7 +1159,7 @@ the values so that it’s relative extinction risk (not probability).</p>
 
 <span class="c1"># We&#39;ll log the values, and then rescale from 0 to 1 so it&#39;s relative probabilities.</span>
 <span class="n">raster_data</span><span class="o">$</span><span class="n">index</span> <span class="o">&lt;-</span> <span class="nf">log</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">)</span>
-<span class="n">raster_data</span><span class="o">$</span><span class="n">index</span> <span class="o">&lt;-</span> <span class="n">scales</span><span class="o">::</span><span class="nf">rescale</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">,</span>  <span class="n">to</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">))</span>
+<span class="n">raster_data</span><span class="o">$</span><span class="n">index</span> <span class="o">&lt;-</span> <span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span> <span class="o">-</span> <span class="nf">min</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">)</span> <span class="o">-</span> <span class="nf">min</span><span class="p">(</span><span class="n">raster_data</span><span class="o">$</span><span class="n">index</span><span class="p">))</span>
 
 <span class="nf">ggplot</span><span class="p">()</span> <span class="o">+</span>
   
@@ -1179,7 +1180,7 @@ the values so that it’s relative extinction risk (not probability).</p>
   <span class="nf">coord_fixed</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-41-11.png"><img alt="../../_images/unnamed-chunk-41-11.png" class="align-center" src="../../_images/unnamed-chunk-41-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-42-1.png"><img alt="../../_images/unnamed-chunk-42-1.png" class="align-center" src="../../_images/unnamed-chunk-42-1.png" style="width: 600px;" /></a>
 </div>
 </section>
 </section>
