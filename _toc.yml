@@ -1,0 +1,7 @@
+format: jb-book
+root: intro
+chapters:
+- file: markdowns/practical_1/practical_1
+- file: markdowns/practical_2/practical_2
+- file: markdowns/practical_3/practical_3
+- file: links
