@@ -1004,8 +1004,8 @@ manually set the number of breaks.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
-##         2
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## null device 
+##           1
 </pre></div>
 </div>
 <p>So it’s true that there are many small species and few large. We can
@@ -1039,8 +1039,8 @@ key part of any analysis.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
-##         2
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## png 
+##   2
 </pre></div>
 </div>
 </section>
@@ -1081,8 +1081,13 @@ info!</p>
 
 <span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
 <span class="n">bio</span> <span class="o">&lt;-</span> <span class="nf">getData</span><span class="p">(</span><span class="s">&quot;worldclim&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;bio&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
-
-<span class="c1"># Get the class for our rasters.</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Warning in getData(&quot;worldclim&quot;, var = &quot;bio&quot;, res = 10): getData will be removed in a future version of raster
+## . Please use the geodata package instead
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the class for our rasters.</span>
 <span class="nf">class</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1099,7 +1104,7 @@ info!</p>
 ## dimensions : 900, 2160, 1944000, 19  (nrow, ncol, ncell, nlayers)
 ## resolution : 0.1666667, 0.1666667  (x, y)
 ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## crs        : +proj=longlat +datum=WGS84 
 ## names      :  bio1,  bio2,  bio3,  bio4,  bio5,  bio6,  bio7,  bio8,  bio9, bio10, bio11, bio12, bio13, bio14, bio15, ... 
 ## min values :  -269,     9,     8,    72,   -59,  -547,    53,  -251,  -450,   -97,  -488,     0,     0,     0,     0, ... 
 ## max values :   314,   211,    95, 22673,   489,   258,   725,   375,   364,   380,   289,  9916,  2088,   652,   261, ...
@@ -1140,7 +1145,7 @@ as <code class="docutils literal notranslate"><span class="pre">spTransform()</s
 ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
 ## resolution : 0.1666667, 0.1666667  (x, y)
 ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## crs        : +proj=longlat +datum=WGS84 
 ## source     : bio12.bil 
 ## names      : bio12 
 ## values     : 0, 9916  (min, max)
@@ -1174,7 +1179,7 @@ the precipitation raster. We can also assign values to the cells.</p>
 ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
 ## resolution : 0.1666667, 0.1666667  (x, y)
 ## extent     : -180, 180.0001, -60.00003, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## crs        : +proj=longlat +datum=WGS84 +towgs84=0,0,0 
 ## source     : memory
 ## names      : layer 
 ## values     : 1, 1944000  (min, max)
@@ -1338,8 +1343,8 @@ accordingly.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
-##         2
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## png 
+##   2
 </pre></div>
 </div>
 <p>Of course, you can play around with plot settings to create some

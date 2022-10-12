@@ -724,8 +724,8 @@ manually set the number of breaks.
 dev.off()
 ```
 
-    ## RStudioGD 
-    ##         2
+    ## null device 
+    ##           1
 
 So it’s true that there are many small species and few large. We can
 take the natural log of body mass to better see if a pattern exists
@@ -772,8 +772,8 @@ plot(passerines$log_mass, passerines$tarsus_length, pch=16, col="blue",
 dev.off()
 ```
 
-    ## RStudioGD 
-    ##         2
+    ## png 
+    ##   2
 
 ### 5. Handling spatial data
 
@@ -816,7 +816,12 @@ library(raster)
 
 # getData is a function from the raster package that allows us to download some spatial data. 
 bio <- getData("worldclim", var="bio", res=10)
+```
 
+    ## Warning in getData("worldclim", var = "bio", res = 10): getData will be removed in a future version of raster
+    ## . Please use the geodata package instead
+
+``` r
 # Get the class for our rasters.
 class(bio)
 ```
@@ -834,7 +839,7 @@ bio
     ## dimensions : 900, 2160, 1944000, 19  (nrow, ncol, ncell, nlayers)
     ## resolution : 0.1666667, 0.1666667  (x, y)
     ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## crs        : +proj=longlat +datum=WGS84 
     ## names      :  bio1,  bio2,  bio3,  bio4,  bio5,  bio6,  bio7,  bio8,  bio9, bio10, bio11, bio12, bio13, bio14, bio15, ... 
     ## min values :  -269,     9,     8,    72,   -59,  -547,    53,  -251,  -450,   -97,  -488,     0,     0,     0,     0, ... 
     ## max values :   314,   211,    95, 22673,   489,   258,   725,   375,   364,   380,   289,  9916,  2088,   652,   261, ...
@@ -877,7 +882,7 @@ bio[[12]]
     ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
     ## resolution : 0.1666667, 0.1666667  (x, y)
     ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## crs        : +proj=longlat +datum=WGS84 
     ## source     : bio12.bil 
     ## names      : bio12 
     ## values     : 0, 9916  (min, max)
@@ -919,7 +924,7 @@ blank_raster
     ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
     ## resolution : 0.1666667, 0.1666667  (x, y)
     ## extent     : -180, 180.0001, -60.00003, 90  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## crs        : +proj=longlat +datum=WGS84 +towgs84=0,0,0 
     ## source     : memory
     ## names      : layer 
     ## values     : 1, 1944000  (min, max)
@@ -1112,8 +1117,8 @@ range_plot
 dev.off()
 ```
 
-    ## RStudioGD 
-    ##         2
+    ## png 
+    ##   2
 
 Of course, you can play around with plot settings to create some
 impressive maps!
