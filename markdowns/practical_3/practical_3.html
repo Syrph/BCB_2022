@@ -497,20 +497,20 @@ scores by the natural log of 2, and combine them.</p>
 <p>Now we have our EDGE scores, we can see if our conservation priority has
 changed in light of IUCN categories.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the highest EDGE score.</span>
-<span class="n">accip_EDGE</span><span class="p">[</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDGE</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDGE</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">26</span><span class="o">:</span><span class="m">30</span><span class="p">)]</span>
+<span class="n">accip_EDGE</span><span class="p">[</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDGE</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDGE</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">28</span><span class="o">:</span><span class="m">32</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name             jetz_name range_size beak_shape body_shape       ED    EDlog
-## 217     Philippine Eagle Pithecophaga_jefferyi   142256.5  -1.321058  -0.926998 22.13085 3.141167
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name             jetz_name body_shape       ED    EDlog       EDn    EDGE
+## 217     Philippine Eagle Pithecophaga_jefferyi  -0.926998 22.13085 3.141167 0.9254021 3.81352
 </pre></div>
 </div>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the EDGE score for our previous highest species.</span>
-<span class="n">accip_EDGE</span><span class="p">[</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDn</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDn</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">26</span><span class="o">:</span><span class="m">30</span><span class="p">)]</span>
+<span class="n">accip_EDGE</span><span class="p">[</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDn</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_EDGE</span><span class="o">$</span><span class="n">EDn</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">28</span><span class="o">:</span><span class="m">32</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name             jetz_name range_size beak_shape body_shape       ED    EDlog
-## 103  Scissor-tailed Kite Chelictinia_riocourii    5425286 -0.4792736 -1.2036786 26.70163 3.321491
-## 135           Pearl Kite  Gampsonyx_swainsonii   10266135 -0.3933587 -0.1955286 26.70163 3.321491
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name             jetz_name body_shape       ED    EDlog EDn     EDGE
+## 103  Scissor-tailed Kite Chelictinia_riocourii -1.2036786 26.70163 3.321491   1 3.363513
+## 135           Pearl Kite  Gampsonyx_swainsonii -0.1955286 26.70163 3.321491   1 3.363513
 </pre></div>
 </div>
 <p>So now we can see that the top conservation priority is the Philippine
@@ -593,8 +593,10 @@ ability), and body mass.</p>
 <span class="n">accip_data</span><span class="o">$</span><span class="n">log_mass</span> <span class="o">&lt;-</span> <span class="nf">log</span><span class="p">(</span><span class="n">accip_data</span><span class="o">$</span><span class="n">mass</span><span class="p">)</span>
 
 <span class="c1"># Split the traits into beak shape traits, body shape traits, and body mass.</span>
-<span class="n">beak_traits</span> <span class="o">&lt;-</span> <span class="n">accip_data</span> <span class="o">%&gt;%</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">beak_length_culmen</span><span class="p">,</span> <span class="n">beak_width</span><span class="p">,</span> <span class="n">beak_depth</span><span class="p">,</span> <span class="n">log_mass</span><span class="p">,</span> <span class="n">hand_wing_index</span><span class="p">)</span>
-<span class="n">body_traits</span> <span class="o">&lt;-</span> <span class="n">accip_data</span> <span class="o">%&gt;%</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">tarsus_length</span><span class="p">,</span> <span class="n">wing_length</span><span class="p">,</span> <span class="n">tail_length</span><span class="p">,</span> <span class="n">log_mass</span><span class="p">,</span> <span class="n">hand_wing_index</span><span class="p">)</span>
+<span class="n">beak_traits</span> <span class="o">&lt;-</span> <span class="n">accip_data</span> <span class="o">%&gt;%</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">beak_length_culmen</span><span class="p">,</span> <span class="n">beak_width</span><span class="p">,</span> 
+                                            <span class="n">beak_depth</span><span class="p">,</span> <span class="n">log_mass</span><span class="p">,</span> <span class="n">hand_wing_index</span><span class="p">)</span>
+<span class="n">body_traits</span> <span class="o">&lt;-</span> <span class="n">accip_data</span> <span class="o">%&gt;%</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">tarsus_length</span><span class="p">,</span> <span class="n">wing_length</span><span class="p">,</span> 
+                                            <span class="n">tail_length</span><span class="p">,</span> <span class="n">log_mass</span><span class="p">,</span> <span class="n">hand_wing_index</span><span class="p">)</span>
 
 <span class="c1"># Look at the correlations between traits, including body mass.</span>
 <span class="nf">pairs</span><span class="p">(</span><span class="n">beak_traits</span><span class="p">)</span>
@@ -609,13 +611,13 @@ ability), and body mass.</p>
 shape and body mass. This is because bigger species tend to have
 proportionally bigger traits. If we were to calculate functional
 distinctiveness using these traits in their current form, we would
-probably only determine which species are the biggest and smallest.
-Another problem is that when all the traits are highly correlated, it’s
-harder to tell which ones are important for functional distinctiveness.
-Instead our model may simply pick them at random, leading to potentially
-random results.</p>
-<p>Instead we can use two variables from Pigot et al. 2020, “beak shape”,
-and “body shape”. These variables were created using a Principal
+probably only determine which species are biggest and smallest. Another
+problem is that when all the traits are highly correlated, it’s harder
+to tell which ones are important for functional distinctiveness. Instead
+our model may simply pick them at random, leading to potentially random
+results.</p>
+<p>Instead we can use two variables from Pigot <em>et al.</em> (2020), “beak
+shape”, and “body shape”. These variables were created using a Principal
 Components Analysis (PCA) to condense our traits down into fewer
 uncorrelated variables, removing body mass as the dominant effect.</p>
 <div class="admonition tip">
@@ -627,7 +629,7 @@ positively with beak length, and negatively with beak width and depth.
 So a higher value beak shape means a narrower longer beak. For body
 shape, there is a positive correlation with tarsus length, and a
 negative correlation with tail length. So the most extreme would be tall
-birds like Ostrich’s and Flamingos.</p>
+birds like Ostrichs and Flamingos.</p>
 <p>We can check to see if there’s still any strong positive or negative
 correlations:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split the traits into beak shape traits, body shape traits, and body mass.</span>
@@ -638,11 +640,11 @@ correlations:</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/unnamed-chunk-18-1.png"><img alt="../../_images/unnamed-chunk-18-1.png" class="align-center" src="../../_images/unnamed-chunk-18-1.png" style="width: 600px;" /></a>
-<p>No clear postive or negative patterns, so we’re okay to go forward and
+<p>No clear positive or negative patterns, so we’re okay to go forward and
 calculate functional diversity.</p>
 <p>First we need to create a distance matrix of our traits. Species with
 similar traits will have smaller ‘distances’.</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a matrix, scaled for accipitridae. Add in the rownames for the species.</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Scale traits for accipitridae and add in the rownames for the species.</span>
 <span class="n">functional_traits</span> <span class="o">&lt;-</span> <span class="n">functional_traits</span> <span class="o">%&gt;%</span> <span class="nf">scale</span><span class="p">()</span>
 <span class="nf">rownames</span><span class="p">(</span><span class="n">functional_traits</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">accip_data</span><span class="o">$</span><span class="n">jetz_name</span>
 
@@ -706,15 +708,15 @@ FD scores from different groups.</p>
 ## 204 Neophron_percnopterus 2.125431 1.139572   1
 </pre></div>
 </div>
-<p>So the species with the largest FD score is <em>Gypaetus barbatus</em>, the
-Bearded Vulture. This means <em>G. barbatus</em> is the most ecologically
+<p>So the species with the largest FD score is <em>Neophron percnopterus</em>, the
+Egyptian Vulture. This means <em>N. percnopterus</em> is the most ecologically
 diverse species in our clade, based on the morphological values we’ve
-supplied. You might be interested to know that <em>G. barbatus</em> is a very
-unique vulture, with long narrow wings, and wedge shaped tail that makes
-it unmistakable in flight! Moreover, they live on a diet of up to 90%
-bone marrow, which makes them the only living bird that specialises on
-marrow! This will be reflected in the beak morphological traits we used
-to calculate FD. Pretty cool right!</p>
+supplied. They’re one of the smallest vultures, feeding on carrion, but
+also small birds, mammals and reptiles.</p>
+<p>You might be interested to know that <em>N. percnopterus</em> is also a very
+unique bird, due to its rare tool use. They often use pebbles as hammers
+to smash large bird eggs. A great example of how FD measures can
+correlate with unique ecosystem roles.</p>
 <p>We can also look at the top 5% of functionally distinct species.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the top 5% of FD scores.</span>
 <span class="n">FD</span><span class="p">[</span><span class="n">FD</span><span class="o">$</span><span class="n">FD</span> <span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">FD</span><span class="o">$</span><span class="n">FD</span><span class="p">,</span> <span class="m">0.95</span><span class="p">),]</span>
@@ -761,41 +763,35 @@ priorities. We use the same formula as before:</p>
 </div>
 <p>And does including IUCN categories change our conservation priorities?</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the highest ecoDGE score.</span>
-<span class="n">accip_ecoDGE</span><span class="p">[</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">27</span><span class="o">:</span><span class="m">30</span><span class="p">)]</span>
+<span class="n">accip_ecoDGE</span><span class="p">[</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span> <span class="o">==</span> <span class="nf">max</span><span class="p">(</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">30</span><span class="o">:</span><span class="m">33</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name             jetz_name redlist_cat beak_shape body_shape log_mass       FD
-## 204     Egyptian Vulture Neophron_percnopterus          EN  0.6171418 -0.4019422 7.641084 2.125431
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name             jetz_name redlist_cat       FD    FDlog FDn   ecoDGE
+## 204     Egyptian Vulture Neophron_percnopterus          EN 2.125431 1.139572   1 1.475749
 </pre></div>
 </div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the ecoDGE score for Gypaetus barbatus.</span>
-<span class="n">accip_ecoDGE</span><span class="p">[</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">jetz_name</span> <span class="o">==</span> <span class="s">&quot;Gypaetus_barbatus&quot;</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">27</span><span class="o">:</span><span class="m">30</span><span class="p">)]</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##     birdlife_common_name         jetz_name redlist_cat beak_shape body_shape log_mass       FD
-## 138      Bearded Vulture Gypaetus_barbatus          NT -0.3314161  -2.167911 8.647344 1.635275
-</pre></div>
-</div>
-<p>Yes! The Hooded Vulture is now our top conservation priority if we use
-ecoDGE scores to inform our decisions. We can also look at the top
-species.</p>
+<p>In this case, there is no change in our highest species. That’s because
+<em>N percnopterus</em> is often found in built up Mediterranean communities,
+which are increasingly threatened by human land use impacts. As such, it
+is currently listed as endangered.</p>
+<p>We can also look at the top species to see if there are any changes:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the top 5% of ecoDGE scores.</span>
-<span class="n">accip_ecoDGE</span><span class="p">[</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span> <span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span><span class="p">,</span> <span class="m">0.95</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">29</span><span class="o">:</span><span class="m">32</span><span class="p">)]</span>
+<span class="n">accip_ecoDGE</span><span class="p">[</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span> <span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">accip_ecoDGE</span><span class="o">$</span><span class="n">ecoDGE</span><span class="p">,</span> <span class="m">0.95</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">30</span><span class="o">:</span><span class="m">33</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##       birdlife_common_name              jetz_name redlist_cat log_mass        FD     FDlog       FDn
-## 105             Cuban Kite Chondrohierax_wilsonii          CR 5.656341 0.4896142 0.3985171 0.2747549
-## 138        Bearded Vulture      Gypaetus_barbatus          NT 8.647344 1.6352751 0.9689876 0.8330547
-## 140   White-backed Vulture         Gyps_africanus          CR 8.600247 0.4664185 0.3828231 0.2593957
-## 141   White-rumped Vulture       Gyps_bengalensis          CR 8.385945 0.5886831 0.4629054 0.3377695
-## 146   R\xfcppell&#39;s Vulture        Gyps_rueppellii          CR 8.909235 0.8266461 0.6024815 0.4743678
-## 147 Slender-billed Vulture      Gyps_tenuirostris          CR 8.615227 0.8447004 0.6123169 0.4839933
-## 203         Hooded Vulture   Necrosyrtes_monachus          CR 7.622175 1.0765008 0.7306842 0.5998353
-## 204       Egyptian Vulture  Neophron_percnopterus          EN 7.641084 2.1254312 1.1395722 1.0000000
-## 208      Flores Hawk-eagle        Nisaetus_floris          CR 7.296481 0.5400292 0.4318014 0.3073291
-## 217       Philippine Eagle  Pithecophaga_jefferyi          CR 8.551653 0.6731602 0.5147142 0.3884729
-## 222     Red-headed Vulture       Sarcogyps_calvus          CR 8.405121 0.8707367 0.6263323 0.4977098
-## 235   Lappet-faced Vulture    Torgos_tracheliotos          EN 8.849227 1.7519680 1.0123163 0.8754590
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##       birdlife_common_name              jetz_name redlist_cat        FD     FDlog       FDn   ecoDGE
+## 105             Cuban Kite Chondrohierax_wilsonii          CR 0.4896142 0.3985171 0.2747549 1.070870
+## 138        Bearded Vulture      Gypaetus_barbatus          NT 1.6352751 0.9689876 0.8330547 1.053032
+## 140   White-backed Vulture         Gyps_africanus          CR 0.4664185 0.3828231 0.2593957 1.055176
+## 141   White-rumped Vulture       Gyps_bengalensis          CR 0.5886831 0.4629054 0.3377695 1.135258
+## 146   R\xfcppell&#39;s Vulture        Gyps_rueppellii          CR 0.8266461 0.6024815 0.4743678 1.274834
+## 147 Slender-billed Vulture      Gyps_tenuirostris          CR 0.8447004 0.6123169 0.4839933 1.284670
+## 203         Hooded Vulture   Necrosyrtes_monachus          CR 1.0765008 0.7306842 0.5998353 1.403037
+## 204       Egyptian Vulture  Neophron_percnopterus          EN 2.1254312 1.1395722 1.0000000 1.475749
+## 208      Flores Hawk-eagle        Nisaetus_floris          CR 0.5400292 0.4318014 0.3073291 1.104154
+## 217       Philippine Eagle  Pithecophaga_jefferyi          CR 0.6731602 0.5147142 0.3884729 1.187067
+## 222     Red-headed Vulture       Sarcogyps_calvus          CR 0.8707367 0.6263323 0.4977098 1.298685
+## 235   Lappet-faced Vulture    Torgos_tracheliotos          EN 1.7519680 1.0123163 0.8754590 1.348493
 </pre></div>
 </div>
 <p>As we can see, nearly all of the highest ecoDGE scores are critically
@@ -895,7 +891,7 @@ don’t need to log them now.</p>
 <span class="nf">hist</span><span class="p">(</span><span class="n">accip_EcoEDGE</span><span class="o">$</span><span class="n">EcoEDGE</span><span class="p">,</span> <span class="n">breaks</span> <span class="o">=</span> <span class="m">20</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-31-1.png"><img alt="../../_images/unnamed-chunk-31-1.png" class="align-center" src="../../_images/unnamed-chunk-31-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-30-11.png"><img alt="../../_images/unnamed-chunk-30-11.png" class="align-center" src="../../_images/unnamed-chunk-30-11.png" style="width: 600px;" /></a>
 <p>So when combining EDGE and ecoDGE, the Philippine Eagle is the highest
 species. In general, we might expect ED and FD to correlate, as species
 with many close relatives are likely to share morphological traits that
@@ -975,7 +971,7 @@ values based on GE rating rather than range size.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">GE_raster</span><span class="p">),</span> <span class="n">col</span><span class="o">=</span><span class="n">green_to_red</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-34-11.png"><img alt="../../_images/unnamed-chunk-34-11.png" class="align-center" src="../../_images/unnamed-chunk-34-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-33-1.png"><img alt="../../_images/unnamed-chunk-33-1.png" class="align-center" src="../../_images/unnamed-chunk-33-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">colors()</span></code> to see the list of all the named colours to play with.</p>
@@ -1036,7 +1032,7 @@ nicer to look at.</p>
 <span class="n">GE_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-36-1.png"><img alt="../../_images/unnamed-chunk-36-1.png" class="align-center" src="../../_images/unnamed-chunk-36-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-35-1.png"><img alt="../../_images/unnamed-chunk-35-1.png" class="align-center" src="../../_images/unnamed-chunk-35-1.png" style="width: 600px;" /></a>
 <p>There’s our finished map! Think how you’d change it yourself if you want
 to include one in your report. It’s up to you and what you think is the
 best way to visualise your data!</p>
@@ -1069,7 +1065,7 @@ We first need to sum all the extinction probabilities, and then divide by specie
 <span class="nf">plot</span><span class="p">(</span><span class="n">average_raster</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-38-1.png"><img alt="../../_images/unnamed-chunk-38-1.png" class="align-center" src="../../_images/unnamed-chunk-38-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-37-1.png"><img alt="../../_images/unnamed-chunk-37-1.png" class="align-center" src="../../_images/unnamed-chunk-37-1.png" style="width: 600px;" /></a>
 <p>In this case we can see that the two maps are actually quite similar. If
 we look close enough we can see there are some cells that have a higher
 extinction risk (like in southern Spain), but there are so few we’d
@@ -1080,7 +1076,7 @@ We can instead take logs, which reduces the effect of outliers.</p>
 <span class="nf">plot</span><span class="p">(</span><span class="nf">log</span><span class="p">(</span><span class="n">average_raster</span><span class="p">),</span> <span class="n">col</span> <span class="o">=</span> <span class="n">green_to_red</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-39-11.png"><img alt="../../_images/unnamed-chunk-39-11.png" class="align-center" src="../../_images/unnamed-chunk-39-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-38-1.png"><img alt="../../_images/unnamed-chunk-38-1.png" class="align-center" src="../../_images/unnamed-chunk-38-1.png" style="width: 600px;" /></a>
 <p>Now we can see the pattern clearer. For your coursework, experiment with
 different metrics and methods to produce the best looking and most
 informative maps. Lastly we can redo the maps with ggplot, and rescale
@@ -1112,7 +1108,7 @@ the values so that it’s relative extinction risk (not probability).</p>
   <span class="nf">coord_fixed</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-40-11.png"><img alt="../../_images/unnamed-chunk-40-11.png" class="align-center" src="../../_images/unnamed-chunk-40-11.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-39-11.png"><img alt="../../_images/unnamed-chunk-39-11.png" class="align-center" src="../../_images/unnamed-chunk-39-11.png" style="width: 600px;" /></a>
 </div>
 </section>
 </section>

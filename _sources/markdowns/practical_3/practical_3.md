@@ -264,20 +264,20 @@ changed in light of IUCN categories.
 
 ``` r
 # Find the highest EDGE score.
-accip_EDGE[accip_EDGE$EDGE == max(accip_EDGE$EDGE), c(2:3, 26:30)]
+accip_EDGE[accip_EDGE$EDGE == max(accip_EDGE$EDGE), c(2:3, 28:32)]
 ```
 
-    ##     birdlife_common_name             jetz_name range_size beak_shape body_shape       ED    EDlog
-    ## 217     Philippine Eagle Pithecophaga_jefferyi   142256.5  -1.321058  -0.926998 22.13085 3.141167
+    ##     birdlife_common_name             jetz_name body_shape       ED    EDlog       EDn    EDGE
+    ## 217     Philippine Eagle Pithecophaga_jefferyi  -0.926998 22.13085 3.141167 0.9254021 3.81352
 
 ``` r
 # Find the EDGE score for our previous highest species.
-accip_EDGE[accip_EDGE$EDn == max(accip_EDGE$EDn), c(2:3, 26:30)]
+accip_EDGE[accip_EDGE$EDn == max(accip_EDGE$EDn), c(2:3, 28:32)]
 ```
 
-    ##     birdlife_common_name             jetz_name range_size beak_shape body_shape       ED    EDlog
-    ## 103  Scissor-tailed Kite Chelictinia_riocourii    5425286 -0.4792736 -1.2036786 26.70163 3.321491
-    ## 135           Pearl Kite  Gampsonyx_swainsonii   10266135 -0.3933587 -0.1955286 26.70163 3.321491
+    ##     birdlife_common_name             jetz_name body_shape       ED    EDlog EDn     EDGE
+    ## 103  Scissor-tailed Kite Chelictinia_riocourii -1.2036786 26.70163 3.321491   1 3.363513
+    ## 135           Pearl Kite  Gampsonyx_swainsonii -0.1955286 26.70163 3.321491   1 3.363513
 
 So now we can see that the top conservation priority is the Philippine
 Eagle, *Pithecophaga jefferyi*. Whilst our previous kites are still
@@ -372,8 +372,10 @@ First we should check correlations between our traits:
 accip_data$log_mass <- log(accip_data$mass)
 
 # Split the traits into beak shape traits, body shape traits, and body mass.
-beak_traits <- accip_data %>% dplyr::select(beak_length_culmen, beak_width, beak_depth, log_mass, hand_wing_index)
-body_traits <- accip_data %>% dplyr::select(tarsus_length, wing_length, tail_length, log_mass, hand_wing_index)
+beak_traits <- accip_data %>% dplyr::select(beak_length_culmen, beak_width, 
+                                            beak_depth, log_mass, hand_wing_index)
+body_traits <- accip_data %>% dplyr::select(tarsus_length, wing_length, 
+                                            tail_length, log_mass, hand_wing_index)
 
 # Look at the correlations between traits, including body mass.
 pairs(beak_traits)
@@ -397,14 +399,14 @@ So we can see some pretty strong correlations between beak shape, body
 shape and body mass. This is because bigger species tend to have
 proportionally bigger traits. If we were to calculate functional
 distinctiveness using these traits in their current form, we would
-probably only determine which species are the biggest and smallest.
-Another problem is that when all the traits are highly correlated, it’s
-harder to tell which ones are important for functional distinctiveness.
-Instead our model may simply pick them at random, leading to potentially
-random results.
+probably only determine which species are biggest and smallest. Another
+problem is that when all the traits are highly correlated, it’s harder
+to tell which ones are important for functional distinctiveness. Instead
+our model may simply pick them at random, leading to potentially random
+results.
 
-Instead we can use two variables from Pigot et al. 2020, “beak shape”,
-and “body shape”. These variables were created using a Principal
+Instead we can use two variables from Pigot *et al.* (2020), “beak
+shape”, and “body shape”. These variables were created using a Principal
 Components Analysis (PCA) to condense our traits down into fewer
 uncorrelated variables, removing body mass as the dominant effect.
 
@@ -417,7 +419,7 @@ positively with beak length, and negatively with beak width and depth.
 So a higher value beak shape means a narrower longer beak. For body
 shape, there is a positive correlation with tarsus length, and a
 negative correlation with tail length. So the most extreme would be tall
-birds like Ostrich’s and Flamingos.
+birds like Ostrichs and Flamingos.
 
 We can check to see if there’s still any strong positive or negative
 correlations:
@@ -435,14 +437,14 @@ pairs(functional_traits)
 :width: 600px
 ```
 
-No clear postive or negative patterns, so we’re okay to go forward and
+No clear positive or negative patterns, so we’re okay to go forward and
 calculate functional diversity.
 
 First we need to create a distance matrix of our traits. Species with
 similar traits will have smaller ‘distances’.
 
 ``` r
-# Create a matrix, scaled for accipitridae. Add in the rownames for the species.
+# Scale traits for accipitridae and add in the rownames for the species.
 functional_traits <- functional_traits %>% scale()
 rownames(functional_traits) <- accip_data$jetz_name
 
@@ -515,15 +517,16 @@ FD[FD$FDn == max(FD$FDn),]
     ##                   species       FD    FDlog FDn
     ## 204 Neophron_percnopterus 2.125431 1.139572   1
 
-So the species with the largest FD score is *Gypaetus barbatus*, the
-Bearded Vulture. This means *G. barbatus* is the most ecologically
+So the species with the largest FD score is *Neophron percnopterus*, the
+Egyptian Vulture. This means *N. percnopterus* is the most ecologically
 diverse species in our clade, based on the morphological values we’ve
-supplied. You might be interested to know that *G. barbatus* is a very
-unique vulture, with long narrow wings, and wedge shaped tail that makes
-it unmistakable in flight! Moreover, they live on a diet of up to 90%
-bone marrow, which makes them the only living bird that specialises on
-marrow! This will be reflected in the beak morphological traits we used
-to calculate FD. Pretty cool right!
+supplied. They’re one of the smallest vultures, feeding on carrion, but
+also small birds, mammals and reptiles.
+
+You might be interested to know that *N. percnopterus* is also a very
+unique bird, due to its rare tool use. They often use pebbles as hammers
+to smash large bird eggs. A great example of how FD measures can
+correlate with unique ecosystem roles.
 
 We can also look at the top 5% of functionally distinct species.
 
@@ -577,42 +580,37 @@ And does including IUCN categories change our conservation priorities?
 
 ``` r
 # Find the highest ecoDGE score.
-accip_ecoDGE[accip_ecoDGE$ecoDGE == max(accip_ecoDGE$ecoDGE), c(2:3, 6, 27:30)]
+accip_ecoDGE[accip_ecoDGE$ecoDGE == max(accip_ecoDGE$ecoDGE), c(2:3, 6, 30:33)]
 ```
 
-    ##     birdlife_common_name             jetz_name redlist_cat beak_shape body_shape log_mass       FD
-    ## 204     Egyptian Vulture Neophron_percnopterus          EN  0.6171418 -0.4019422 7.641084 2.125431
+    ##     birdlife_common_name             jetz_name redlist_cat       FD    FDlog FDn   ecoDGE
+    ## 204     Egyptian Vulture Neophron_percnopterus          EN 2.125431 1.139572   1 1.475749
 
-``` r
-# Find the ecoDGE score for Gypaetus barbatus.
-accip_ecoDGE[accip_ecoDGE$jetz_name == "Gypaetus_barbatus", c(2:3, 6, 27:30)]
-```
+In this case, there is no change in our highest species. That’s because
+*N percnopterus* is often found in built up Mediterranean communities,
+which are increasingly threatened by human land use impacts. As such, it
+is currently listed as endangered.
 
-    ##     birdlife_common_name         jetz_name redlist_cat beak_shape body_shape log_mass       FD
-    ## 138      Bearded Vulture Gypaetus_barbatus          NT -0.3314161  -2.167911 8.647344 1.635275
-
-Yes! The Hooded Vulture is now our top conservation priority if we use
-ecoDGE scores to inform our decisions. We can also look at the top
-species.
+We can also look at the top species to see if there are any changes:
 
 ``` r
 # Get the top 5% of ecoDGE scores.
-accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 6, 29:32)]
+accip_ecoDGE[accip_ecoDGE$ecoDGE > quantile(accip_ecoDGE$ecoDGE, 0.95), c(2:3, 6, 30:33)]
 ```
 
-    ##       birdlife_common_name              jetz_name redlist_cat log_mass        FD     FDlog       FDn
-    ## 105             Cuban Kite Chondrohierax_wilsonii          CR 5.656341 0.4896142 0.3985171 0.2747549
-    ## 138        Bearded Vulture      Gypaetus_barbatus          NT 8.647344 1.6352751 0.9689876 0.8330547
-    ## 140   White-backed Vulture         Gyps_africanus          CR 8.600247 0.4664185 0.3828231 0.2593957
-    ## 141   White-rumped Vulture       Gyps_bengalensis          CR 8.385945 0.5886831 0.4629054 0.3377695
-    ## 146   R\xfcppell's Vulture        Gyps_rueppellii          CR 8.909235 0.8266461 0.6024815 0.4743678
-    ## 147 Slender-billed Vulture      Gyps_tenuirostris          CR 8.615227 0.8447004 0.6123169 0.4839933
-    ## 203         Hooded Vulture   Necrosyrtes_monachus          CR 7.622175 1.0765008 0.7306842 0.5998353
-    ## 204       Egyptian Vulture  Neophron_percnopterus          EN 7.641084 2.1254312 1.1395722 1.0000000
-    ## 208      Flores Hawk-eagle        Nisaetus_floris          CR 7.296481 0.5400292 0.4318014 0.3073291
-    ## 217       Philippine Eagle  Pithecophaga_jefferyi          CR 8.551653 0.6731602 0.5147142 0.3884729
-    ## 222     Red-headed Vulture       Sarcogyps_calvus          CR 8.405121 0.8707367 0.6263323 0.4977098
-    ## 235   Lappet-faced Vulture    Torgos_tracheliotos          EN 8.849227 1.7519680 1.0123163 0.8754590
+    ##       birdlife_common_name              jetz_name redlist_cat        FD     FDlog       FDn   ecoDGE
+    ## 105             Cuban Kite Chondrohierax_wilsonii          CR 0.4896142 0.3985171 0.2747549 1.070870
+    ## 138        Bearded Vulture      Gypaetus_barbatus          NT 1.6352751 0.9689876 0.8330547 1.053032
+    ## 140   White-backed Vulture         Gyps_africanus          CR 0.4664185 0.3828231 0.2593957 1.055176
+    ## 141   White-rumped Vulture       Gyps_bengalensis          CR 0.5886831 0.4629054 0.3377695 1.135258
+    ## 146   R\xfcppell's Vulture        Gyps_rueppellii          CR 0.8266461 0.6024815 0.4743678 1.274834
+    ## 147 Slender-billed Vulture      Gyps_tenuirostris          CR 0.8447004 0.6123169 0.4839933 1.284670
+    ## 203         Hooded Vulture   Necrosyrtes_monachus          CR 1.0765008 0.7306842 0.5998353 1.403037
+    ## 204       Egyptian Vulture  Neophron_percnopterus          EN 2.1254312 1.1395722 1.0000000 1.475749
+    ## 208      Flores Hawk-eagle        Nisaetus_floris          CR 0.5400292 0.4318014 0.3073291 1.104154
+    ## 217       Philippine Eagle  Pithecophaga_jefferyi          CR 0.6731602 0.5147142 0.3884729 1.187067
+    ## 222     Red-headed Vulture       Sarcogyps_calvus          CR 0.8707367 0.6263323 0.4977098 1.298685
+    ## 235   Lappet-faced Vulture    Torgos_tracheliotos          EN 1.7519680 1.0123163 0.8754590 1.348493
 
 As we can see, nearly all of the highest ecoDGE scores are critically
 endangered, which means we could soon lose their unique ecosystem
@@ -717,7 +715,7 @@ accip_EcoEDGE[accip_EcoEDGE$EcoEDGE > quantile(accip_EcoEDGE$EcoEDGE, 0.9),]
 hist(accip_EcoEDGE$EcoEDGE, breaks = 20)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-31-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-30-1.png
 :align: center
 :width: 600px
 ```
@@ -807,7 +805,7 @@ green_to_red <- colorRampPalette(c("forestgreen", "khaki", "firebrick"))(20)
 plot(as.factor(GE_raster), col=green_to_red)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-34-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-33-1.png
 :align: center
 :width: 600px
 ```
@@ -875,7 +873,7 @@ options(repr.plot.width=15, repr.plot.height=10)
 GE_plot
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-36-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-35-1.png
 :align: center
 :width: 600px
 ```
@@ -916,7 +914,7 @@ average_raster <- sum_raster / richness_raster
 plot(average_raster)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-38-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-37-1.png
 :align: center
 :width: 600px
 ```
@@ -933,7 +931,7 @@ We can instead take logs, which reduces the effect of outliers.
 plot(log(average_raster), col = green_to_red)
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-39-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-38-1.png
 :align: center
 :width: 600px
 ```
@@ -971,7 +969,7 @@ ggplot() +
   coord_fixed()
 ```
 
-```{image} practical_3_files/figure-gfm/unnamed-chunk-40-1.png
+```{image} practical_3_files/figure-gfm/unnamed-chunk-39-1.png
 :align: center
 :width: 600px
 ```
