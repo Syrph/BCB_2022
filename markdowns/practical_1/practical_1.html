@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Basics in R &#8212; Biodiversity and Conservation Biology</title>
+    <title>Basics &amp; Phylogenetics in R &#8212; Biodiversity and  &lt;br/&gt;Conservation Biology</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -29,6 +29,21 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -41,6 +56,22 @@
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/copybutton_funcs.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery-3.5.1.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="../../_static/sphinx-thebe.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/underscore-1.13.1.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+    <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
@@ -77,7 +108,7 @@
       
       
       
-      <h1 class="site-logo" id="site-title">Biodiversity and Conservation Biology</h1>
+      <h1 class="site-logo" id="site-title">Biodiversity and  <br/>Conservation Biology</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -95,7 +126,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Basics in R
+   Basics &amp; Phylogenetics in R
   </a>
  </li>
  <li class="toctree-l1">
@@ -275,18 +306,6 @@
      Text based formats
     </a>
    </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#basic-tree-viewing-in-r">
-   7. Basic tree viewing in
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     R
-    </span>
-   </code>
-  </a>
-  <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#reading-in-a-phylogeny-from-a-file">
      Reading in a phylogeny from a file
@@ -296,7 +315,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#manipulating-phylogenetic-trees-in-r">
-   8. Manipulating phylogenetic trees in
+   7. Manipulating phylogenetic trees in
    <code class="docutils literal notranslate">
     <span class="pre">
      R
@@ -306,7 +325,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#adding-trait-data-to-trees-in-r">
-   9. Adding trait data to trees in
+   8. Adding trait data to trees in
    <code class="docutils literal notranslate">
     <span class="pre">
      R
@@ -325,26 +344,22 @@
         
               <div>
                 
-  <section id="basics-in-r">
-<h1>Basics in R<a class="headerlink" href="#basics-in-r" title="Permalink to this headline">¶</a></h1>
+  <section id="basics-phylogenetics-in-r">
+<h1>Basics &amp; Phylogenetics in R<a class="headerlink" href="#basics-phylogenetics-in-r" title="Permalink to this headline">¶</a></h1>
 <section id="introduction-and-resources">
 <h2>1. Introduction and resources<a class="headerlink" href="#introduction-and-resources" title="Permalink to this headline">¶</a></h2>
 <p>The aim of this practical is to revise some basic functions in <code class="docutils literal notranslate"><span class="pre">R</span></code>
 relating to data management and plotting. We will then look at handling
-spatial data and phylogenies, two skills essential for macro-ecology.
-One aim of this practical is to make sure everyone’s set up is working
-well and fix any problems!</p>
+spatial data and phylogenies, two skills essential for macroecology. One
+aim of this practical is to make sure everyone’s set up is working well
+and fix any problems!</p>
 <p>We will review importing phylogenetic trees as data files, displaying
 phylogenetic trees visually, and some basic evolutionary computations
 that can be conducted with phylogenetic trees. This practical will
-deliver some of the important background for Coursework 1. Below you
-will find some of the relevant resources required for this practical.</p>
-<p>Parts (sections 2,3,4) of this practical are written by <a class="reference external" href="http://nhcooper123.github.io/">Natalie
+deliver some of the important background for Coursework 1.</p>
+<p>Parts (sections 6,7) of this practical are written by <a class="reference external" href="http://nhcooper123.github.io/">Natalie
 Cooper</a>. The original can be found
-<a class="reference external" href="https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd">here</a>.
-Whereas, parts (section 5 &amp; 6) of this practical are written by Adam
-Devenish &amp; Rob Barber (<a class="reference external" href="mailto:a&#46;devenish&#37;&#52;&#48;imperial&#46;ac&#46;uk">mailto:a<span>&#46;</span>devenish<span>&#64;</span>imperial<span>&#46;</span>ac<span>&#46;</span>uk</a>)
-(<a class="reference external" href="mailto:r&#46;barber19&#37;&#52;&#48;imperial&#46;ac&#46;uk">mailto:r<span>&#46;</span>barber19<span>&#64;</span>imperial<span>&#46;</span>ac<span>&#46;</span>uk</a>).</p>
+<a class="reference external" href="https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd">here</a>.</p>
 <section id="working-directory">
 <h3>Working directory<a class="headerlink" href="#working-directory" title="Permalink to this headline">¶</a></h3>
 <p>The first step when starting a new session is to set your working
@@ -854,13 +869,14 @@ inside for the <code class="docutils literal notranslate"><span class="pre">avon
 <span class="nf">str</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    9872 obs. of  25 variables:
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    9872 obs. of  28 variables:
 ##  $ birdlife_name       : chr  &quot;Accipiter albogularis&quot; &quot;Accipiter badius&quot; &quot;Accipiter bicolor&quot; &quot;Accipiter brachyurus&quot; ...
 ##  $ birdlife_common_name: chr  &quot;Pied Goshawk&quot; &quot;Shikra&quot; &quot;Bicolored Hawk&quot; &quot;New Britain Sparrowhawk&quot; ...
 ##  $ jetz_name           : chr  &quot;Accipiter_albogularis&quot; &quot;Accipiter_badius&quot; &quot;Accipiter_bicolor&quot; &quot;Accipiter_brachyurus&quot; ...
 ##  $ jetz_order          : chr  &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; &quot;Accipitriformes&quot; ...
 ##  $ jetz_family         : chr  &quot;Accipitridae&quot; &quot;Accipitridae&quot; &quot;Accipitridae&quot; &quot;Accipitridae&quot; ...
 ##  $ redlist_cat         : chr  &quot;LC&quot; &quot;LC&quot; &quot;LC&quot; &quot;VU&quot; ...
+##  $ extinct_prob        : num  0.0606 0.0606 0.0606 0.2425 0.0606 ...
 ##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
 ##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
 ##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
@@ -880,6 +896,8 @@ inside for the <code class="docutils literal notranslate"><span class="pre">avon
 ##  $ centroid_latitude   : num  -8.15 8.23 -10.1 -5.45 45.24 ...
 ##  $ centroid_longitude  : num  158.5 45 -60 150.7 45.3 ...
 ##  $ range_size          : num  37461 22374973 14309701 35581 2936752 ...
+##  $ beak_shape          : num  -0.594 -0.538 -0.442 -0.499 -0.487 ...
+##  $ body_shape          : num  -0.028 -0.227 -0.342 0.267 -0.271 ...
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">str</span></code> shows the structure of the data frame (this can be a really useful
@@ -892,24 +910,30 @@ so it’s useful to check this.</p>
 <span class="nf">head</span><span class="p">(</span><span class="n">avonet_data</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat beak_length_culmen
-## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC               27.7
-## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC               20.6
-## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC               25.0
-## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU               22.5
-## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC               21.1
-##   beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1 hand_wing_index tail_length  mass
-## 1              17.8       10.6       14.7          62.0       235.2           81.8      159.5            33.9       169.0 248.8
-## 2              12.1        8.8       11.6          43.0       186.7           62.5      127.4            32.9       140.6 131.2
-## 3              13.7        8.6       12.7          58.1       229.6           56.6      174.8            24.6       186.3 287.5
-## 4              14.0        8.9       11.9          61.2       202.2           64.1      138.1            31.7       140.8 142.0
-## 5              12.1        8.7       11.1          46.4       217.6           87.8      129.9            40.2       153.5 186.5
-##   habitat_density migration trophic_level trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
-## 1               1         2     Carnivore     Vertivore       Insessorial             -8.15             158.49    37461.21
-## 2               2         3     Carnivore     Vertivore       Insessorial              8.23              44.98 22374973.00
-## 3               2         2     Carnivore     Vertivore        Generalist            -10.10             -59.96 14309701.27
-## 4               1         2     Carnivore     Vertivore       Insessorial             -5.45             150.68    35580.71
-## 5               1         3     Carnivore     Vertivore        Generalist             45.24              45.33  2936751.80
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat
+## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC
+## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC
+## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC
+## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU
+## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC
+##   extinct_prob beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance
+## 1     0.060625               27.7              17.8       10.6       14.7          62.0       235.2           81.8
+## 2     0.060625               20.6              12.1        8.8       11.6          43.0       186.7           62.5
+## 3     0.060625               25.0              13.7        8.6       12.7          58.1       229.6           56.6
+## 4     0.242500               22.5              14.0        8.9       11.9          61.2       202.2           64.1
+## 5     0.060625               21.1              12.1        8.7       11.1          46.4       217.6           87.8
+##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche
+## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore
+## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore
+## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore
+## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore
+## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore
+##   primary_lifestyle centroid_latitude centroid_longitude  range_size beak_shape body_shape
+## 1       Insessorial             -8.15             158.49    37461.21 -0.5939811 -0.0279868
+## 2       Insessorial              8.23              44.98 22374973.00 -0.5381898 -0.2265797
+## 3        Generalist            -10.10             -59.96 14309701.27 -0.4418864 -0.3419256
+## 4       Insessorial             -5.45             150.68    35580.71 -0.4985385  0.2672395
+## 5        Generalist             45.24              45.33  2936751.80 -0.4866800 -0.2710666
 </pre></div>
 </div>
 <p>Briefly, you can export data (especially dataframes) using a few simple
@@ -982,8 +1006,8 @@ manually set the number of breaks.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## null device 
-##           1
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
 </pre></div>
 </div>
 <p>So it’s true that there are many small species and few large. We can
@@ -1017,8 +1041,8 @@ key part of any analysis.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## png 
-##   2
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
 </pre></div>
 </div>
 </section>
@@ -1059,8 +1083,13 @@ info!</p>
 
 <span class="c1"># getData is a function from the raster package that allows us to download some spatial data. </span>
 <span class="n">bio</span> <span class="o">&lt;-</span> <span class="nf">getData</span><span class="p">(</span><span class="s">&quot;worldclim&quot;</span><span class="p">,</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;bio&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
-
-<span class="c1"># Get the class for our rasters.</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Warning in getData(&quot;worldclim&quot;, var = &quot;bio&quot;, res = 10): getData will be removed in a future version of raster
+## . Please use the geodata package instead
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the class for our rasters.</span>
 <span class="nf">class</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1077,7 +1106,7 @@ info!</p>
 ## dimensions : 900, 2160, 1944000, 19  (nrow, ncol, ncell, nlayers)
 ## resolution : 0.1666667, 0.1666667  (x, y)
 ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## crs        : +proj=longlat +datum=WGS84 
 ## names      :  bio1,  bio2,  bio3,  bio4,  bio5,  bio6,  bio7,  bio8,  bio9, bio10, bio11, bio12, bio13, bio14, bio15, ... 
 ## min values :  -269,     9,     8,    72,   -59,  -547,    53,  -251,  -450,   -97,  -488,     0,     0,     0,     0, ... 
 ## max values :   314,   211,    95, 22673,   489,   258,   725,   375,   364,   380,   289,  9916,  2088,   652,   261, ...
@@ -1118,7 +1147,7 @@ as <code class="docutils literal notranslate"><span class="pre">spTransform()</s
 ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
 ## resolution : 0.1666667, 0.1666667  (x, y)
 ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## crs        : +proj=longlat +datum=WGS84 
 ## source     : bio12.bil 
 ## names      : bio12 
 ## values     : 0, 9916  (min, max)
@@ -1152,7 +1181,7 @@ the precipitation raster. We can also assign values to the cells.</p>
 ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
 ## resolution : 0.1666667, 0.1666667  (x, y)
 ## extent     : -180, 180.0001, -60.00003, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +no_defs 
+## crs        : +proj=longlat +datum=WGS84 +towgs84=0,0,0 
 ## source     : memory
 ## names      : layer 
 ## values     : 1, 1944000  (min, max)
@@ -1316,8 +1345,8 @@ accordingly.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## png 
-##   2
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
 </pre></div>
 </div>
 <p>Of course, you can play around with plot settings to create some
@@ -1356,8 +1385,6 @@ trees used in computer science.</p>
 <p>To plot phylogenies (or use any specialized analysis) in R, you need one
 or more additional packages from the basic R installation. For this
 practical you will need to load the following packages:</p>
-<p>• ape</p>
-<p>• phytools</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load packages.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ape</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">phytools</span><span class="p">)</span>
@@ -1460,13 +1487,10 @@ scalar that follows a colon.</p>
 You can open it with a simple text editor to see the newick tree
 structure.</p>
 </section>
-</section>
-<section id="basic-tree-viewing-in-r">
-<h2>7. Basic tree viewing in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#basic-tree-viewing-in-r" title="Permalink to this headline">¶</a></h2>
-<p>Now let’s visualise some phylogenies! We’ll use the Elopomorpha (eels
-and similar fishes) tree to start as it is simple.</p>
 <section id="reading-in-a-phylogeny-from-a-file">
 <h3>Reading in a phylogeny from a file<a class="headerlink" href="#reading-in-a-phylogeny-from-a-file" title="Permalink to this headline">¶</a></h3>
+<p>Now let’s visualise some phylogenies! We’ll use the Elopomorpha (eels
+and similar fishes) tree to start as it is simple.</p>
 <p>To load a tree you need the function <code class="docutils literal notranslate"><span class="pre">read.tree</span></code>. Just like we did with
 text but instead we point to a file location. <code class="docutils literal notranslate"><span class="pre">read.tree</span></code> can read any
 newick format trees (see above) like the <code class="docutils literal notranslate"><span class="pre">elopomorph.tre</span></code> file.</p>
@@ -1576,22 +1600,10 @@ tips (<code class="docutils literal notranslate"><span class="pre">edge.color</s
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/unnamed-chunk-77-1.png"><img alt="../../_images/unnamed-chunk-77-1.png" class="align-center" src="../../_images/unnamed-chunk-77-1.png" style="width: 600px;" /></a>
-<p>Or try</p>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">plot</span><span class="p">(</span><span class="nf">ladderize</span><span class="p">(</span><span class="n">fishtree</span><span class="p">),</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="n">edge.color</span> <span class="o">=</span> <span class="s">&quot;darkviolet&quot;</span><span class="p">,</span> <span class="n">tip.color</span> <span class="o">=</span> <span class="s">&quot;hotpink&quot;</span><span class="p">,</span>  <span class="n">cex</span> <span class="o">=</span> <span class="m">0.7</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-78-1.png"><img alt="../../_images/unnamed-chunk-78-1.png" class="align-center" src="../../_images/unnamed-chunk-78-1.png" style="width: 600px;" /></a>
-<p>The <code class="docutils literal notranslate"><span class="pre">ladderize</span></code> function allows to display the branches from shortest to
-longest.</p>
-<blockquote>
-<div><p>Try to modify the graphical options (colors, display, size, ordering
-of the nodes, etc.) to obtain the most beautiful or ugliest
-Elopomorpha phylogeny!</p>
-</div></blockquote>
 </section>
 </section>
 <section id="manipulating-phylogenetic-trees-in-r">
-<h2>8. Manipulating phylogenetic trees in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#manipulating-phylogenetic-trees-in-r" title="Permalink to this headline">¶</a></h2>
+<h2>7. Manipulating phylogenetic trees in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#manipulating-phylogenetic-trees-in-r" title="Permalink to this headline">¶</a></h2>
 <p>There are a range of ways in which we can manipulate trees in R. To
 start lets take a look at the bird family Turdidae.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the turdidae (thrush) tree.</span>
@@ -1608,14 +1620,15 @@ first choose one random tree before we start.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">ran_turdidae_tree</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">fsize</span><span class="o">=</span><span class="m">0.4</span><span class="p">,</span> <span class="n">lwd</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span><span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-80-1.png"><img alt="../../_images/unnamed-chunk-80-1.png" class="align-center" src="../../_images/unnamed-chunk-80-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-79-1.png"><img alt="../../_images/unnamed-chunk-79-1.png" class="align-center" src="../../_images/unnamed-chunk-79-1.png" style="width: 600px;" /></a>
 <p>First, lets see what species are in the tree.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lets see the first 10 species.</span>
 <span class="nf">head</span><span class="p">(</span><span class="n">ran_turdidae_tree</span><span class="o">$</span><span class="n">tip.label</span><span class="p">,</span> <span class="m">10</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] &quot;Zoothera_everetti&quot;        &quot;Zoothera_naevia&quot;          &quot;Zoothera_pinicola&quot;        &quot;Hylocichla_mustelina&quot;     &quot;Catharus_aurantiirostris&quot;
-##  [6] &quot;Catharus_mexicanus&quot;       &quot;Catharus_dryas&quot;           &quot;Catharus_fuscater&quot;        &quot;Catharus_ustulatus&quot;       &quot;Catharus_bicknelli&quot;
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] &quot;Zoothera_everetti&quot;        &quot;Zoothera_naevia&quot;          &quot;Zoothera_pinicola&quot;        &quot;Hylocichla_mustelina&quot;    
+##  [5] &quot;Catharus_aurantiirostris&quot; &quot;Catharus_mexicanus&quot;       &quot;Catharus_dryas&quot;           &quot;Catharus_fuscater&quot;       
+##  [9] &quot;Catharus_ustulatus&quot;       &quot;Catharus_bicknelli&quot;
 </pre></div>
 </div>
 <p>We can remove species from the tree that we don’t want to include. This
@@ -1635,9 +1648,9 @@ instance we first find all the associated tip.labels.</p>
 <span class="n">drop_species</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] &quot;Myadestes_genibarbis&quot;   &quot;Myadestes_ralloides&quot;    &quot;Myadestes_melanops&quot;     &quot;Myadestes_coloratus&quot;    &quot;Myadestes_palmeri&quot;     
-##  [6] &quot;Myadestes_elisabeth&quot;    &quot;Myadestes_townsendi&quot;    &quot;Myadestes_obscurus&quot;     &quot;Myadestes_occidentalis&quot; &quot;Myadestes_unicolor&quot;    
-## [11] &quot;Myadestes_lanaiensis&quot;
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##  [1] &quot;Myadestes_genibarbis&quot;   &quot;Myadestes_ralloides&quot;    &quot;Myadestes_melanops&quot;     &quot;Myadestes_coloratus&quot;   
+##  [5] &quot;Myadestes_palmeri&quot;      &quot;Myadestes_elisabeth&quot;    &quot;Myadestes_townsendi&quot;    &quot;Myadestes_obscurus&quot;    
+##  [9] &quot;Myadestes_occidentalis&quot; &quot;Myadestes_unicolor&quot;     &quot;Myadestes_lanaiensis&quot;
 </pre></div>
 </div>
 <p>Now, we create a new tree, with the Myadestes tips dropped from it.</p>
@@ -1648,7 +1661,7 @@ instance we first find all the associated tip.labels.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">ran_turdidae_tree_NM</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;fan&quot;</span><span class="p">,</span> <span class="n">fsize</span><span class="o">=</span><span class="m">0.4</span><span class="p">,</span> <span class="n">lwd</span><span class="o">=</span><span class="m">0.5</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-83-1.png"><img alt="../../_images/unnamed-chunk-83-1.png" class="align-center" src="../../_images/unnamed-chunk-83-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-82-1.png"><img alt="../../_images/unnamed-chunk-82-1.png" class="align-center" src="../../_images/unnamed-chunk-82-1.png" style="width: 600px;" /></a>
 <p>Alternatively, lets say we want to extract the clade within the tree
 that includes the pre identified selected range of species. We’ll now
 keep the drop species and remove everything else.</p>
@@ -1662,7 +1675,7 @@ keep the drop species and remove everything else.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">pruned_birdtree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-84-1.png"><img alt="../../_images/unnamed-chunk-84-1.png" class="align-center" src="../../_images/unnamed-chunk-84-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-83-1.png"><img alt="../../_images/unnamed-chunk-83-1.png" class="align-center" src="../../_images/unnamed-chunk-83-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>You can save your new revised tree. This can save time reading in a big tree just
@@ -1743,7 +1756,7 @@ tips in the tree.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">genera_tree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-88-1.png"><img alt="../../_images/unnamed-chunk-88-1.png" class="align-center" src="../../_images/unnamed-chunk-88-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-87-1.png"><img alt="../../_images/unnamed-chunk-87-1.png" class="align-center" src="../../_images/unnamed-chunk-87-1.png" style="width: 600px;" /></a>
 <p>As the tree has dropped all but one species per genus, this means we
 will finally need to also rename the tip labels as well to reflect this
 change.</p>
@@ -1756,10 +1769,10 @@ change.</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">genera_tree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-89-1.png"><img alt="../../_images/unnamed-chunk-89-1.png" class="align-center" src="../../_images/unnamed-chunk-89-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-88-1.png"><img alt="../../_images/unnamed-chunk-88-1.png" class="align-center" src="../../_images/unnamed-chunk-88-1.png" style="width: 600px;" /></a>
 </section>
 <section id="adding-trait-data-to-trees-in-r">
-<h2>9. Adding trait data to trees in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#adding-trait-data-to-trees-in-r" title="Permalink to this headline">¶</a></h2>
+<h2>8. Adding trait data to trees in <code class="docutils literal notranslate"><span class="pre">R</span></code><a class="headerlink" href="#adding-trait-data-to-trees-in-r" title="Permalink to this headline">¶</a></h2>
 <p>Often basic tree plots in R are all you need for exploring data and your
 analysis. However, for publications and presentations it may be useful
 to plot trees with associated trait data. We will try plotting data with
@@ -1803,14 +1816,16 @@ are in the tip labels</p>
 <span class="n">turdidae_data</span><span class="o">$</span><span class="n">jetz_name</span> <span class="o">%in%</span> <span class="n">ran_turdidae_tree</span><span class="o">$</span><span class="n">tip.label</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-##  [23] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-##  [45]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-##  [67]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-##  [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-## [155]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [19]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [37]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [55]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [73]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+##  [91]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [127]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [163]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 </pre></div>
 </div>
 <p>We can save the results, and use this to select the rows we need from
@@ -1850,7 +1865,7 @@ this yourself?</p>
 <span class="nf">plotTree</span><span class="p">(</span><span class="n">turdi_tree</span><span class="p">,</span> <span class="n">ftype</span><span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-95-1.png"><img alt="../../_images/unnamed-chunk-95-1.png" class="align-center" src="../../_images/unnamed-chunk-95-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-94-1.png"><img alt="../../_images/unnamed-chunk-94-1.png" class="align-center" src="../../_images/unnamed-chunk-94-1.png" style="width: 600px;" /></a>
 </div>
 <p>Now lets try using ggtree to plot our data with our phylogeny. This
 package produces really nice plots you can use for coursework
@@ -1869,7 +1884,7 @@ and then add tip labels and traits after.</p>
 <span class="n">turdidae_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-97-1.png"><img alt="../../_images/unnamed-chunk-97-1.png" class="align-center" src="../../_images/unnamed-chunk-97-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-96-1.png"><img alt="../../_images/unnamed-chunk-96-1.png" class="align-center" src="../../_images/unnamed-chunk-96-1.png" style="width: 600px;" /></a>
 <p>This is a pretty basic plot. We can add tip labels and customize our
 plot the same way as if we were using <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a plot of the tree with a circular layout.</span>
@@ -1879,7 +1894,7 @@ plot the same way as if we were using <code class="docutils literal notranslate"
 <span class="n">turdidae_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-98-1.png"><img alt="../../_images/unnamed-chunk-98-1.png" class="align-center" src="../../_images/unnamed-chunk-98-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-97-1.png"><img alt="../../_images/unnamed-chunk-97-1.png" class="align-center" src="../../_images/unnamed-chunk-97-1.png" style="width: 600px;" /></a>
 <p>Our plot is now a bit big and falling out of the plotting window. We can
 fix this by expanding the x axis, which unlike normal plots comes out
 from the middle. We can also make the tips smaller as well.</p>
@@ -1890,7 +1905,7 @@ from the middle. We can also make the tips smaller as well.</p>
 <span class="n">turdidae_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-99-1.png"><img alt="../../_images/unnamed-chunk-99-1.png" class="align-center" src="../../_images/unnamed-chunk-99-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-98-1.png"><img alt="../../_images/unnamed-chunk-98-1.png" class="align-center" src="../../_images/unnamed-chunk-98-1.png" style="width: 600px;" /></a>
 <p>If we want to add trait data to our plot, we can combine our tree and
 data together.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add a column that&#39;s the node number matching the tree.</span>
@@ -1909,7 +1924,7 @@ data together.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will replace the existing scale.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-101-1.png"><img alt="../../_images/unnamed-chunk-101-1.png" class="align-center" src="../../_images/unnamed-chunk-101-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-100-1.png"><img alt="../../_images/unnamed-chunk-100-1.png" class="align-center" src="../../_images/unnamed-chunk-100-1.png" style="width: 600px;" /></a>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Notice when we put an extra <code class="docutils literal notranslate"><span class="pre">()</span></code> around the entire line of code, it saves the plot
@@ -1918,9 +1933,9 @@ as an object, and prints the plot at the same time.</p>
 <p>And now we have a plot where we can see the spread of habitat types in
 Thrushes. Try experimenting with different colours and sizes to create
 some beautiful trees that put this one to shame! There’s also lots of
-other ways you can label trees. For more info this guide is a great
-place to start:
-<a class="reference external" href="https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package">https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package</a></p>
+other ways you can label trees. For more info <a class="reference external" href="https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package">this
+guide</a>
+is a great place to start.</p>
 <blockquote>
 <div><p>Extra task: Can you make another plot for continuous body mass data?
 Think about how you’d show this with colour. Can you change the key to
@@ -1952,7 +1967,7 @@ the tree than habitat?</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will replace the existing scale.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-103-1.png"><img alt="../../_images/unnamed-chunk-103-1.png" class="align-center" src="../../_images/unnamed-chunk-103-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-102-1.png"><img alt="../../_images/unnamed-chunk-102-1.png" class="align-center" src="../../_images/unnamed-chunk-102-1.png" style="width: 600px;" /></a>
 <p>Notice how we use <code class="docutils literal notranslate"><span class="pre">open.angle</span> <span class="pre">=</span> <span class="pre">15</span></code> so that we can fit the legend in the
 gap. Think how you can play around with the size of each part of the
 plot to make it look nicer!</p>
@@ -1977,7 +1992,7 @@ plot to make it look nicer!</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will replace the existing scale.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-104-1.png"><img alt="../../_images/unnamed-chunk-104-1.png" class="align-center" src="../../_images/unnamed-chunk-104-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-103-1.png"><img alt="../../_images/unnamed-chunk-103-1.png" class="align-center" src="../../_images/unnamed-chunk-103-1.png" style="width: 600px;" /></a>
 <p>Geom fruit can be confusing as we have the y value as the node, and x as
 our variable, but this code can easily be subbed in with your own data.</p>
 <p>This guide goes into lots of detail plotting with ggtree, and is worth

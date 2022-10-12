@@ -410,16 +410,6 @@ So we can see that our comparative object has worked as it should. Now
 we can run a pgls to see if information on the phylogeny makes any
 difference.
 
-**Warning** If you’re using R studio Cloud, you’ll need an extra
-argument: `bounds = list(lambda = c(0.05, 1))`. So it looks like this:
-
-`duck_pgls <- pgls(log_BM ~ abs_latitude, data = duck_comp, lambda = "ML", bounds = list(lambda = c(0.05, 1)))`
-
-This limits where the model searches for the lambda value, but won’t
-change your result. It’s just a weird way cloud is set up, and doesn’t
-happen for every pgls. For your coursework, try models without this
-argument first.
-
 ``` r
 # Run a PGLS model.
 duck_pgls <- pgls(log_BM ~ abs_latitude, data = duck_comp, lambda = "ML")
@@ -590,11 +580,9 @@ prey.
 #### Phylogenetic analysis
 
 First we’ll load in our data. This is the same data from practical 1
-from the AVONET database. The citation for this data is:
-
-Tobias, J.A., Sheard, C., Pigot, A.L., Devenish, A.J.M., Yang, J.,
-Sayol, F. et al. (2021) AVONET: morphological, ecological and
-geographical data for all birds. Ecology Letters (in press).
+from the AVONET database. You can find the paper
+[here](https://doi.org/10.1111/ele.13898), and should cite it in
+reports.
 
 ``` r
 # Read in the avonet data.
@@ -602,13 +590,14 @@ avonet_data <- read.csv("data/avonet_data.csv")
 str(avonet_data)
 ```
 
-    ## 'data.frame':    9872 obs. of  25 variables:
+    ## 'data.frame':    9872 obs. of  28 variables:
     ##  $ birdlife_name       : chr  "Accipiter albogularis" "Accipiter badius" "Accipiter bicolor" "Accipiter brachyurus" ...
     ##  $ birdlife_common_name: chr  "Pied Goshawk" "Shikra" "Bicolored Hawk" "New Britain Sparrowhawk" ...
     ##  $ jetz_name           : chr  "Accipiter_albogularis" "Accipiter_badius" "Accipiter_bicolor" "Accipiter_brachyurus" ...
     ##  $ jetz_order          : chr  "Accipitriformes" "Accipitriformes" "Accipitriformes" "Accipitriformes" ...
     ##  $ jetz_family         : chr  "Accipitridae" "Accipitridae" "Accipitridae" "Accipitridae" ...
     ##  $ redlist_cat         : chr  "LC" "LC" "LC" "VU" ...
+    ##  $ extinct_prob        : num  0.0606 0.0606 0.0606 0.2425 0.0606 ...
     ##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
     ##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
     ##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
@@ -628,32 +617,41 @@ str(avonet_data)
     ##  $ centroid_latitude   : num  -8.15 8.23 -10.1 -5.45 45.24 ...
     ##  $ centroid_longitude  : num  158.5 45 -60 150.7 45.3 ...
     ##  $ range_size          : num  37461 22374973 14309701 35581 2936752 ...
+    ##  $ beak_shape          : num  -0.594 -0.538 -0.442 -0.499 -0.487 ...
+    ##  $ body_shape          : num  -0.028 -0.227 -0.342 0.267 -0.271 ...
 
 ``` r
 head(avonet_data)
 ```
 
-    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat beak_length_culmen
-    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC               27.7
-    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC               20.6
-    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC               25.0
-    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU               22.5
-    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC               21.1
-    ## 6     Accipiter butleri     Nicobar Sparrowhawk     Accipiter_butleri Accipitriformes Accipitridae          VU               20.0
-    ##   beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1 hand_wing_index tail_length  mass
-    ## 1              17.8       10.6       14.7          62.0       235.2           81.8      159.5            33.9       169.0 248.8
-    ## 2              12.1        8.8       11.6          43.0       186.7           62.5      127.4            32.9       140.6 131.2
-    ## 3              13.7        8.6       12.7          58.1       229.6           56.6      174.8            24.6       186.3 287.5
-    ## 4              14.0        8.9       11.9          61.2       202.2           64.1      138.1            31.7       140.8 142.0
-    ## 5              12.1        8.7       11.1          46.4       217.6           87.8      129.9            40.2       153.5 186.5
-    ## 6              11.9        6.6       12.0          48.7       166.0           42.9      123.1            25.8       127.0 122.0
-    ##   habitat_density migration trophic_level trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
-    ## 1               1         2     Carnivore     Vertivore       Insessorial             -8.15             158.49    37461.21
-    ## 2               2         3     Carnivore     Vertivore       Insessorial              8.23              44.98 22374973.00
-    ## 3               2         2     Carnivore     Vertivore        Generalist            -10.10             -59.96 14309701.27
-    ## 4               1         2     Carnivore     Vertivore       Insessorial             -5.45             150.68    35580.71
-    ## 5               1         3     Carnivore     Vertivore        Generalist             45.24              45.33  2936751.80
-    ## 6               1         1     Carnivore     Vertivore       Insessorial              8.42              93.17      327.84
+    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat
+    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC
+    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC
+    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC
+    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU
+    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC
+    ## 6     Accipiter butleri     Nicobar Sparrowhawk     Accipiter_butleri Accipitriformes Accipitridae          VU
+    ##   extinct_prob beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance
+    ## 1     0.060625               27.7              17.8       10.6       14.7          62.0       235.2           81.8
+    ## 2     0.060625               20.6              12.1        8.8       11.6          43.0       186.7           62.5
+    ## 3     0.060625               25.0              13.7        8.6       12.7          58.1       229.6           56.6
+    ## 4     0.242500               22.5              14.0        8.9       11.9          61.2       202.2           64.1
+    ## 5     0.060625               21.1              12.1        8.7       11.1          46.4       217.6           87.8
+    ## 6     0.242500               20.0              11.9        6.6       12.0          48.7       166.0           42.9
+    ##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche
+    ## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore
+    ## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore
+    ## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore
+    ## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore
+    ## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore
+    ## 6      123.1            25.8       127.0 122.0               1         1     Carnivore     Vertivore
+    ##   primary_lifestyle centroid_latitude centroid_longitude  range_size beak_shape  body_shape
+    ## 1       Insessorial             -8.15             158.49    37461.21 -0.5939811 -0.02798680
+    ## 2       Insessorial              8.23              44.98 22374973.00 -0.5381898 -0.22657971
+    ## 3        Generalist            -10.10             -59.96 14309701.27 -0.4418864 -0.34192565
+    ## 4       Insessorial             -5.45             150.68    35580.71 -0.4985385  0.26723952
+    ## 5        Generalist             45.24              45.33  2936751.80 -0.4866800 -0.27106661
+    ## 6       Insessorial              8.42              93.17      327.84 -0.4403345  0.07580829
 
 So we can see the data is a near complete species list for the world’s
 birds, with some information on morphological data, range data and IUCN
@@ -675,7 +673,7 @@ library(dplyr)
 accip_data <- avonet_data %>% filter(jetz_family == "Accipitridae")
 ```
 
-> Extra task: Can you use skills from Practical 2 and 3 to run a PGLS to
+> Extra task: Can you use skills from Practical 1 and 2 to run a PGLS to
 > detirmine if Rapoport’s rule is true in Accipitridae? You’ll need to
 > read in the ‘all_birds.tre’ and drop the tips for all the other
 > species.
@@ -766,18 +764,17 @@ with `lambda = 0.15` to check if it changes our result.
 #### Plotting range size
 
 Now we need to load in our range data. For convenience we’ve saved the
-range data as an `.Rdata` object, which `R` can load back into the
-working environment. `.Rdata` objects can be extremely useful,
+range data as an `.RData` object, which `R` can load back into the
+working environment. `.RData` objects can be extremely useful,
 especially when you’ve ran a model that’s taken a long time, and wish to
 save the result without converting it to a specific file format. The
-maps for each family are available as a separate `R.data` file on
+maps for each family are available as a separate `.RData` file on
 blackboard.
 
 ``` r
 # First load in the spatial packages we'll need.
 library(raster)
 library(sf)
-
 
 # Load the data into our environment.
 load("data/accipitridae_ranges.RData")
@@ -985,8 +982,8 @@ range_plot
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 ### 5. Latitudinal diversity gradient
 
@@ -1200,11 +1197,12 @@ richness_plot <- ggplot() +
   geom_tile(aes(x=long, y=lat, fill= richness), data=raster_data) +
   
   # Here we add a name to the legend, and set manual colours for either end of a gradient.
-  scale_fill_gradientn(name = "Species Richness", colors = c("skyblue", "red")) +
+  # \n adds a new line.
+  scale_fill_gradientn(name = "Species\nRichness", colors = c("skyblue", "red")) +  
   
   # You should be getting used to this code!
-  ggtitle("Accipitridae Species Richness Heat Map") + 
-  theme_classic() +
+  theme_classic() + # Most of preset theme.
+  theme(text = element_text(face = "bold")) +  # Extra theme just for the bold.
   ylab("Latitude") + 
   xlab("Longitude") + 
   coord_fixed()

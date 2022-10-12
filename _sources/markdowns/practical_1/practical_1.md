@@ -1,25 +1,21 @@
-## Basics in R
+## Basics & Phylogenetics in R
 
 ### 1. Introduction and resources
 
 The aim of this practical is to revise some basic functions in `R`
 relating to data management and plotting. We will then look at handling
-spatial data and phylogenies, two skills essential for macro-ecology.
-One aim of this practical is to make sure everyone’s set up is working
-well and fix any problems!
+spatial data and phylogenies, two skills essential for macroecology. One
+aim of this practical is to make sure everyone’s set up is working well
+and fix any problems!
 
 We will review importing phylogenetic trees as data files, displaying
 phylogenetic trees visually, and some basic evolutionary computations
 that can be conducted with phylogenetic trees. This practical will
-deliver some of the important background for Coursework 1. Below you
-will find some of the relevant resources required for this practical.
+deliver some of the important background for Coursework 1.
 
-Parts (sections 2,3,4) of this practical are written by [Natalie
+Parts (sections 6,7) of this practical are written by [Natalie
 Cooper](http://nhcooper123.github.io/). The original can be found
 [here](https://github.com/nhcooper123/TeachingMaterials/blob/master/PhD_Museum/VisualisingPhylo.Rmd).
-Whereas, parts (section 5 & 6) of this practical are written by Adam
-Devenish & Rob Barber (<a.devenish@imperial.ac.uk>)
-(<r.barber19@imperial.ac.uk>).
 
 #### Working directory
 
@@ -561,13 +557,14 @@ It’s always good practice to check the data after it’s been read in.
 str(avonet_data)
 ```
 
-    ## 'data.frame':    9872 obs. of  25 variables:
+    ## 'data.frame':    9872 obs. of  28 variables:
     ##  $ birdlife_name       : chr  "Accipiter albogularis" "Accipiter badius" "Accipiter bicolor" "Accipiter brachyurus" ...
     ##  $ birdlife_common_name: chr  "Pied Goshawk" "Shikra" "Bicolored Hawk" "New Britain Sparrowhawk" ...
     ##  $ jetz_name           : chr  "Accipiter_albogularis" "Accipiter_badius" "Accipiter_bicolor" "Accipiter_brachyurus" ...
     ##  $ jetz_order          : chr  "Accipitriformes" "Accipitriformes" "Accipitriformes" "Accipitriformes" ...
     ##  $ jetz_family         : chr  "Accipitridae" "Accipitridae" "Accipitridae" "Accipitridae" ...
     ##  $ redlist_cat         : chr  "LC" "LC" "LC" "VU" ...
+    ##  $ extinct_prob        : num  0.0606 0.0606 0.0606 0.2425 0.0606 ...
     ##  $ beak_length_culmen  : num  27.7 20.6 25 22.5 21.1 20 20.5 19.2 20 25.4 ...
     ##  $ beak_length_nares   : num  17.8 12.1 13.7 14 12.1 11.9 11.5 10.6 11.2 13.9 ...
     ##  $ beak_width          : num  10.6 8.8 8.6 8.9 8.7 6.6 8.3 7.7 8.6 8.6 ...
@@ -587,6 +584,8 @@ str(avonet_data)
     ##  $ centroid_latitude   : num  -8.15 8.23 -10.1 -5.45 45.24 ...
     ##  $ centroid_longitude  : num  158.5 45 -60 150.7 45.3 ...
     ##  $ range_size          : num  37461 22374973 14309701 35581 2936752 ...
+    ##  $ beak_shape          : num  -0.594 -0.538 -0.442 -0.499 -0.487 ...
+    ##  $ body_shape          : num  -0.028 -0.227 -0.342 0.267 -0.271 ...
 
 `str` shows the structure of the data frame (this can be a really useful
 command when you have a big data file). It also tells you what kind of
@@ -601,24 +600,30 @@ The `head` function is also useful to check the data is correct.
 head(avonet_data, 5)
 ```
 
-    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat beak_length_culmen
-    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC               27.7
-    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC               20.6
-    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC               25.0
-    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU               22.5
-    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC               21.1
-    ##   beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance secondary1 hand_wing_index tail_length  mass
-    ## 1              17.8       10.6       14.7          62.0       235.2           81.8      159.5            33.9       169.0 248.8
-    ## 2              12.1        8.8       11.6          43.0       186.7           62.5      127.4            32.9       140.6 131.2
-    ## 3              13.7        8.6       12.7          58.1       229.6           56.6      174.8            24.6       186.3 287.5
-    ## 4              14.0        8.9       11.9          61.2       202.2           64.1      138.1            31.7       140.8 142.0
-    ## 5              12.1        8.7       11.1          46.4       217.6           87.8      129.9            40.2       153.5 186.5
-    ##   habitat_density migration trophic_level trophic_niche primary_lifestyle centroid_latitude centroid_longitude  range_size
-    ## 1               1         2     Carnivore     Vertivore       Insessorial             -8.15             158.49    37461.21
-    ## 2               2         3     Carnivore     Vertivore       Insessorial              8.23              44.98 22374973.00
-    ## 3               2         2     Carnivore     Vertivore        Generalist            -10.10             -59.96 14309701.27
-    ## 4               1         2     Carnivore     Vertivore       Insessorial             -5.45             150.68    35580.71
-    ## 5               1         3     Carnivore     Vertivore        Generalist             45.24              45.33  2936751.80
+    ##           birdlife_name    birdlife_common_name             jetz_name      jetz_order  jetz_family redlist_cat
+    ## 1 Accipiter albogularis            Pied Goshawk Accipiter_albogularis Accipitriformes Accipitridae          LC
+    ## 2      Accipiter badius                  Shikra      Accipiter_badius Accipitriformes Accipitridae          LC
+    ## 3     Accipiter bicolor          Bicolored Hawk     Accipiter_bicolor Accipitriformes Accipitridae          LC
+    ## 4  Accipiter brachyurus New Britain Sparrowhawk  Accipiter_brachyurus Accipitriformes Accipitridae          VU
+    ## 5    Accipiter brevipes      Levant Sparrowhawk    Accipiter_brevipes Accipitriformes Accipitridae          LC
+    ##   extinct_prob beak_length_culmen beak_length_nares beak_width beak_depth tarsus_length wing_length kipps_distance
+    ## 1     0.060625               27.7              17.8       10.6       14.7          62.0       235.2           81.8
+    ## 2     0.060625               20.6              12.1        8.8       11.6          43.0       186.7           62.5
+    ## 3     0.060625               25.0              13.7        8.6       12.7          58.1       229.6           56.6
+    ## 4     0.242500               22.5              14.0        8.9       11.9          61.2       202.2           64.1
+    ## 5     0.060625               21.1              12.1        8.7       11.1          46.4       217.6           87.8
+    ##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche
+    ## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore
+    ## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore
+    ## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore
+    ## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore
+    ## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore
+    ##   primary_lifestyle centroid_latitude centroid_longitude  range_size beak_shape body_shape
+    ## 1       Insessorial             -8.15             158.49    37461.21 -0.5939811 -0.0279868
+    ## 2       Insessorial              8.23              44.98 22374973.00 -0.5381898 -0.2265797
+    ## 3        Generalist            -10.10             -59.96 14309701.27 -0.4418864 -0.3419256
+    ## 4       Insessorial             -5.45             150.68    35580.71 -0.4985385  0.2672395
+    ## 5        Generalist             45.24              45.33  2936751.80 -0.4866800 -0.2710666
 
 Briefly, you can export data (especially dataframes) using a few simple
 functions:
@@ -721,8 +726,8 @@ manually set the number of breaks.
 dev.off()
 ```
 
-    ## null device 
-    ##           1
+    ## RStudioGD 
+    ##         2
 
 So it’s true that there are many small species and few large. We can
 take the natural log of body mass to better see if a pattern exists
@@ -769,8 +774,8 @@ plot(passerines$log_mass, passerines$tarsus_length, pch=16, col="blue",
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 ### 5. Handling spatial data
 
@@ -813,7 +818,12 @@ library(raster)
 
 # getData is a function from the raster package that allows us to download some spatial data. 
 bio <- getData("worldclim", var="bio", res=10)
+```
 
+    ## Warning in getData("worldclim", var = "bio", res = 10): getData will be removed in a future version of raster
+    ## . Please use the geodata package instead
+
+``` r
 # Get the class for our rasters.
 class(bio)
 ```
@@ -831,7 +841,7 @@ bio
     ## dimensions : 900, 2160, 1944000, 19  (nrow, ncol, ncell, nlayers)
     ## resolution : 0.1666667, 0.1666667  (x, y)
     ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## crs        : +proj=longlat +datum=WGS84 
     ## names      :  bio1,  bio2,  bio3,  bio4,  bio5,  bio6,  bio7,  bio8,  bio9, bio10, bio11, bio12, bio13, bio14, bio15, ... 
     ## min values :  -269,     9,     8,    72,   -59,  -547,    53,  -251,  -450,   -97,  -488,     0,     0,     0,     0, ... 
     ## max values :   314,   211,    95, 22673,   489,   258,   725,   375,   364,   380,   289,  9916,  2088,   652,   261, ...
@@ -874,7 +884,7 @@ bio[[12]]
     ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
     ## resolution : 0.1666667, 0.1666667  (x, y)
     ## extent     : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## crs        : +proj=longlat +datum=WGS84 
     ## source     : bio12.bil 
     ## names      : bio12 
     ## values     : 0, 9916  (min, max)
@@ -916,7 +926,7 @@ blank_raster
     ## dimensions : 900, 2160, 1944000  (nrow, ncol, ncell)
     ## resolution : 0.1666667, 0.1666667  (x, y)
     ## extent     : -180, 180.0001, -60.00003, 90  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## crs        : +proj=longlat +datum=WGS84 +towgs84=0,0,0 
     ## source     : memory
     ## names      : layer 
     ## values     : 1, 1944000  (min, max)
@@ -1109,8 +1119,8 @@ range_plot
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 Of course, you can play around with plot settings to create some
 impressive maps!
@@ -1156,10 +1166,6 @@ trees used in computer science.
 To plot phylogenies (or use any specialized analysis) in R, you need one
 or more additional packages from the basic R installation. For this
 practical you will need to load the following packages:
-
-• ape
-
-• phytools
 
 ``` r
 # Load packages.
@@ -1288,12 +1294,10 @@ In this practical we are going to use the `elopomorph.tre` newick tree.
 You can open it with a simple text editor to see the newick tree
 structure.
 
-### 7. Basic tree viewing in `R`
+#### Reading in a phylogeny from a file
 
 Now let’s visualise some phylogenies! We’ll use the Elopomorpha (eels
 and similar fishes) tree to start as it is simple.
-
-#### Reading in a phylogeny from a file
 
 To load a tree you need the function `read.tree`. Just like we did with
 text but instead we point to a file location. `read.tree` can read any
@@ -1438,25 +1442,7 @@ plot(fishtree, type = "unrooted", edge.color = "deeppink", tip.color = "springgr
 :width: 600px
 ```
 
-Or try
-
-``` r
-plot(ladderize(fishtree), type = "c", edge.color = "darkviolet", tip.color = "hotpink",  cex = 0.7)
-```
-
-```{image} practical_1_files/figure-gfm/unnamed-chunk-78-1.png
-:align: center
-:width: 600px
-```
-
-The `ladderize` function allows to display the branches from shortest to
-longest.
-
-> Try to modify the graphical options (colors, display, size, ordering
-> of the nodes, etc.) to obtain the most beautiful or ugliest
-> Elopomorpha phylogeny!
-
-### 8. Manipulating phylogenetic trees in `R`
+### 7. Manipulating phylogenetic trees in `R`
 
 There are a range of ways in which we can manipulate trees in R. To
 start lets take a look at the bird family Turdidae.
@@ -1478,7 +1464,7 @@ ran_turdidae_tree <- sample(turdidae_tree, size=1)[[1]]
 plotTree(ran_turdidae_tree, type="fan", fsize=0.4, lwd=0.5,ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-80-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-79-1.png
 :align: center
 :width: 600px
 ```
@@ -1490,8 +1476,9 @@ First, lets see what species are in the tree.
 head(ran_turdidae_tree$tip.label, 10)
 ```
 
-    ##  [1] "Zoothera_everetti"        "Zoothera_naevia"          "Zoothera_pinicola"        "Hylocichla_mustelina"     "Catharus_aurantiirostris"
-    ##  [6] "Catharus_mexicanus"       "Catharus_dryas"           "Catharus_fuscater"        "Catharus_ustulatus"       "Catharus_bicknelli"
+    ##  [1] "Zoothera_everetti"        "Zoothera_naevia"          "Zoothera_pinicola"        "Hylocichla_mustelina"    
+    ##  [5] "Catharus_aurantiirostris" "Catharus_mexicanus"       "Catharus_dryas"           "Catharus_fuscater"       
+    ##  [9] "Catharus_ustulatus"       "Catharus_bicknelli"
 
 We can remove species from the tree that we don’t want to include. This
 is useful when we are missing data for a species, or we have a larger
@@ -1513,9 +1500,9 @@ drop_species <- ran_turdidae_tree$tip.label[tip_numbers]
 drop_species
 ```
 
-    ##  [1] "Myadestes_genibarbis"   "Myadestes_ralloides"    "Myadestes_melanops"     "Myadestes_coloratus"    "Myadestes_palmeri"     
-    ##  [6] "Myadestes_elisabeth"    "Myadestes_townsendi"    "Myadestes_obscurus"     "Myadestes_occidentalis" "Myadestes_unicolor"    
-    ## [11] "Myadestes_lanaiensis"
+    ##  [1] "Myadestes_genibarbis"   "Myadestes_ralloides"    "Myadestes_melanops"     "Myadestes_coloratus"   
+    ##  [5] "Myadestes_palmeri"      "Myadestes_elisabeth"    "Myadestes_townsendi"    "Myadestes_obscurus"    
+    ##  [9] "Myadestes_occidentalis" "Myadestes_unicolor"     "Myadestes_lanaiensis"
 
 Now, we create a new tree, with the Myadestes tips dropped from it.
 
@@ -1527,7 +1514,7 @@ ran_turdidae_tree_NM <- drop.tip(ran_turdidae_tree, drop_species)
 plotTree(ran_turdidae_tree_NM, type="fan", fsize=0.4, lwd=0.5, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-83-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-82-1.png
 :align: center
 :width: 600px
 ```
@@ -1547,7 +1534,7 @@ pruned_birdtree <- drop.tip(ran_turdidae_tree, species_we_dont_want)
 plotTree(pruned_birdtree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-84-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-83-1.png
 :align: center
 :width: 600px
 ```
@@ -1640,7 +1627,7 @@ genera_tree <- drop.tip(ran_turdidae_tree, drop_tips)
 plotTree(genera_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-88-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-87-1.png
 :align: center
 :width: 600px
 ```
@@ -1659,12 +1646,12 @@ genera_tree$tip.label <- bird_genera$Genus
 plotTree(genera_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-89-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-88-1.png
 :align: center
 :width: 600px
 ```
 
-### 9. Adding trait data to trees in `R`
+### 8. Adding trait data to trees in `R`
 
 Often basic tree plots in R are all you need for exploring data and your
 analysis. However, for publications and presentations it may be useful
@@ -1714,14 +1701,16 @@ are in the tip labels
 turdidae_data$jetz_name %in% ran_turdidae_tree$tip.label
 ```
 
-    ##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [23] FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [45]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [67]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ##  [89]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [111]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
-    ## [155]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##   [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [19]  TRUE  TRUE  TRUE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [37]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [55]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [73]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ##  [91]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [109]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [127]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [145]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+    ## [163]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 
 We can save the results, and use this to select the rows we need from
 turdidae_data. We’ll use the `!` operator, which means NOT. So in this
@@ -1766,7 +1755,7 @@ turdi_tree <- drop.tip(ran_turdidae_tree, drop_tips)
 plotTree(turdi_tree, ftype="i")
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-95-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-94-1.png
 :align: center
 :width: 600px
 ```
@@ -1794,7 +1783,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular")
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-97-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-96-1.png
 :align: center
 :width: 600px
 ```
@@ -1810,7 +1799,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular") + geom_tiplab()
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-98-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-97-1.png
 :align: center
 :width: 600px
 ```
@@ -1827,7 +1816,7 @@ turdidae_plot <- ggtree(turdi_tree, layout = "circular") + geom_tiplab(size = 1.
 turdidae_plot
 ```
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-99-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-98-1.png
 :align: center
 :width: 600px
 ```
@@ -1853,7 +1842,7 @@ Now we can make our plot!
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-101-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-100-1.png
 :align: center
 :width: 600px
 ```
@@ -1866,9 +1855,9 @@ as an object, and prints the plot at the same time.
 And now we have a plot where we can see the spread of habitat types in
 Thrushes. Try experimenting with different colours and sizes to create
 some beautiful trees that put this one to shame! There’s also lots of
-other ways you can label trees. For more info this guide is a great
-place to start:
-<https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package>
+other ways you can label trees. For more info [this
+guide](https://4va.github.io/biodatasci/r-ggtree.html#the_ggtree_package)
+is a great place to start.
 
 > Extra task: Can you make another plot for continuous body mass data?
 > Think about how you’d show this with colour. Can you change the key to
@@ -1902,7 +1891,7 @@ We can try using points on the end of tips.
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-103-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-102-1.png
 :align: center
 :width: 600px
 ```
@@ -1935,7 +1924,7 @@ library(ggtreeExtra)
 
     ## Scale for 'y' is already present. Adding another scale for 'y', which will replace the existing scale.
 
-```{image} practical_1_files/figure-gfm/unnamed-chunk-104-1.png
+```{image} practical_1_files/figure-gfm/unnamed-chunk-103-1.png
 :align: center
 :width: 600px
 ```
