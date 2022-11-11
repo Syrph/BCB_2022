@@ -359,24 +359,7 @@ ducks.
 # Load phylogenetic packages.
 library(ape)
 library(caper)
-```
 
-    ## Loading required package: MASS
-
-    ## 
-    ## Attaching package: 'MASS'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     select
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     area, select
-
-    ## Loading required package: mvtnorm
-
-``` r
 # Read in the tree.
 duck_tree <- read.tree("data/duck_tree.tre")
 plot(duck_tree, cex=0.3)
@@ -506,16 +489,7 @@ visualise this by plotting trees with different lambda values.
 ``` r
 # Load the package geiger that has the rescale function. You'll have to install it if you're in Rstudio on your own laptops.
 library(geiger)
-```
 
-    ## 
-    ## Attaching package: 'geiger'
-
-    ## The following object is masked from 'package:raster':
-    ## 
-    ##     hdr
-
-``` r
 # We'll create six trees with different lambda values .
 lambda_1_tree <- rescale(duck_tree, "lambda", 1)
 lambda_0.8_tree <- rescale(duck_tree, "lambda", 0.8)
@@ -1008,8 +982,8 @@ range_plot
 dev.off()
 ```
 
-    ## png 
-    ##   2
+    ## RStudioGD 
+    ##         2
 
 ### 5. Latitudinal diversity gradient
 
@@ -1155,9 +1129,8 @@ most macro-ecological research we’re less concerned with predictions,
 and more interested in determining if we can reject our null hypothesis.
 
 > Extra task: Can you recreate this plot using your `ggplot2` skills?
-
-::::{admonition} Show the answer…  
-:class: dropdown
+> We’ll first add the predictions for the line to the species richness
+> dataframe for ggplot to use.
 
 ``` r
 # We need the predictions from our model. Type "response" gives us y after the log-link.
@@ -1167,7 +1140,12 @@ predictions <- predict(accip_model, type = "response", se.fit = TRUE)
 species_richness$fit <- predictions$fit
 species_richness$y_max <- predictions$fit + predictions$se.fit
 species_richness$y_min <- predictions$fit - predictions$se.fit
+```
 
+::::{admonition} Show the answer…  
+:class: dropdown
+
+``` r
 # Create a normal scatter plot.
 ggplot(species_richness, aes(x = lat.bins, y = richness)) + geom_point() +
   
@@ -1186,7 +1164,7 @@ ggplot(species_richness, aes(x = lat.bins, y = richness)) + geom_point() +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-40-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-41-1.png
 :align: center
 :width: 600px
 ```
@@ -1237,7 +1215,7 @@ richness_plot <- ggplot() +
 richness_plot
 ```
 
-```{image} practical_2_files/figure-gfm/unnamed-chunk-41-1.png
+```{image} practical_2_files/figure-gfm/unnamed-chunk-42-1.png
 :align: center
 :width: 600px
 ```
@@ -1251,3 +1229,59 @@ more information on how to effectively use colours, including links for
 figure presentation in general.
 
 <https://www.molecularecologist.com/2020/04/23/simple-tools-for-mastering-color-in-scientific-figures/>
+
+```{tip}
+For your coursework, you'll be asked to investigate the questions/theories raised in this practical. You should think about the order you present them in your report, and if it makes sense to present them in the order they are shown here. We left assessing a latitudinal gradient of species richness till last, but maybe it makes more sense to establish if a latitudinal gradient exists before assessing specific relationships like body mass and range size.
+```
+
+Although we encourage beautiful phylogenies and maps, often the best way
+to visualise a pattern in the data is with a scatter plot. Earlier in
+this practical we made a scatter plot using the base R `plot()`
+function. However this plot isn’t currently a high enough standard for a
+publication or report.
+
+> Extra task: Can you recreate the scatter plot of latitude and body
+> size using ggplot2? Try playing around with the code from the
+> latitudinal diversity gradient plot before looking at the answer.
+
+::::{admonition} Show the answer…  
+:class: dropdown
+
+``` r
+# We need the predictions from our model. We'll add in the linear model and the pgls 
+# prediction so we can see the difference.
+duck_data$linear_fit <- predict(duck_model, type = "response", se.fit = FALSE)
+duck_data$phylo_fit <- predict(duck_pgls, type = "response", se.fit = FALSE)
+
+# Create a normal scatter plot.
+ggplot(duck_data, aes(x = abs_latitude, y = log_BM)) + geom_point() +
+  
+  # Add a blue line for the linear model.
+  geom_smooth(aes(y = linear_fit), fullrange=FALSE, se = FALSE, col = "blue") + 
+  
+  # Add a red line for the phylo model.
+  geom_smooth(aes(y = phylo_fit), fullrange=FALSE, se = FALSE, col = "red") + 
+
+  # Add labels.
+  xlab("Latitude") + ylab("Species Richness") +
+  
+  # Lastly add a theme to remove the grey background and grid lines. And make text bold.
+  theme_classic() + theme(text = element_text(face = "bold"))
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+```{image} practical_2_files/figure-gfm/unnamed-chunk-44-1.png
+:align: center
+:width: 600px
+```
+
+Think how you could change the plot to make it nicer. Can you figure out
+how to change the font sizes? Does adding more bins for latitude change
+your model results, or make the plot nicer?
+
+Think about how you could add a legend? Maybe you can create your own,
+or even simply make one in another program to add.
+
+::::

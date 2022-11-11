@@ -213,7 +213,7 @@ suggested by Mooers *et al.* (2008), looking at a 50 year time frame.
 Here’s the link to the publication, which you should cite in your
 reports.
 
-<https://doi.org/10.1371/journal.pone.0003700.t001>
+<https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0003700>
 
 These extinction probabilities are also referred to as GE (Globally
 Endangered) scores, which is why it’s called EDGE. We’ll add the ED
@@ -738,7 +738,7 @@ out this paper which first proposed the use of EcoEDGE scores:
 <https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320>
 
 ```{tip}
-For your coursework, you should cite both the original [EDGE reference](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000296), as well as the [EcoEDGE reference](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320).
+For your coursework, you should cite both the original [**EDGE reference**](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0000296), as well as the [**EcoEDGE reference**](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320).
 
 In general, most of the papers linked in this practical will be useful citations you should think about including.
 ```

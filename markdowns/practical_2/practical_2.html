@@ -573,25 +573,8 @@ ducks.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load phylogenetic packages.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">ape</span><span class="p">)</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">caper</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## Loading required package: MASS
 
-## 
-## Attaching package: &#39;MASS&#39;
-
-## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     select
-
-## The following objects are masked from &#39;package:raster&#39;:
-## 
-##     area, select
-
-## Loading required package: mvtnorm
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in the tree.</span>
+<span class="c1"># Read in the tree.</span>
 <span class="n">duck_tree</span> <span class="o">&lt;-</span> <span class="nf">read.tree</span><span class="p">(</span><span class="s">&quot;data/duck_tree.tre&quot;</span><span class="p">)</span>
 <span class="nf">plot</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="n">cex</span><span class="o">=</span><span class="m">0.3</span><span class="p">)</span>
 </pre></div>
@@ -697,17 +680,8 @@ on the tree, to reflect how body mass is related between species. We can
 visualise this by plotting trees with different lambda values.</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the package geiger that has the rescale function. You&#39;ll have to install it if you&#39;re in Rstudio on your own laptops.</span>
 <span class="nf">library</span><span class="p">(</span><span class="n">geiger</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## 
-## Attaching package: &#39;geiger&#39;
 
-## The following object is masked from &#39;package:raster&#39;:
-## 
-##     hdr
-</pre></div>
-</div>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll create six trees with different lambda values .</span>
+<span class="c1"># We&#39;ll create six trees with different lambda values .</span>
 <span class="n">lambda_1_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
 <span class="n">lambda_0.8_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">0.8</span><span class="p">)</span>
 <span class="n">lambda_0.6_tree</span> <span class="o">&lt;-</span> <span class="nf">rescale</span><span class="p">(</span><span class="n">duck_tree</span><span class="p">,</span> <span class="s">&quot;lambda&quot;</span><span class="p">,</span> <span class="m">0.6</span><span class="p">)</span>
@@ -1139,8 +1113,8 @@ your plots accordingly.</p>
 <span class="nf">dev.off</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## png 
-##   2
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## RStudioGD 
+##         2
 </pre></div>
 </div>
 </section>
@@ -1267,10 +1241,10 @@ decrease in species richness with every 1 degree latitude increase. For
 most macro-ecological research we’re less concerned with predictions,
 and more interested in determining if we can reject our null hypothesis.</p>
 <blockquote>
-<div><p>Extra task: Can you recreate this plot using your <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> skills?</p>
+<div><p>Extra task: Can you recreate this plot using your <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> skills?
+We’ll first add the predictions for the line to the species richness
+dataframe for ggplot to use.</p>
 </div></blockquote>
-<div class="dropdown admonition">
-<p class="admonition-title">Show the answer…  </p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We need the predictions from our model. Type &quot;response&quot; gives us y after the log-link.</span>
 <span class="n">predictions</span> <span class="o">&lt;-</span> <span class="nf">predict</span><span class="p">(</span><span class="n">accip_model</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;response&quot;</span><span class="p">,</span> <span class="n">se.fit</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 
@@ -1278,8 +1252,11 @@ and more interested in determining if we can reject our null hypothesis.</p>
 <span class="n">species_richness</span><span class="o">$</span><span class="n">fit</span> <span class="o">&lt;-</span> <span class="n">predictions</span><span class="o">$</span><span class="n">fit</span>
 <span class="n">species_richness</span><span class="o">$</span><span class="n">y_max</span> <span class="o">&lt;-</span> <span class="n">predictions</span><span class="o">$</span><span class="n">fit</span> <span class="o">+</span> <span class="n">predictions</span><span class="o">$</span><span class="n">se.fit</span>
 <span class="n">species_richness</span><span class="o">$</span><span class="n">y_min</span> <span class="o">&lt;-</span> <span class="n">predictions</span><span class="o">$</span><span class="n">fit</span> <span class="o">-</span> <span class="n">predictions</span><span class="o">$</span><span class="n">se.fit</span>
-
-<span class="c1"># Create a normal scatter plot.</span>
+</pre></div>
+</div>
+<div class="dropdown admonition">
+<p class="admonition-title">Show the answer…  </p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a normal scatter plot.</span>
 <span class="nf">ggplot</span><span class="p">(</span><span class="n">species_richness</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">lat.bins</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">richness</span><span class="p">))</span> <span class="o">+</span> <span class="nf">geom_point</span><span class="p">()</span> <span class="o">+</span>
   
   <span class="c1"># Add in the main model line. Turn se off so we add it manually after.</span>
@@ -1298,7 +1275,7 @@ and more interested in determining if we can reject our null hypothesis.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-40-1.png"><img alt="../../_images/unnamed-chunk-40-1.png" class="align-center" src="../../_images/unnamed-chunk-40-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-41-1.png"><img alt="../../_images/unnamed-chunk-41-1.png" class="align-center" src="../../_images/unnamed-chunk-41-1.png" style="width: 600px;" /></a>
 <p>Think how you could change the plot to make it nicer. Can you figure out
 how to change the font sizes? Does adding more bins for latitude change
 your model results, or make the plot nicer?</p>
@@ -1341,7 +1318,7 @@ richness.</p>
 <span class="n">richness_plot</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/unnamed-chunk-41-1.png"><img alt="../../_images/unnamed-chunk-41-1.png" class="align-center" src="../../_images/unnamed-chunk-41-1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-42-1.png"><img alt="../../_images/unnamed-chunk-42-1.png" class="align-center" src="../../_images/unnamed-chunk-42-1.png" style="width: 600px;" /></a>
 <p>Does this look nicer than the plot in practical 1? Figure presentation
 is an important skill in ecology (and wider science), and will be useful
 for your future projects no matter what the topic! It’s worth taking the
@@ -1350,6 +1327,54 @@ edit figures using ggplot. I highly recommend checking out this page for
 more information on how to effectively use colours, including links for
 figure presentation in general.</p>
 <p><a class="reference external" href="https://www.molecularecologist.com/2020/04/23/simple-tools-for-mastering-color-in-scientific-figures/">https://www.molecularecologist.com/2020/04/23/simple-tools-for-mastering-color-in-scientific-figures/</a></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For your coursework, you’ll be asked to investigate the questions/theories raised in this practical. You should think about the order you present them in your report, and if it makes sense to present them in the order they are shown here. We left assessing a latitudinal gradient of species richness till last, but maybe it makes more sense to establish if a latitudinal gradient exists before assessing specific relationships like body mass and range size.</p>
+</div>
+<p>Although we encourage beautiful phylogenies and maps, often the best way
+to visualise a pattern in the data is with a scatter plot. Earlier in
+this practical we made a scatter plot using the base R <code class="docutils literal notranslate"><span class="pre">plot()</span></code>
+function. However this plot isn’t currently a high enough standard for a
+publication or report.</p>
+<blockquote>
+<div><p>Extra task: Can you recreate the scatter plot of latitude and body
+size using ggplot2? Try playing around with the code from the
+latitudinal diversity gradient plot before looking at the answer.</p>
+</div></blockquote>
+<div class="dropdown admonition">
+<p class="admonition-title">Show the answer…  </p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># We need the predictions from our model. We&#39;ll add in the linear model and the pgls </span>
+<span class="c1"># prediction so we can see the difference.</span>
+<span class="n">duck_data</span><span class="o">$</span><span class="n">linear_fit</span> <span class="o">&lt;-</span> <span class="nf">predict</span><span class="p">(</span><span class="n">duck_model</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;response&quot;</span><span class="p">,</span> <span class="n">se.fit</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="n">duck_data</span><span class="o">$</span><span class="n">phylo_fit</span> <span class="o">&lt;-</span> <span class="nf">predict</span><span class="p">(</span><span class="n">duck_pgls</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;response&quot;</span><span class="p">,</span> <span class="n">se.fit</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+
+<span class="c1"># Create a normal scatter plot.</span>
+<span class="nf">ggplot</span><span class="p">(</span><span class="n">duck_data</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">abs_latitude</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">log_BM</span><span class="p">))</span> <span class="o">+</span> <span class="nf">geom_point</span><span class="p">()</span> <span class="o">+</span>
+  
+  <span class="c1"># Add a blue line for the linear model.</span>
+  <span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">linear_fit</span><span class="p">),</span> <span class="n">fullrange</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">se</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;blue&quot;</span><span class="p">)</span> <span class="o">+</span> 
+  
+  <span class="c1"># Add a red line for the phylo model.</span>
+  <span class="nf">geom_smooth</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">phylo_fit</span><span class="p">),</span> <span class="n">fullrange</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> <span class="n">se</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span> <span class="o">+</span> 
+
+  <span class="c1"># Add labels.</span>
+  <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Latitude&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;Species Richness&quot;</span><span class="p">)</span> <span class="o">+</span>
+  
+  <span class="c1"># Lastly add a theme to remove the grey background and grid lines. And make text bold.</span>
+  <span class="nf">theme_classic</span><span class="p">()</span> <span class="o">+</span> <span class="nf">theme</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">face</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;
+## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/unnamed-chunk-44-11.png"><img alt="../../_images/unnamed-chunk-44-11.png" class="align-center" src="../../_images/unnamed-chunk-44-11.png" style="width: 600px;" /></a>
+<p>Think how you could change the plot to make it nicer. Can you figure out
+how to change the font sizes? Does adding more bins for latitude change
+your model results, or make the plot nicer?</p>
+<p>Think about how you could add a legend? Maybe you can create your own,
+or even simply make one in another program to add.</p>
+</div>
 </section>
 </section>
 </section>
