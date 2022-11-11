@@ -359,7 +359,24 @@ ducks.
 # Load phylogenetic packages.
 library(ape)
 library(caper)
+```
 
+    ## Loading required package: MASS
+
+    ## 
+    ## Attaching package: 'MASS'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     select
+
+    ## The following objects are masked from 'package:raster':
+    ## 
+    ##     area, select
+
+    ## Loading required package: mvtnorm
+
+``` r
 # Read in the tree.
 duck_tree <- read.tree("data/duck_tree.tre")
 plot(duck_tree, cex=0.3)
@@ -489,7 +506,16 @@ visualise this by plotting trees with different lambda values.
 ``` r
 # Load the package geiger that has the rescale function. You'll have to install it if you're in Rstudio on your own laptops.
 library(geiger)
+```
 
+    ## 
+    ## Attaching package: 'geiger'
+
+    ## The following object is masked from 'package:raster':
+    ## 
+    ##     hdr
+
+``` r
 # We'll create six trees with different lambda values .
 lambda_1_tree <- rescale(duck_tree, "lambda", 1)
 lambda_0.8_tree <- rescale(duck_tree, "lambda", 0.8)
@@ -638,20 +664,20 @@ head(avonet_data)
     ## 4     0.242500               22.5              14.0        8.9       11.9          61.2       202.2           64.1
     ## 5     0.060625               21.1              12.1        8.7       11.1          46.4       217.6           87.8
     ## 6     0.242500               20.0              11.9        6.6       12.0          48.7       166.0           42.9
-    ##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche
-    ## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore
-    ## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore
-    ## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore
-    ## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore
-    ## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore
-    ## 6      123.1            25.8       127.0 122.0               1         1     Carnivore     Vertivore
-    ##   primary_lifestyle centroid_latitude centroid_longitude  range_size beak_shape  body_shape
-    ## 1       Insessorial             -8.15             158.49    37461.21 -0.5939811 -0.02798680
-    ## 2       Insessorial              8.23              44.98 22374973.00 -0.5381898 -0.22657971
-    ## 3        Generalist            -10.10             -59.96 14309701.27 -0.4418864 -0.34192565
-    ## 4       Insessorial             -5.45             150.68    35580.71 -0.4985385  0.26723952
-    ## 5        Generalist             45.24              45.33  2936751.80 -0.4866800 -0.27106661
-    ## 6       Insessorial              8.42              93.17      327.84 -0.4403345  0.07580829
+    ##   secondary1 hand_wing_index tail_length  mass habitat_density migration trophic_level trophic_niche primary_lifestyle
+    ## 1      159.5            33.9       169.0 248.8               1         2     Carnivore     Vertivore       Insessorial
+    ## 2      127.4            32.9       140.6 131.2               2         3     Carnivore     Vertivore       Insessorial
+    ## 3      174.8            24.6       186.3 287.5               2         2     Carnivore     Vertivore        Generalist
+    ## 4      138.1            31.7       140.8 142.0               1         2     Carnivore     Vertivore       Insessorial
+    ## 5      129.9            40.2       153.5 186.5               1         3     Carnivore     Vertivore        Generalist
+    ## 6      123.1            25.8       127.0 122.0               1         1     Carnivore     Vertivore       Insessorial
+    ##   centroid_latitude centroid_longitude  range_size beak_shape  body_shape
+    ## 1             -8.15             158.49    37461.21 -0.5939811 -0.02798680
+    ## 2              8.23              44.98 22374973.00 -0.5381898 -0.22657971
+    ## 3            -10.10             -59.96 14309701.27 -0.4418864 -0.34192565
+    ## 4             -5.45             150.68    35580.71 -0.4985385  0.26723952
+    ## 5             45.24              45.33  2936751.80 -0.4866800 -0.27106661
+    ## 6              8.42              93.17      327.84 -0.4403345  0.07580829
 
 So we can see the data is a near complete species list for the world’s
 birds, with some information on morphological data, range data and IUCN
@@ -982,8 +1008,8 @@ range_plot
 dev.off()
 ```
 
-    ## RStudioGD 
-    ##         2
+    ## png 
+    ##   2
 
 ### 5. Latitudinal diversity gradient
 

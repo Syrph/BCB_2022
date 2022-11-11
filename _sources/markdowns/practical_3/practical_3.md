@@ -11,7 +11,7 @@ more information about EDGE scores from the ZSL website:
 <https://www.zsl.org/conservation/our-priorities/wildlife-back-from-the-brink/animals-on-the-edge>
 
 We will also try plotting a simple map of IUCN categories so we can
-visual the risk to our clade across the globe.
+visualise the risk to our clade across the globe.
 
 ### 2. Preparing data
 
@@ -644,10 +644,10 @@ accip_EcoEDGE <- left_join(accip_EDGE, accip_ecoDGE)
 ```
 
     ## Joining, by = c("birdlife_name", "birdlife_common_name", "jetz_name", "jetz_order", "jetz_family", "redlist_cat",
-    ## "extinct_prob", "beak_length_culmen", "beak_length_nares", "beak_width", "beak_depth", "tarsus_length",
-    ## "wing_length", "kipps_distance", "secondary1", "hand_wing_index", "tail_length", "mass", "habitat_density",
-    ## "migration", "trophic_level", "trophic_niche", "primary_lifestyle", "centroid_latitude", "centroid_longitude",
-    ## "range_size", "beak_shape", "body_shape")
+    ## "extinct_prob", "beak_length_culmen", "beak_length_nares", "beak_width", "beak_depth", "tarsus_length", "wing_length",
+    ## "kipps_distance", "secondary1", "hand_wing_index", "tail_length", "mass", "habitat_density", "migration",
+    ## "trophic_level", "trophic_niche", "primary_lifestyle", "centroid_latitude", "centroid_longitude", "range_size",
+    ## "beak_shape", "body_shape")
 
 ``` r
 # Calculate EcoEDGE scores.

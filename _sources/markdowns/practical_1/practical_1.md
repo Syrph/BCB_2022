@@ -655,8 +655,8 @@ R session. Later on we’ll use .RData files to plot maps of bird ranges.
 
 R can be used to produce a wide array of plots and has a large capacity
 for customisation. We will touch upon some basic plots which are useful
-to visual data during your analysis. For more advanced plots useful in
-your coursework, most biologists use the package *ggplot2*. A useful
+to visualise data during your analysis. For more advanced plots useful
+in your coursework, most biologists use the package *ggplot2*. A useful
 guide is the R cookbook, that includes information on customising plots:
 <http://www.cookbook-r.com/Graphs/>
 
