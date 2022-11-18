@@ -74,3 +74,5 @@ The EDGE programme at ZSL.
 The paper that first proposed EcoEDGE scores.  
 <https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12320>
 
+A recent example of using EDGE and EcoDGE scores.
+<https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2435.14140>
